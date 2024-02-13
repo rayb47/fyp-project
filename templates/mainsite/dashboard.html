@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'portu_flag_pic.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      <span class="text-green">Portu</span><span class="text-red">Pro</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link active-tab" href="men_tester.html">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gearth.html">Vocabulary</a>
+      </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Culture
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="culture.html">Architecture</a>
+            <a class="dropdown-item" href="page2.html">Festivals</a>
+            <a class="dropdown-item" href="page3.html">Media</a>
+            <!-- More dropdown items -->
+          </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          More
+        </a>
+        <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+          <a class="dropdown-item" href="page1.html">Diacritics</a>
+          <a class="dropdown-item" href="page2.html">OS Language</a>
+          <a class="dropdown-item" href="page3.html">Music & More</a>
+          <!-- More dropdown items -->
+        </div>
+      <li class="nav-item">
+        <a class="nav-link" href="gearth.html">Settings</a>
+    </li>
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="/signout" class="settings-link">Logout</a>
+      </span>
+    </div>
+  </nav>
+
+<div class="container mt-4">
+  <div class="text-white">
+    {% if user.is_authenticated %}
+    <h1>Hi {{uname}}, welcome to PortuguesePro!</h1><br><br>
+    {% endif %}
+  </div>
+  
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="card lesson-card">
+            <img src="{% static 'conversation.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">1 - Basic Conversation and Phrases</h5>
+              <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
+              <a href="#" class="btn btn-primary">Lessons</a>
+              <a href="/quiz" class="btn btn-primary">Quizzes</a>
+              <span class="badge badge-info" style="float: right; margin-top:20px">2 of 12</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card lesson-card">
+            <img src="{% static 'conversation.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">2 - Common Foods and Animal Names</h5>
+              <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
+              <a href="#" class="btn btn-primary">Lessons</a>
+              <a href="#" class="btn btn-primary">Quizzes</a>
+              <span class="badge badge-info" style="float: right; margin-top:20px">2 of 12</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card lesson-card">
+            <img src="{% static 'conversation.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">3 - Colors, Numbers and Basic Objects</h5>
+              <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
+              <a href="#" class="btn btn-primary">Lessons</a>
+              <a href="#" class="btn btn-primary">Quizzes</a>
+              <span class="badge badge-info" style="float: right; margin-top:20px">2 of 12</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card lesson-card">
+            <img src="{% static 'conversation.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">4 - General Outdoors and Weather</h5>
+              <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
+              <a href="#" class="btn btn-primary">Lessons</a>
+              <a href="#" class="btn btn-primary">Quizzes</a>
+              <span class="badge badge-info" style="float: right; margin-top:20px">2 of 12</span>
+            </div>
+          </div>
+        </div>
+        <!-- Repeat for other units -->
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card mb-3 weather-widget">
+        <div class="card-body">
+          <h5 class="card-title">{{country}} {{local_time}}</h5>
+          <div class="d-flex flex-row">
+            <p class="card-text" style="background-color: green">{{temp_c}}</p>
+            <img src={{image}} alt="W3Schools.com" style="background-color: antiquewhite;">
+          </div>
+        </div>
+      </div>
+      <!-- Add other widgets like activity tracker and twitter feed -->
+      <div class="twitter-container">
+        <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/theportugalnews?ref_src=twsrc%5Etfw">Tweets by theportugalnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

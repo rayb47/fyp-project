@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - PortuguesePro</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+  body {
+    background: linear-gradient(to bottom, #33A251, #BB4B3C);
+  }
+  .registration-container {
+    max-width: 400px;
+    margin: 50px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .registration-container h1 {
+    text-align: center;
+    color: #333;
+  }
+  .registration-container img {
+    display: block;
+    margin: 10px auto;
+  }
+  .btn-primary {
+    background-color: #D32F2F;
+    border-color: #D32F2F;
+  }
+</style>
+</head>
+<body>
+
+<div class="registration-container">
+  <a href="home" class="text-secondary">&larr; Login</a>
+  <img src="{% static 'portu_flag_pic.png' %}" alt="Portuguese Flag" style="width: 100px;"> <!-- Adjust size as needed -->
+  <h1>PortuPro</h1>
+  <p class="text-center">A Portuguese language learning website to help you sharpen and develop your Portuguese. Enter your details to register for an account below.</p>
+  
+  <form action="signup" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="inputUsername">Username</label>
+        <input type="username" name="username" id="inputUsername" class="form-control" placeholder="Username..." required autofocus>
+      </div>
+    
+    <div class="form-group">
+      <label for="inputEmail">Email</label>
+      <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email..." value="{{ form_data.email|default_if_none:'' }}" required autofocus>
+    </div>
+
+    <div class="form-group">
+      <label for="inputPassword">Password</label>
+      <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    </div>
+
+    <div class="form-group">
+      <label for="inputPasswordConfirm">Re-Enter Password</label>
+      <input type="password" name="passwordConfirm" id="inputPasswordConfirm" class="form-control" placeholder="Re-Enter Password" required>
+    </div>
+
+    <div class="form-group">
+        <label for="studyFrequency">Study Frequency</label>
+        <div class="input-group">
+          <input type="number" name="studyFrequency" id="studyFrequency" class="form-control" placeholder="Number" aria-label="Study frequency number">
+          <div class="input-group-append">
+            <select class="custom-select" name="frequencyUnit" id="frequencyUnit">
+              <option value="Daily" selected>hours per day</option>
+              <option value="Weekly">hours per week</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    <fieldset class="form-group">
+      <legend class="col-form-label pt-0">Proficiency Level</legend>
+      <div class="form-check">
+        <input class="form-check-input" name="beginner_lvl" type="checkbox" name="proficiencyLevel" id="beginner" value="beginner">
+        <label class="form-check-label" for="beginner">
+          Beginner
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" name="intermediate_lvl" type="checkbox" name="proficiencyLevel" id="intermediate" value="intermediate">
+        <label class="form-check-label" for="intermediate">
+          Intermediate
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" name="advanced_lvl" type="checkbox" name="proficiencyLevel" id="advanced" value="advanced">
+        <label class="form-check-label" for="advanced">
+          Advanced
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-group">
+      <legend class="col-form-label pt-0">Default site language to Portuguese?</legend>
+      <div class="form-check">
+        <input class="form-check-input" name="languageYes" type="checkbox" name="siteLanguage" id="languageYes" value="yes">
+        <label class="form-check-label" for="languageYes">
+          Yes
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" name="languageNo" type="checkbox" name="siteLanguage" id="languageNo" value="no">
+        <label class="form-check-label" for="languageNo">
+          No
+        </label>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+  </form>
+</div>
+{% if messages %}
+<script type="text/javascript">
+    window.onload = function() {
+        // Concatenate all messages into one string
+        let messageText = "{% for message in messages %}{{ message }}\n{% endfor %}";
+        alert(messageText);  // Use a simple alert for demonstration
+    }
+</script>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,14 @@
+body {
+    background: linear-gradient(to right, #33A251, #BB4B3C); /* Start and end colors of the gradient */
+    background-attachment: fixed; /* Fix the background to the viewport */
+    background-repeat: no-repeat; /* Do not repeat the background */
+    background-size: cover; /* Cover the entire page */
+  }
+  
+.card {
+border-radius: 15px; /* Rounded corners for the card */
+}
+
+.btn-primary {
+background-color: #0056b3; /* Custom color for the primary button */
+}

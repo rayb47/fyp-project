@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz - Unit 3: Food And Drink</title>
+<link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
+<style>
+    .quiz-container {
+      max-width: 600px;
+      margin: 30px auto;
+      background-color: #f9f9f9;
+      padding: 20px;
+      padding-left: 0px;
+      padding-right: 0px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .option:hover {
+      background-color: #f0f0f0;
+    }
+    .option img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .progress {
+      height: 20px;
+    }
+    .progress-bar {
+      background-color: #4CAF50;
+    }
+    hr {
+        border: none;
+        height: 1px;
+        width: 100%;
+        margin-left: 0px;  /* counteract the left padding of the container */
+        margin-right: 0px; /* counteract the right padding of the container */
+        background-color: #000000; /* or any color that fits the design */
+        margin-top: 20px; /* or any value that fits the design */
+        margin-bottom: 20px; /* or any value that fits the design */
+    }
+
+    input[type="radio"]:checked + img {
+  border: 8px solid #4CAF50; /* Green border for selected item */
+  /* padding: 4px; */
+}
+
+
+
+.option-container {
+    margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
+}
+  </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'portu_flag_pic.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      <span class="text-green">Portu</span><span class="text-red">Pro</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="men_tester.html">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gearth.html">Vocabulary</a>
+      </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Culture
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="culture.html">Architecture</a>
+            <a class="dropdown-item" href="page2.html">Festivals</a>
+            <a class="dropdown-item" href="page3.html">Media</a>
+            <!-- More dropdown items -->
+          </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          More
+        </a>
+        <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+          <a class="dropdown-item" href="page1.html">Diacritics</a>
+          <a class="dropdown-item" href="page2.html">OS Language</a>
+          <a class="dropdown-item" href="page3.html">Music & More</a>
+          <!-- More dropdown items -->
+        </div>
+      <li class="nav-item">
+        <a class="nav-link" href="gearth.html">Settings</a>
+    </li>
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="/signout" class="settings-link">Logout</a>
+      </span>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="quiz-container">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="#" class="btn btn-light big-arrow">&larr;</a>
+        <b>Unit 3 - Food And Drink</b>
+        <div class="progress" style="width: 30%;"> 
+          <div class="progress-bar" style="width:70%"></div>
+        </div>
+        <b>2 of 12</b> 
+        <a href="/home" class="btn btn-light big-close">&times;</a>
+      </div>
+
+      <hr> 
+
+      <h2 class="text-center mb-4">Which of these is 'bread'?</h2>
+      <!-- <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="option">
+            <img src="{% static 'conversation.jpg' %}" alt="Pão">
+            <p class="text-center mt-2">pão</p>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="option">
+            <img src="{% static 'conversation.jpg' %}" alt="Água">
+            <p class="text-center mt-2">água</p>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="option">
+            <img src="{% static 'conversation.jpg' %}" alt="Maçã">
+            <p class="text-center mt-2">maçã</p>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="option">
+            <img src="{% static 'conversation.jpg' %}" alt="Laranja">
+            <p class="text-center mt-2">laranja</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-success btn-lg">Continue</button>
+      </div> -->
+      <form id="quiz-form" method="post" action="submit_answer">
+        {% csrf_token %}
+        <div class="row">
+          <!-- Option 1 -->
+          <div class="col-md-6 option-container">
+            <label class="option">
+              <input type="radio" name="quiz" value="pão" {% if quiz == "pão" %}checked{% endif %} hidden />
+              <img src="{% static 'conversation.jpg' %}" alt="Pão">
+              <p class="text-center mt-2">A. pão</p>
+            </label>
+          </div>
+          <!-- Option 2 -->
+          <div class="col-md-6 option-container">
+            <label class="option">
+              <input type="radio" name="quiz" value="água" {% if quiz == "água" %}checked{% endif %} hidden/>
+              <img src="{% static 'conversation.jpg' %}" alt="Água">
+              <p class="text-center mt-2">B. água</p>
+            </label>
+          </div>
+          <!-- More options -->
+          <div class="col-md-6 option-container">
+            <label class="option">
+              <input type="radio" name="quiz" value="maca" {% if quiz == "maca" %}checked{% endif %} hidden  />
+              <img src="{% static 'conversation.jpg' %}" alt="maca">
+              <p class="text-center mt-2">C. maca</p>
+            </label>
+          </div>
+          <div class="col-md-6 option-container">
+            <label class="option">
+              <input type="radio" name="quiz" value="laranja" {% if quiz == "laranja" %}checked{% endif %} hidden />
+              <img src="{% static 'conversation.jpg' %}" alt="laranja">
+              <p class="text-center mt-2">D. laranja</p>
+            </label>
+          </div>
+        </div>
+        <div class="text-center" style="padding:0px">
+          {% if messages %}
+            {% for message in messages %}
+              <!-- Check if the message is a success message -->
+              {% if 'success' in message.tags %}
+                <div class="alert alert-success" role="alert">
+                  {{ message }}
+                </div>
+              {% endif %}
+                
+              <!-- Check if the message is an error message -->
+              {% if 'error' in message.tags %}
+                <div class="alert alert-danger" role="alert">
+                  {{ message }}
+                  
+                </div>
+              {% endif %}
+
+                            <!-- Check if the message is an error message -->
+                            {% if 'info' in message.tags %}
+                            <div class="alert alert-danger" role="alert">
+                              {{ message }}
+                              
+                            </div>
+                          {% endif %}
+              
+              
+            {% endfor %}
+          {% endif %}
+          <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
+          {% for message in messages %}
+            {% if 'info' not in message.tags %}
+            <script>
+              document.getElementById('submitButton').textContent = 'Continue';
+              console.log("Yeah made it")
+            </script>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+
+<!-- Replace the 'slim' version with the full version of jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- <script>
+  document.getElementById('quiz-form').addEventListener('submit', function(e) {
+  e.preventDefault(); // Prevent the default form submission
+
+  // Find which radio button is checked
+  var selectedOption = document.querySelector('input[name="quiz"]:checked');
+  
+  if (selectedOption) {
+    // Retrieve the value of the selected radio button
+    var answer = selectedOption.value;
+
+    // For demonstration, just log the answer to the console
+    console.log('Selected answer:', answer);
+    
+    // Here you would typically send the answer to your server
+    // using AJAX, or navigate to another page, etc.
+    
+  } else {
+    // If no option was selected, alert the user
+    alert('Please select an option.');
+  }
+}); -->
+
+<!-- {% if messages %}
+<script type="text/javascript">
+    window.onload = function() {
+        // Concatenate all messages into one string
+        let messageText = "{% for message in messages %}{{ message }}\n{% endfor %}";
+        alert(messageText);  // Use a simple alert for demonstration
+    }
+</script>
+{% endif %} -->
+
+
+</body>
+</html>

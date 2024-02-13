@@ -1,0 +1,122 @@
+.lesson-card {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 20px 20px;
+    border-width: 3px;
+    border-color: black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Horizontal offset, vertical offset, blur radius, spread radius, color */
+    transition: 0.3s; /* Optional: adds a transition effect when the shadow changes */
+    background-color: black;
+  }
+
+  .lesson-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+  
+  .settings-link {
+    color: #fff;
+  }
+  
+  .weather-widget {
+    background: linear-gradient(to right, #6dd5ed, #2193b0);
+    color: white;
+    border-radius: 20px;
+    border-width: 3px;
+    border-color: black;
+    height: 20%;
+  }
+
+  /* body, html {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #33A251, #BB4B3C); 
+  } */
+
+      /* This styles the dropdown background */
+.navbar .dropdown-menu {
+  background-color: black; /* Sets the dropdown background to black */
+}
+
+/* This styles each dropdown item */
+.navbar .dropdown-menu .dropdown-item {
+  color: white; /* Sets the dropdown item text color to white */
+}
+
+/* This styles the dropdown item on hover */
+.navbar .dropdown-menu .dropdown-item:hover {
+  background-color: yellow; /* Sets the dropdown item background to yellow on hover */
+  color: black; /* Sets the dropdown item text color to black on hover */
+}
+  
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: linear-gradient(to right, #33A251, #BB4B3C); /* Start and end colors of the gradient */
+    background-attachment: fixed; /* Fix the background to the viewport */
+    background-repeat: no-repeat; /* Do not repeat the background */
+    background-size: cover; /* Cover the entire page */
+  }
+
+  .twitter-container {
+    /* max-height: 100vh; Viewport Height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 50px;
+    height: 580px;
+
+}
+
+.card-title {
+  color: white;
+}
+
+/* .card-body {
+  background-color: black;,
+  border-radius: 0 0 20px 20px;
+} */
+  
+
+  
+  /* Ensure that all parent elements of your content also stretch to the full height */
+  .container {
+    min-height: 100%;
+    /* Other styles for your container */
+  }
+
+  .navbar.bg-black {
+    background-color: black !important; /* Using !important to override any existing Bootstrap styles */
+  }
+  
+  /* Change the text color for the active nav item to yellow */
+  .navbar .nav-link.active-tab, .navbar .nav-link.active {
+    color: yellow !important; /* Using !important to override any existing Bootstrap styles */
+    background-color: transparent !important; /* Ensure the background is transparent */
+  }
+  
+  /* Optional: Change hover and focus styles for nav links */
+  .navbar .nav-link:hover, .navbar .nav-link:focus {
+    color: yellow; /* Change text color to yellow on hover/focus */
+    background-color: transparent; /* Ensure the background is transparent on hover/focus */
+  }
+  /* Add more custom styles as needed */
+
+  
+/* New styles for the brand name */
+.text-green {
+    color: green;
+  }
+  
+  .text-red {
+    color: red;
+  }
+  
+  /* Ensure that the navbar brand has no text decoration to remove the underline from the anchor tag */
+  .navbar-brand {
+    text-decoration: none;
+  }
+
+  
