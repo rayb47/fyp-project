@@ -17,21 +17,7 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    .option {
-      margin: 10px 0;
-      padding: 15px;
-      border-radius: 8px;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-    .option:hover {
-      background-color: #f0f0f0;
-    }
-    .option img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
+    
     .progress {
       height: 20px;
     }
@@ -49,10 +35,49 @@
         margin-bottom: 20px; /* or any value that fits the design */
     }
 
-    input[type="radio"]:checked + img {
-  border: 8px solid #4CAF50; /* Green border for selected item */
-  /* padding: 4px; */
+    .phrase-section h1 {
+    color: #333;
 }
+
+.phrase {
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    height: 100px; /* Or any fixed height you prefer */
+}
+
+
+.sound-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0; /* Remove padding if you want the button closer to the text */
+    display: inline-flex; /* Align the icon vertically */
+    align-items: center;
+    justify-content: center;
+}
+
+.recording {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.record-button {
+    background-color: #f8f8f8;
+    border: 2px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.recording-slider input[type="range"] {
+    width: 100%;
+}
+
+
 
 
 
@@ -111,6 +136,7 @@
       </span>
     </div>
   </nav>
+
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
@@ -123,79 +149,18 @@
         <a href="/home" class="btn btn-light big-close">&times;</a>
       </div>
       <hr> 
-      <h2 class="text-center mb-4">Which of these is 'bread'?</h2>
-      <form id="quiz-form" method="post" action="submit_answer">
-        {% csrf_token %}
-        <div class="row">
-          <!-- Option 1 -->
-          <div class="col-md-6 option-container">
-            <label class="option">
-              <input type="radio" name="quiz" value="pão" {% if quiz == "pão" %}checked{% endif %} hidden />
-              <img src="{% static 'conversation.jpg' %}" alt="Pão">
-              <p class="text-center mt-2">A. pão</p>
-            </label>
-          </div>
-          <!-- Option 2 -->
-          <div class="col-md-6 option-container">
-            <label class="option">
-              <input type="radio" name="quiz" value="água" {% if quiz == "água" %}checked{% endif %} hidden/>
-              <img src="{% static 'conversation.jpg' %}" alt="Água">
-              <p class="text-center mt-2">B. água</p>
-            </label>
-          </div>
-          <!-- More options -->
-          <div class="col-md-6 option-container">
-            <label class="option">
-              <input type="radio" name="quiz" value="maca" {% if quiz == "maca" %}checked{% endif %} hidden  />
-              <img src="{% static 'conversation.jpg' %}" alt="maca">
-              <p class="text-center mt-2">C. maca</p>
-            </label>
-          </div>
-          <div class="col-md-6 option-container">
-            <label class="option">
-              <input type="radio" name="quiz" value="laranja" {% if quiz == "laranja" %}checked{% endif %} hidden />
-              <img src="{% static 'conversation.jpg' %}" alt="laranja">
-              <p class="text-center mt-2">D. laranja</p>
-            </label>
-          </div>
+      <section class="phrase-section">
+        <h1 class="text-center mb-4">Say the Following Phrase</h1>
+        <div class="phrase">
+            <span><b>Eu Sou Um Menino</b> <button class="sound-button" id="speakBtn">🔊</button></span>
         </div>
-        <div class="text-center" style="padding:0px">
-          {% if messages %}
-            {% for message in messages %}
-              <!-- Check if the message is a success message -->
-              {% if 'success' in message.tags %}
-                <div class="alert alert-success" role="alert">
-                  {{ message }}
-                </div>
-              {% endif %}
-                
-              <!-- Check if the message is an error message -->
-              {% if 'error' in message.tags %}
-                <div class="alert alert-danger" role="alert">
-                  {{ message }}
-                  
-                </div>
-              {% endif %}
-
-                            <!-- Check if the message is an error message -->
-                            {% if 'info' in message.tags %}
-                            <div class="alert alert-danger" role="alert">
-                              {{ message }}                             
-                            </div>
-                          {% endif %}              
-            {% endfor %}
-          {% endif %}
-          <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
-          {% for message in messages %}
-            {% if 'info' not in message.tags %}
-            <script>
-              document.getElementById('submitButton').textContent = 'Continue';
-              console.log("Yeah made it")
-            </script>
-            {% endif %}
-          {% endfor %}
+        <div class="recording">
+            <button class="btn btn-primary" id="recordBtn">Click To Speak</button>
         </div>
-      </form>
+        <div class="text-center" style="padding-top:30px">
+        <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
+        </div>
+    </section>
     </div>
   </div>
   
@@ -203,5 +168,73 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    // JavaScript to handle button click and make AJAX request
+    $('#speakBtn').click(function() {
+        var textToSpeak = "Eu Sou Um Menino";  // The text you want to convert to speech
+        $.ajax({
+            url: '/text-to-speech/',  // URL to Django view
+            type: 'POST',
+            data: { 'text': textToSpeak },
+            success: function(response) {
+                console.log(response.message);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+    const recordButton = document.getElementById('recordBtn');
+
+    recordButton.addEventListener('click', () => {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                // Check if the browser supports recording in WAV format
+                let options = {};
+                if (MediaRecorder.isTypeSupported('audio/wav')) {
+                    options = { mimeType: 'audio/wav' };
+                }
+                const mediaRecorder = new MediaRecorder(stream, options);
+                mediaRecorder.start();
+
+                const audioChunks = [];
+                mediaRecorder.addEventListener("dataavailable", event => {
+                    audioChunks.push(event.data);
+                });
+
+                mediaRecorder.addEventListener("stop", () => {
+                    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+                    sendAudioToServer(audioBlob);
+                });
+
+                // Stop recording after 5 seconds
+                setTimeout(() => {
+                    mediaRecorder.stop();
+                }, 5000);
+            })
+            .catch(error => {
+                console.log("Error recording audio:", error);
+            });
+    });
+
+    function sendAudioToServer(blob) {
+        const formData = new FormData();
+        formData.append('audio', blob);
+
+        fetch('/process_audio/', { // URL of your Django view
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Handle the response from the server
+        })
+        .catch(error => {
+            console.log("Error sending audio to server:", error);
+        });
+    }
+    </script>
 </body>
 </html>

@@ -1,0 +1,102 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #00b09b, #96c93d);
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+.unit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ddd;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 5px;
+}
+
+.phrase-section h1 {
+    color: #333;
+}
+
+.phrase {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.sound-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+}
+
+.recording {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.record-button {
+    background-color: #f8f8f8;
+    border: 2px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.recording-slider input[type="range"] {
+    width: 100%;
+}
+
+.continue-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.back-button, .close-button {
+    background: none;
+    border: none;
+    color: #555;
+    cursor: pointer;
+}
