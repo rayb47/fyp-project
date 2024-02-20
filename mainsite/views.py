@@ -12,19 +12,35 @@ import pygame
 import os
 import time
 from django.views.decorators.csrf import csrf_exempt
+from pydub import AudioSegment
+import random
+
+# Include message for streak
+# Include English Text to Portuguese using the TTS
 
 # Create your views here.
 def home(request):
     r = requests.get("http://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q=Lisbon")
     r = r.json()
-    print(r)
+    print(r['location']['localtime'])
+    current_hour = int(r['location']['localtime'].split(' ')[1].split(':')[0])
+    current_date = r['location']['localtime'].split(' ')[0]
+    print("Hour:", current_hour)
+    greeting = ''
+    if current_hour < 12:
+        greeting = "Good morning"
+    elif current_hour < 18:
+        greeting = "Good afternoon"
+    else:
+        greeting = "Good evening"
     data = {
         'uname': request.session.get('uname'),
         'city': r['location']['name'],
         'country': r['location']['country'],
-        'local_time': r['location']['localtime'],
+        'local_time': current_date,
         'temp_c': str(r['current']['temp_c']) + '°C',
-        'image': r['current']['condition']['icon']
+        'image': r['current']['condition']['icon'],
+        'greeting': greeting
     }
     print("Data:", data)
     return render(request, "mainsite/dashboard.html", data)
@@ -35,8 +51,11 @@ def signout(request):
     messages.success(request, "Logged out successfully")
     return redirect('login:signin')
 
-def quiz(request):
+def quiz2(request):
     return render(request, 'mainsite/quiz_2.html')
+
+def quiz(request):
+    # return render(request, 'mainsite/quiz_2.html')
     submitted_answer = request.session.get('submitted_answer', '')
     source_view = request.session.get('source_view')
 
@@ -51,6 +70,9 @@ def quiz(request):
 # Change greeting to 'Good afternoon/morning' based on local time
 def submit_answer(request):
     valu = ''
+    correct_ans_msgs = ['Correct Answer!','Well Done!','Spot on!','You got it!']
+    success_msg = random.choice(correct_ans_msgs)
+
     is_correct = False
     if request.method == 'POST':
         submitted_answer = request.POST.get('quiz')
@@ -62,9 +84,9 @@ def submit_answer(request):
             messages.info(request, 'Please select an answer!')
             return redirect('mainsite:quiz')
         if is_correct:
-            messages.success(request, 'Correct Answer!')
+            messages.success(request, success_msg)
         else:
-            messages.error(request, 'Incorrect Answer, Try again!')
+            messages.error(request, 'Incorrect Answer')
     else:
         print("This is not a post request!!!!!!!!!!!")
     request.session['submitted_answer'] = valu
@@ -122,15 +144,20 @@ def text_to_speech(request):
 def process_audio(request):
     try:
         if request.method == 'POST':
-            # Assuming the audio file is sent as a file upload
             audio_file = request.FILES['audio']
             file_name = audio_file.name
             file_extension = os.path.splitext(file_name)[1]
 
+            # Convert audio to WAV format using pydub
+            audio = AudioSegment.from_file(audio_file, format=file_extension.replace('.', ''))
+            audio = audio.set_frame_rate(16000).set_channels(1)  # Convert to mono and adjust frame rate
+            audio.export("converted_audio.wav", format="wav")
+
+            # Use the converted audio file for recognition
             recognizer = sr.Recognizer()
-            with sr.AudioFile(audio_file) as source:
+            with sr.AudioFile("converted_audio.wav") as source:
                 audio_data = recognizer.record(source)
-                text = recognizer.recognize_google(audio_data)
+                text = recognizer.recognize_google(audio_data, language='pt-BR')
 
             return JsonResponse({'status': 'success', 'transcript': text})
 

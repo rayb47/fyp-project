@@ -60,7 +60,7 @@
 <div class="container mt-4">
   <div class="text-white">
     {% if user.is_authenticated %}
-    <h1>Hi {{uname}}, welcome to PortuguesePro!</h1><br><br>
+    <h1>{{greeting}} Raynell!</h1><br><br>
     {% endif %}
   </div>
   
@@ -86,7 +86,7 @@
               <h5 class="card-title">2 - Common Foods and Animal Names</h5>
               <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
               <a href="#" class="btn btn-primary">Lessons</a>
-              <a href="#" class="btn btn-primary">Quizzes</a>
+              <a href="/quiz2" class="btn btn-primary">Quizzes</a>
               <span class="badge badge-info" style="float: right; margin-top:20px">2 of 12</span>
             </div>
           </div>
@@ -123,9 +123,10 @@
       <div class="card mb-3 weather-widget">
         <div class="card-body">
           <h5 class="card-title">{{country}} {{local_time}}</h5>
+          <h5 id="liveTime">Random</h5>
           <div class="d-flex flex-row">
-            <p class="card-text" style="background-color: green">{{temp_c}}</p>
-            <img src={{image}} alt="W3Schools.com" style="background-color: antiquewhite;">
+            <p class="card-text">{{temp_c}}</p>
+            <img src={{image}} alt="W3Schools.com">
           </div>
         </div>
       </div>
@@ -140,5 +141,20 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  function updateTime() {
+    const now = new Date();
+    // Specify the timeZone as Europe/Lisbon for Portugal
+    const timeInPortugal = now.toLocaleTimeString('en-US', { timeZone: 'Europe/Lisbon', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+
+    document.getElementById('liveTime').textContent = timeInPortugal;
+}
+
+// Update the time every second
+setInterval(updateTime, 1000);
+
+// Initialize
+updateTime();
+</script>
 </body>
 </html>

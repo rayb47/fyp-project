@@ -8,6 +8,7 @@ urlpatterns = [
     path('home', views.home, name='home'),
     path('signout', views.signout, name='signout'),
     path('quiz', views.quiz, name='quiz'),
+    path('quiz2', views.quiz2, name='quiz2'),
     path('submit_answer', views.submit_answer, name='submit_answer'),
     path('text-to-speech/', views.text_to_speech, name='text_to_speech'),
     path('process_audio/', views.process_audio, name='process_audio'),
