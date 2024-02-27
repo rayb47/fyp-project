@@ -22,7 +22,8 @@
     border-radius: 20px;
     border-width: 3px;
     border-color: black;
-    height: 20%;
+    height: 15%;
+    width: 100%;
   }
 
   /* body, html {
@@ -79,6 +80,74 @@
   border-radius: 0 0 20px 20px;
 } */
   
+.calendar th, .calendar td {
+  padding: 10px;
+  text-align: center;
+}
+
+.calendar td.today {
+  background-color: #ffff88;
+}
+
+.calendar td.logged-in {
+  background-color: #88ff88;
+}
+
+.calendar {
+  background-color: #CBD095;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.calendar {
+  border-collapse: collapse; /* Ensures the borders between cells are merged */
+  width: 100%; /* Adjust based on your layout */
+}
+
+/* Add a bottom border to the last cell of the first row */
+.calendar thead tr:first-child th:last-child {
+  border-bottom: 2px solid #000;
+}
+
+/* Add a top border to the first cell of the second row */
+.calendar thead tr:nth-child(2) th:first-child {
+  border-top: 2px solid #000;
+}
+
+/* Extend the top border across all cells of the second row */
+.calendar thead tr:nth-child(2) th {
+  border-top: 2px solid #000;
+}
+
+/* Adds a bottom border to the entire thead section */
+.calendar thead {
+  border-bottom: 2px solid #000;
+}
+
+.calendar th, .calendar td {
+  text-align: center;
+  padding: 10px;
+  border: none; /* Removes individual cell borders */
+}
+
+.calendar th {
+  text-align: center;
+  
+}
+
+.calendar .calendar-header th {
+  padding: 10px 0; /* Adjust padding as needed */
+}
+
+#monthYear {
+  margin: 0 20px; /* Adjust spacing around the month and year display */
+}
+
+#monthYear {
+  font-weight: bold;
+}
+
+
 
   
   /* Ensure that all parent elements of your content also stretch to the full height */
@@ -118,5 +187,7 @@
   .navbar-brand {
     text-decoration: none;
   }
+
+
 
   

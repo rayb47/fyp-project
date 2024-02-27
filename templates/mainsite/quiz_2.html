@@ -157,7 +157,14 @@
         <div class="recording">
             <button class="btn btn-primary" id="recordBtn">Click To Speak</button>
         </div>
-        <div class="text-center" style="padding-top:30px">
+        <div class="container" style="margin-top:20px">
+          <div class="row justify-content-center">
+              <div class="col-auto">
+                  <div id="message" class="alert" role="alert" style="display: none; width: 100%;"></div>
+              </div>
+          </div>
+      </div>
+        <div class="text-center" style="padding-top:15px">
         <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
         </div>
     </section>
@@ -230,6 +237,17 @@
         .then(response => response.json())
         .then(data => {
             console.log(data); // Handle the response from the server
+            const messageElement = document.getElementById('message');
+            messageElement.style.display = ''; // Show the message div
+            if (data.status === 'success') {
+                messageElement.className = 'alert alert-success'; // Use Bootstrap success class
+                // messageElement.textContent = 'Success: ' + data.message;
+                messageElement.textContent = 'Success';
+            } else {
+                messageElement.className = 'alert alert-danger'; // Use Bootstrap danger class for errors
+                messageElement.textContent = 'Failure';
+            }
+
         })
         .catch(error => {
             console.log("Error sending audio to server:", error);
