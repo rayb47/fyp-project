@@ -96,7 +96,7 @@
               <h5 class="card-title">3 - Colors, Numbers and Basic Objects</h5>
               <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
               <a href="#" class="btn btn-primary">Lessons</a>
-              <a href="#" class="btn btn-primary">Quizzes</a>
+              <a href="/quiz3" class="btn btn-primary">Quizzes</a>
             </div>
           </div>
         </div>
@@ -119,7 +119,7 @@
       <h2 style="color: white">Weather Widget</h2>
       <div class="card mb-3 weather-widget">
         <div class="card-body">
-            <h5 class="card-title">{{country}} {{local_time}}</h5>
+            <h5 class="card-title weather-title">{{country}} {{local_time}}</h5>
             <h5 id="liveTime">Random</h5>
             <div class="d-flex flex-row justify-content-between align-items-center w-100">
                 <div>
@@ -130,7 +130,7 @@
                 </div>
             </div>
         </div>
-    </div>
+      </div>
       <!-- Add other widgets like activity tracker and twitter feed -->
       <div id="calendar-container">
         <h2 style="color: white">Activity Tracker</h2>
@@ -252,6 +252,27 @@ function markLoginDates(loginDates, date) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const weatherData = [
+        { country: 'Country 1', local_time: 'Time 1', temp_c: 'Temp 1' },
+        { country: 'Country 2', local_time: 'Time 2', temp_c: 'Temp 2'}
+        // Add more cities as needed
+    ];
+
+    let currentIndex = 0;
+
+    function updateWeatherWidget() {
+        const data = weatherData[currentIndex];
+        document.querySelector('.weather-title').innerHTML = `${data.country} ${data.local_time}`;
+        document.querySelector('.card-text').innerHTML = `${data.temp_c}`;
+        // document.querySelector('img').src = data.image;
+
+        currentIndex = (currentIndex + 1) % weatherData.length; // Loop back to the first city
+    }
+
+    setInterval(updateWeatherWidget, 5000); // Update every 5000 milliseconds (5 seconds)
+});
 </script>
 </body>
 </html>

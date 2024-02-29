@@ -54,6 +54,9 @@ def signout(request):
 def quiz2(request):
     return render(request, 'mainsite/quiz_2.html')
 
+def quiz3(request):
+    return render(request, 'mainsite/quiz_3.html')
+
 def quiz(request):
     # return render(request, 'mainsite/quiz_2.html')
     submitted_answer = request.session.get('submitted_answer', '')

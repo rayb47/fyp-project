@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz - Unit 3: Food And Drink</title>
+<link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
+<style>
+    .quiz-container {
+      max-width: 600px;
+      margin: 30px auto;
+      background-color: #f9f9f9;
+      padding: 20px;
+      padding-left: 0px;
+      padding-right: 0px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .option:hover {
+      background-color: #f0f0f0;
+    }
+    .option img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .progress {
+      height: 20px;
+    }
+    .progress-bar {
+      background-color: #4CAF50;
+    }
+    hr {
+        border: none;
+        height: 1px;
+        width: 100%;
+        margin-left: 0px;  /* counteract the left padding of the container */
+        margin-right: 0px; /* counteract the right padding of the container */
+        background-color: #000000; /* or any color that fits the design */
+        margin-top: 20px; /* or any value that fits the design */
+        margin-bottom: 20px; /* or any value that fits the design */
+    }
+
+    input[type="radio"]:checked + img {
+  border: 8px solid #4CAF50; /* Green border for selected item */
+  /* padding: 4px; */
+}
+
+.match-item { cursor: pointer; }
+.matched { background-color: #198754; color: green; font-weight: bold; }
+.mismatched { color: red}
+
+
+
+.option-container {
+    margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
+}
+  </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'portu_flag_pic.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      <span class="text-green">Portu</span><span class="text-red">Pro</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gearth.html">Vocabulary</a>
+      </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Culture
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="culture.html">Architecture</a>
+            <a class="dropdown-item" href="page2.html">Festivals</a>
+            <a class="dropdown-item" href="page3.html">Media</a>
+            <!-- More dropdown items -->
+          </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          More
+        </a>
+        <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+          <a class="dropdown-item" href="page1.html">Diacritics</a>
+          <a class="dropdown-item" href="page2.html">OS Language</a>
+          <a class="dropdown-item" href="page3.html">Music & More</a>
+          <!-- More dropdown items -->
+        </div>
+      <li class="nav-item">
+        <a class="nav-link" href="gearth.html">Settings</a>
+    </li>
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="/signout" class="settings-link">Logout</a>
+      </span>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="quiz-container">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="#" class="btn btn-light big-arrow">&larr;</a>
+        <b>Unit 3 - Food And Drink</b>
+        <div class="progress" style="width: 30%;"> 
+          <div class="progress-bar" style="width:70%"></div>
+        </div>
+        <b>2 of 12</b> 
+        <a href="/home" class="btn btn-light big-close">&times;</a>
+      </div>
+      <hr> 
+      <center><h2>Match the Following</h2></center>
+    <div class="row">
+        <div class="col-6">
+            <ul class="list-group" id="listA">
+                <li class="list-group-item match-item" data-match="B1">Item A1</li>
+                <li class="list-group-item match-item" data-match="B2">Item A2</li>
+                <li class="list-group-item match-item" data-match="B3">Item A3</li>
+            </ul>
+        </div>
+        <div class="col-6">
+            <ul class="list-group" id="listB">
+                <li class="list-group-item match-item" data-match="B1">Item B1</li>
+                <li class="list-group-item match-item" data-match="A2">Item B2</li>
+                <li class="list-group-item match-item" data-match="A3">Item B3</li>
+            </ul>
+        </div>
+    </div>
+    </div>
+  </div>
+  
+<!-- Replace the 'slim' version with the full version of jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+    let lastClicked = null;
+
+    $('.match-item').click(function() {
+    const currentClicked = $(this);
+    if (lastClicked && lastClicked !== currentClicked) {
+        if (lastClicked.data('match') === currentClicked.data('match')) {
+            currentClicked.addClass('matched');
+            lastClicked.addClass('matched');
+        } else {
+            currentClicked.addClass('mismatched');
+            lastClicked.addClass('mismatched');
+            setTimeout(() => {
+                currentClicked.removeClass('mismatched');
+                if (lastClicked) {
+                    lastClicked.removeClass('mismatched');
+                }
+            }, 1500);
+        }
+        lastClicked = null;
+    } else {
+        lastClicked = currentClicked;
+    }
+});
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
