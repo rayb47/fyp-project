@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'architecture.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'portu_flag_pic.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      <span class="text-green">Portu</span><span class="text-red">Pro</span>
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="gearth.html">Vocabulary</a>
+        </li>
+        <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle active-tab" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Culture
+            </a>
+            <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+              <a class="dropdown-item" href="page1.html">Architecture</a>
+              <a class="dropdown-item" href="page2.html">Festivals</a>
+              <a class="dropdown-item" href="page3.html">Media</a>
+              <!-- More dropdown items -->
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            More
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="page1.html">Diacritics</a>
+            <a class="dropdown-item" href="page2.html">OS Language</a>
+            <a class="dropdown-item" href="page3.html">Music & More</a>
+            <!-- More dropdown items -->
+          </div>
+        <li class="nav-item">
+          <a class="nav-link" href="gearth.html">Settings</a>
+      </li>
+
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="/signout" class="settings-link">Logout</a>
+      </span>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="mb-4 heading">Portuguese Architecture</h1>
+    <div class="card mb-3 culture-card">
+      <div class="card-body">
+        <p class="card-text">Portugal boasts several scores of medieval castles, as well as the ruins of several villas and forts from the period of Roman occupation. Romanesque and Gothic influences have given Portugal some of its greatest cathedrals, and in the late 16th century a national style—Arte Manuelina—was synthesized by adapting several forms into a luxuriantly ornamented whole. </p>
+        <p class="card-text">Outstanding examples of Portuguese architecture include the ornate Manueline-style Jerónimos Monastery in Lisbon; the Sé (cathedral) of Lisbon, in the facade of which the remains of Roman construction may still be seen; the Palace of Justice in Lisbon, a fine, soaring example of austere modern architecture; the castle and church of the Convent of Christ in Tomar; the late Portuguese Gothic abbey of Santa Maria da Vitória in Batalha; the granite Tower of the Clerics in Porto; and Braga’s Romanesque cathedral. Lisbon’s Baixa neighbourhood, in Pombaline style (named for Sebastião de Carvalho, marquês de Pombal, who rebuilt Lisbon after the 1755 earthquake), remains admirable today. As modern cities have expanded, there has been a revival of interest in traditional domestic and folk architecture, as is found in the hand-hewn stones of the Beiras, the low farms of the Alentejo, and the cottage chimneys in the Algarve.</p>
+      </div>
+      <!-- <div class="cubebox" style="display: flex; justify-content: center; align-items: center; height: 400px;">
+        <div id="cube">
+          <div class="face front"></div>
+          <div class="face back"></div>
+          <div class="face right"></div>
+          <div class="face left"></div>
+          <div class="face top"></div>
+          <div class="face bottom"></div>
+        </div>  
+        
+        
+        Google Map Copied Code -->
+          <!-- <iframe width="400" height="400" style="border:0; border-radius: 10px; margin-bottom: 15px;" loading="lazy" allowfullscreen
+          src="https://www.google.com/maps/embed/v1/streetview?location=38.6787,-9.1713&key=AIzaSyDtutlR-5LD8Hzjs2uR1I5Sbku7_aml5pQ"></iframe>
+         -->
+          <!-- Google Map Copied Code -->
+          <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Cristo_Rei_%2836211699613%29.jpg/220px-Cristo_Rei_%2836211699613%29.jpg" style="border:0; border-radius: 10px; margin-bottom: 15px; margin-right: 55px; float: right; height: 400;"> -->
+
+      <!-- </div> -->
+    </div> 
+
+    <div class="card mb-3 culture-card">
+      <div class="card-body">
+        <h2 class="card-title"><b>1. Sanctuary of Christ the King</b></h2>
+        <p class="card-text">The Sanctuary of Christ the King (Portuguese: Santuário de Cristo Rei) 
+          is a Catholic monument and shrine dedicated to the Sacred Heart of Jesus Christ overlooking the city of 
+          Lisbon situated in Almada, in Portugal. It was inspired by the Christ the Redeemer statue of Rio de Janeiro, 
+          in Brazil, after the Cardinal Patriarch of Lisbon visited that monument. 
+          The project was inaugurated on 17 May 1959. The giant statue was erected to express gratitude because the 
+          Portuguese were spared the direct destructive effects of World War II.</p>
+        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
+            in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+      <div class="map">
+        <center>
+          <div>
+          <!-- Google Map Copied Code -->
+          <iframe width="400" height="400" style="border:0; border-radius: 10px; margin-bottom: 15px;" loading="lazy" allowfullscreen
+            src="https://www.google.com/maps/embed/v1/streetview?location=38.6787,-9.1713&key=AIzaSyDtutlR-5LD8Hzjs2uR1I5Sbku7_aml5pQ"></iframe>
+        <center>
+  <!-- Google Map Copied Code -->
+<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Cristo_Rei_%2836211699613%29.jpg/220px-Cristo_Rei_%2836211699613%29.jpg" style="border:0; border-radius: 10px; margin-bottom: 15px; margin-right: 55px; float: right; height: 400;"> -->
+</center>
+</div>
+      </div>
+    </div>
+    
+    <div class="card mb-3 culture-card">
+      <div class="card-body">
+        <h2 class="card-title"><b>2. Belém Tower</b></h2>
+        <p class="card-text">Belém Tower (Portuguese: Torre de Belém, pronounced [ˈtoʁɨ ðɨ βɨˈlɐ̃j]; 
+          literally: Bethlehem Tower), officially the 
+          Tower of Saint Vincent (Portuguese: Torre de São Vicente) is a 16th-century 
+          fortification located in Lisbon that served as a point of embarkation and 
+          disembarkation for Portuguese explorers and as a ceremonial gateway to Lisbon.
+          It was built during the height of the Portuguese Renaissance, and is 
+          a prominent example of the Portuguese Manueline style, but it 
+          also incorporates hints of other architectural styles. The structure
+           was built from lioz limestone and is composed of a bastion and a 30-metre 
+           (100 ft), four-storey tower.</p>
+    </div>
+      <div class="map">
+      <center>
+      <iframe width="400" height="400" style="border:0; border-radius: 10px; margin-bottom: 15px;" loading="lazy" allowfullscreen src="https://www.google.com/maps/embed?pb=!4v1704830452871!6m8!1m7!1sCAoSLEFGMVFpcFBuVjVMZklSNnd4R2lyN04zaFNnMThZX19NYy1FczRfRWJWSk11!2m2!1d38.69209842333764!2d-9.215197753444102!3f252.66944197108666!4f-17.197631610183265!5f0.7820865974627469" ></iframe>
+    </center>
+    </div>
+    
+    </div>
+    
+    <!-- Add more cards for other locations as needed -->
+    
+  </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

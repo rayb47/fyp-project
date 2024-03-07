@@ -14,11 +14,31 @@ import time
 from django.views.decorators.csrf import csrf_exempt
 from pydub import AudioSegment
 import random
+from mainsite.models import Question
 
 # Include message for streak
 # Include English Text to Portuguese using the TTS
 
 # Create your views here.
+
+def weather_data(request):
+    data = []
+    cities = ['Lisbon', 'Madeira']
+    for city in cities:
+        r = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city))
+        r = r.json()
+        current_date = r['location']['localtime'].split(' ')[0]
+        data.append(
+            {
+                'city': r['location']['name'],
+                'current_date': current_date,
+                'temp_c': str(r['current']['temp_c']) + '°C',
+            }
+        )
+    return JsonResponse({'data': data})
+
+    
+
 def home(request):
     r = requests.get("http://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q=Lisbon")
     r = r.json()
@@ -57,46 +77,79 @@ def quiz2(request):
 def quiz3(request):
     return render(request, 'mainsite/quiz_3.html')
 
+def quiz4(request):
+    answer_status = request.session.get('answer_status', None)
+    print("Answer status:", answer_status)
+    return render(request, 'mainsite/quiz_4.html', {'answer_status': answer_status})
+
+def architecture(request):
+    return render(request, 'mainsite/architecture.html')
+
 def quiz(request):
     # return render(request, 'mainsite/quiz_2.html')
+    number = random.choice([1, 4])
+    print("Number is ",number)
+    question_obj = Question.objects.get(id=number)
     submitted_answer = request.session.get('submitted_answer', '')
     source_view = request.session.get('source_view')
 
     print("Loading the quiz page!")
     print("Quiz submitted value is:", submitted_answer)
     print("Source view is:", source_view)
-    return render(request, 'mainsite/quiz_1.html', {'quiz': submitted_answer, 'source_view': source_view})
+    print("Inside the QUIZ VIEW!!!!!!")
+    return render(request, 'mainsite/quiz_1.html', {'quiz': submitted_answer, 'source_view': source_view, 'question_text': question_obj.question_text, 'question_answer': question_obj.correct_answer})
 
 # Include different messages for answering questions correctly
 # Include scrollbar for different temperatures in cities for portugal - scrolls automatically
 # Include public holidays for Portugal
 # Change greeting to 'Good afternoon/morning' based on local time
 def submit_answer(request):
+    print("Inside submit answer")
     valu = ''
     correct_ans_msgs = ['Correct Answer!','Well Done!','Spot on!','You got it!']
     success_msg = random.choice(correct_ans_msgs)
 
-    is_correct = False
-    if request.method == 'POST':
-        submitted_answer = request.POST.get('quiz')
-        valu = submitted_answer
-        if submitted_answer == 'maca':
-            is_correct = True
-        print("Submitted answer:",submitted_answer)
-        if not submitted_answer:
-            messages.info(request, 'Please select an answer!')
-            return redirect('mainsite:quiz')
-        if is_correct:
-            messages.success(request, success_msg)
+    form_type = request.POST.get('form_type')
+    print("Form type:", form_type)
+    if form_type == 'form_a':
+        is_correct = False
+        if request.method == 'POST':
+            submitted_answer = request.POST.get('quiz')
+            valu = submitted_answer
+            if submitted_answer == 'maca':
+                is_correct = True
+            print("Submitted answer:",submitted_answer)
+            if not submitted_answer:
+                messages.info(request, 'Please select an answer!')
+                return redirect('mainsite:quiz')
+            if is_correct:
+                messages.success(request, success_msg)
+            else:
+                messages.error(request, 'Incorrect Answer')
         else:
-            messages.error(request, 'Incorrect Answer')
-    else:
-        print("This is not a post request!!!!!!!!!!!")
-    request.session['submitted_answer'] = valu
-    request.session['source_view'] = 'submitted_answer'
-    return redirect('mainsite:quiz')
-    return render(request, 'mainsite/quiz_1.html', {'quiz': valu})
-
+            print("This is not a post request!!!!!!!!!!!")
+        request.session['submitted_answer'] = valu
+        request.session['source_view'] = 'submitted_answer'
+        return redirect('mainsite:quiz')
+        return render(request, 'mainsite/quiz_1.html', {'quiz': valu})
+    elif form_type == 'form_b':
+        print("Inside FORM B!!!")
+        submitted_answer = request.POST.get('quiz')
+        answer_status = ''
+        if submitted_answer == 'paris':
+            #messages.success(request, "Correct Answer!")
+            request.session['answer_status'] = 'correct'
+            answer_status = 'correct'
+        elif submitted_answer == None:
+            request.session['answer_status'] = 'None'
+            answer_status = 'None'
+        else:
+            request.session['answer_status'] = 'wrong'
+            answer_status = 'wrong'
+        return JsonResponse({'answer_status': answer_status}, status=200)
+        return redirect('mainsite:quiz4')
+        return render(request, 'mainsite/quiz_4.html')
+        
 
 @csrf_exempt  # Disable CSRF token for simplicity (not recommended for production)
 def text_to_speech(request):

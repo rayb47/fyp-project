@@ -30,7 +30,7 @@
             Culture
           </a>
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
-            <a class="dropdown-item" href="culture.html">Architecture</a>
+            <a class="dropdown-item" href="/architecture">Architecture</a>
             <a class="dropdown-item" href="page2.html">Festivals</a>
             <a class="dropdown-item" href="page3.html">Media</a>
             <!-- More dropdown items -->
@@ -60,7 +60,7 @@
 <div class="container mt-4">
   <div class="text-white">
     {% if user.is_authenticated %}
-    <h1>{{greeting}} Raynell!</h1><br><br>
+    <h1>{{greeting}} {{uname}}!</h1><br><br>
     {% endif %}
   </div>
   
@@ -80,7 +80,7 @@
         </div>
         <div class="col-md-6 mb-3">
           <div class="card lesson-card">
-            <img src="{% static 'conversation.jpg' %}" class="card-img-top" alt="...">
+            <img src="{% static 'common_animals.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">2 - Common Foods and Animal Names</h5>
               <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
@@ -91,7 +91,7 @@
         </div>
         <div class="col-md-6 mb-3">
           <div class="card lesson-card">
-            <img src="{% static 'conversation.jpg' %}" class="card-img-top" alt="...">
+            <img src="{% static 'colors_numbers.jpeg' %}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">3 - Colors, Numbers and Basic Objects</h5>
               <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
@@ -102,15 +102,16 @@
         </div>
         <div class="col-md-6 mb-3">
           <div class="card lesson-card">
-            <img src="{% static 'conversation.jpg' %}" class="card-img-top" alt="...">
+            <img src="{% static 'outdoors.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">4 - General Outdoors and Weather</h5>
               <!-- <p class="card-text">Review your lessons and track your progress.</p> -->
               <a href="#" class="btn btn-primary">Lessons</a>
-              <a href="#" class="btn btn-primary">Quizzes</a>
+              <a href="/quiz4" class="btn btn-primary">Quizzes</a>
             </div>
           </div>
         </div>
+        
         <!-- Repeat for other units -->
       </div>
     </div>
@@ -119,16 +120,14 @@
       <h2 style="color: white">Weather Widget</h2>
       <div class="card mb-3 weather-widget">
         <div class="card-body">
-            <h5 class="card-title weather-title">{{country}} {{local_time}}</h5>
-            <h5 id="liveTime">Random</h5>
-            <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                <div>
-                    <p class="card-text">{{temp_c}}</p>
-                </div>
-                <div>
-                    <img src="{{image}}" alt="Weather Icon" style="max-width: 100px;"> <!-- Adjust size as needed -->
-                </div>
+            
+            <h3 class="card-title city-title">{{city}}</h3>
+            <div style="align-items: end; width:60px; float: right;">
+              <img src="{{image}}" alt="Weather Icon" style="max-width: 100px;">
             </div>
+            <h5 id="localTime" class="card-text">{{local_time}}</h5>
+            <h5 id="liveTime">Random</h5>
+            <h6 id="localTemp" class="card-text">{{temp_c}}</h6>
         </div>
       </div>
       <!-- Add other widgets like activity tracker and twitter feed -->
@@ -202,7 +201,7 @@ function updateCalendar(date) {
     document.getElementById('monthYear').textContent = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
 
     // Assume loginDates are fetched or defined here
-    const loginDates = ['2024-02-20', '2024-02-21', '2023-09-18'];
+    const loginDates = ['2024-02-20', '2024-02-21', '2023-09-18', '2024-03-03', '2024-03-04', '2024-03-01'];
     markLoginDates(loginDates, date);
 }
 
@@ -255,8 +254,8 @@ function markLoginDates(loginDates, date) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const weatherData = [
-        { country: 'Country 1', local_time: 'Time 1', temp_c: 'Temp 1' },
-        { country: 'Country 2', local_time: 'Time 2', temp_c: 'Temp 2'}
+        { country: 'Porto', local_time: '06/03/2024', temp_c: '13.0°C' },
+        { country: 'Madeira', local_time: '06/03/2024', temp_c: '16°C'}
         // Add more cities as needed
     ];
 
@@ -264,14 +263,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateWeatherWidget() {
         const data = weatherData[currentIndex];
-        document.querySelector('.weather-title').innerHTML = `${data.country} ${data.local_time}`;
-        document.querySelector('.card-text').innerHTML = `${data.temp_c}`;
+        document.querySelector('.city-title').innerHTML = `${data.country}`;
+        document.querySelector('#localTime').innerHTML = `${data.local_time}`;
+        document.querySelector('#localTemp').innerHTML = `${data.temp_c}`;
         // document.querySelector('img').src = data.image;
 
         currentIndex = (currentIndex + 1) % weatherData.length; // Loop back to the first city
     }
 
     setInterval(updateWeatherWidget, 5000); // Update every 5000 milliseconds (5 seconds)
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/weather_data')
+        .then(response => response.json())
+        .then(data => {
+            // 'data' contains the weather data from your Django view
+            console.log(data.data); // Access the 'data' key of the JSON response
+            // Process and display this data as needed
+        })
+        .catch(error => console.error('Error fetching weather data:', error));
 });
 </script>
 </body>

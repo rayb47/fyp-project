@@ -11,6 +11,10 @@
   .lesson-card:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   }
+
+  .card-img-top {
+    height:200px
+  }
   
   .settings-link {
     color: #fff;
@@ -188,6 +192,9 @@
     text-decoration: none;
   }
 
+  .quiz-img {
+    height: 200px; /* Adjust the height as needed *//* This helps to preserve the aspect ratio */
+}
 
 
   

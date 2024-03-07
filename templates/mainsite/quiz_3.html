@@ -56,7 +56,7 @@
 
 .match-item { cursor: pointer; }
 .matched { background-color: #198754; color: green; font-weight: bold; }
-.mismatched { color: red}
+.mismatched { color: red; font-weight: bold;}
 
 
 
@@ -89,7 +89,7 @@
             Culture
           </a>
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
-            <a class="dropdown-item" href="culture.html">Architecture</a>
+            <a class="dropdown-item" href="/architecture">Architecture</a>
             <a class="dropdown-item" href="page2.html">Festivals</a>
             <a class="dropdown-item" href="page3.html">Media</a>
             <!-- More dropdown items -->
@@ -118,31 +118,44 @@
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="#" class="btn btn-light big-arrow">&larr;</a>
-        <b>Unit 3 - Food And Drink</b>
+        <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a>
+        <div style="width: 150px">
+          <b>Unit 3 - Colors, Numbers and Basic Objects </b>
+        </div>
         <div class="progress" style="width: 30%;"> 
           <div class="progress-bar" style="width:70%"></div>
         </div>
         <b>2 of 12</b> 
-        <a href="/home" class="btn btn-light big-close">&times;</a>
+        <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
       </div>
       <hr> 
       <center><h2>Match the Following</h2></center>
-    <div class="row">
+    <div class="row" style="margin-top: 20px;">
         <div class="col-6">
-            <ul class="list-group" id="listA">
-                <li class="list-group-item match-item" data-match="B1">Item A1</li>
-                <li class="list-group-item match-item" data-match="B2">Item A2</li>
-                <li class="list-group-item match-item" data-match="B3">Item A3</li>
+            <u><h5 style="text-align: center;">English</h5></u>
+            <ul class="list-group" id="listA" style="margin-left: 10px;">
+                <li class="list-group-item match-item" data-match="A1">Newspaper</li>
+                <li class="list-group-item match-item" data-match="A2">Man</li>
+                <li class="list-group-item match-item" data-match="A3">Morning</li>
+                <li class="list-group-item match-item" data-match="A4">Night</li>
+                <li class="list-group-item match-item" data-match="A5">Orange</li>
+                <li class="list-group-item match-item" data-match="A6">Bye</li>
             </ul>
         </div>
         <div class="col-6">
-            <ul class="list-group" id="listB">
-                <li class="list-group-item match-item" data-match="B1">Item B1</li>
-                <li class="list-group-item match-item" data-match="A2">Item B2</li>
-                <li class="list-group-item match-item" data-match="A3">Item B3</li>
+            <u><h5 style="text-align: center;">Portguese</h5></u>
+            <ul class="list-group" id="listB" style="margin-right: 10px;">
+                <li class="list-group-item match-item" data-match="A6">Tchau</li>
+                <li class="list-group-item match-item" data-match="A3">Dia</li>
+                <li class="list-group-item match-item" data-match="A2">Homem</li>
+                <li class="list-group-item match-item" data-match="A1">Jornal</li>
+                <li class="list-group-item match-item" data-match="A4">Nuit</li>
+                <li class="list-group-item match-item" data-match="A5">Laranja</li>
             </ul>
         </div>
+    </div>
+    <div class="text-center" style="padding-top:25px">
+      <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
     </div>
     </div>
   </div>
@@ -150,30 +163,31 @@
 <!-- Replace the 'slim' version with the full version of jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
     let lastClicked = null;
 
     $('.match-item').click(function() {
-    const currentClicked = $(this);
-    if (lastClicked && lastClicked !== currentClicked) {
-        if (lastClicked.data('match') === currentClicked.data('match')) {
-            currentClicked.addClass('matched');
-            lastClicked.addClass('matched');
+        const currentClicked = $(this);
+        if (lastClicked && lastClicked[0] !== currentClicked[0]) { // Ensure they are different elements
+            if (lastClicked.data('match') === currentClicked.attr('data-match')) { // Check if data-match values are equal
+                currentClicked.addClass('matched');
+                lastClicked.addClass('matched');
+            } else {
+                currentClicked.addClass('mismatched');
+                lastClicked.addClass('mismatched');
+                // Store lastClicked in a separate variable to use in the timeout function
+                const tempLastClicked = lastClicked;
+                setTimeout(() => {
+                    // Remove 'mismatched' class from both last clicked and current clicked elements
+                    currentClicked.removeClass('mismatched');
+                    tempLastClicked.removeClass('mismatched');
+                }, 1000);
+            }
+            lastClicked = null; // Reset lastClicked after handling
         } else {
-            currentClicked.addClass('mismatched');
-            lastClicked.addClass('mismatched');
-            setTimeout(() => {
-                currentClicked.removeClass('mismatched');
-                if (lastClicked) {
-                    lastClicked.removeClass('mismatched');
-                }
-            }, 1500);
+            lastClicked = currentClicked; // Set currentClicked as lastClicked for the next click
         }
-        lastClicked = null;
-    } else {
-        lastClicked = currentClicked;
-    }
-});
+    });
 });
 </script>
 

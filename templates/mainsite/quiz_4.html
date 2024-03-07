@@ -8,10 +8,10 @@
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
 <style>
     .quiz-container {
-      max-width: 600px;
+      max-width: 650px;
       margin: 30px auto;
       background-color: #f9f9f9;
-      padding: 20px;
+      padding-top: 20px;
       padding-left: 0px;
       padding-right: 0px;
       border-radius: 8px;
@@ -78,8 +78,43 @@
 }
 
 
+.mcq-container {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: auto;
+    padding-bottom: 20px;
+}
 
+.question {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
 
+.options {
+    list-style: none;
+    padding: 0;
+}
+
+.options li {
+    margin-bottom: 10px;
+}
+
+.options label {
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.options input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* New hover effect styles */
+.options li:hover label {
+    background-color: #f0f0f0; /* Light grey background on hover */
+    border-radius: 5px; /* Optional: adds rounded corners to the hover background */
+}
 
 .option-container {
     margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
@@ -89,6 +124,35 @@
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
 <body>
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Assuming the button initially doesn't have the text "Continue"
+    const submitButton = document.getElementById('submitButton');
+    
+    // Add click event listener to the button
+    submitButton.addEventListener('click', function() {
+        // Call updateButton with the desired text when the button is clicked
+        updateButton('Continue');
+    });
+});
+
+function updateButton(text) {
+    const submitButton = document.getElementById('submitButton');
+    console.log("Inside the JS Function");
+    console.log(text);
+    submitButton.textContent = text;
+
+    // If you need to check the condition right after setting the text
+    if (submitButton.textContent === 'Continue') {
+        console.log("Cool beans!");
+        // If you need the button to do something different now that it's text is "Continue",
+        // you can add another event listener here or change its onclick to a different function.
+        // Example:
+        // submitButton.onclick = onContinueButtonClick;
+    }
+}
+
+    </script> -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <a class="navbar-brand" href="#">
       <img src="{% static 'portu_flag_pic.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
@@ -142,7 +206,7 @@
       <div class="d-flex justify-content-between align-items-center mb-3">
         <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a>
         <div style="width: 150px">
-          <b>Unit 2 - Common Food and Animal Names </b>
+          <b>Unit 4 - General Outdoors and Weather </b>
         </div>
         <div class="progress" style="width: 30%;"> 
           <div class="progress-bar" style="width:70%"></div>
@@ -151,26 +215,48 @@
         <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
       </div>
       <hr> 
-      <section class="phrase-section">
-        <h1 class="text-center mb-4">Say the Following Phrase</h1>
-        <div class="phrase">
-            <span><b title="I am a boy">Eu Sou Um Menino</b> <button class="sound-button" id="speakBtn">🔊</button></span>
+      <div class="mcq-container">
+        <h2 class="text-center mb-4">Select 'I am a boy' in Portuguese</h2>
+        <form id="quiz-form" method="post" action="submit_answer">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="form_b">
+        <ul class="options">
+            <li>
+                <input type="radio" id="option1" name="quiz" value="london">
+                <label for="option1">Eu sou um meninho</label>
+            </li>
+            <li>
+                <input type="radio" id="option2" name="quiz" value="paris">
+                <label for="option2">Eu tenho um carro</label>
+            </li>
+            <li>
+                <input type="radio" id="option3" name="quiz" value="berlin">
+                <label for="option3">Ela tehno uma maca</label>
+            </li>
+            <li>
+                <input type="radio" id="option4" name="quiz" value="madrid">
+                <label for="option4">Eu nao tehno um jornal</label>
+            </li>
+        </ul>
+        <!-- {% if answer_status == 'correct' %} -->
+        <div id="correct_msg" class="alert alert-success" role="alert" style="width:100%">
+            <!-- Right answer given!                          -->
         </div>
-        <div class="recording">
-            <button class="btn btn-primary" id="recordBtn">Click To Speak</button>
+        <!-- {% elif answer_status == 'wrong' %} -->
+        <div id="wrong_msg" class="alert alert-danger" role="alert" style="width:100%">
+            <!-- Wrong answer given!                              -->
         </div>
-        <div class="container" style="margin-top:20px">
-          <div id="message" class="alert alert-danger" role="alert" style="width: 100%; display: none"></div>
-          <!-- <div class="row justify-content-center">
-              <div class="col-auto">
-                  <div id="message" role="alert" style="display: none; width: 100%;"></div>
-              </div>
-          </div> -->
-      </div>
-        <div class="text-center" style="padding-top:10px">
-        <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
+        <!-- {% endif %} -->
+        <div class="text-center">
+            <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
+            <button id="continueButton" type="submit" class="btn btn-success btn-lg">Continue</button>
         </div>
-    </section>
+        </form>
+        <!-- <div class="text-center">
+            <button class="btn btn-success btn-lg">Check</button>
+            <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
+        </div> -->
+    </div>
     </div>
   </div>
   
@@ -179,85 +265,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-    // JavaScript to handle button click and make AJAX request
-    $('#speakBtn').click(function() {
-        var textToSpeak = "Eu Sou Um Menino";  // The text you want to convert to speech
-        $.ajax({
-            url: '/text-to-speech/',  // URL to Django view
-            type: 'POST',
-            data: { 'text': textToSpeak },
-            success: function(response) {
-                console.log(response.message);
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    });
-
-
-    const recordButton = document.getElementById('recordBtn');
-
-    recordButton.addEventListener('click', () => {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                // Check if the browser supports recording in WAV format
-                let options = {};
-                if (MediaRecorder.isTypeSupported('audio/wav')) {
-                    options = { mimeType: 'audio/wav' };
+    $(document).ready(function() {
+        $('#continueButton').hide();
+        $('#quiz-form').submit(function(event) {
+            $('#submitButton').hide()
+            $('#continueButton').show();
+            event.preventDefault(); // Prevent the form from submitting through the browser.
+            var formData = $(this).serialize(); // Serialize form data
+            
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'), // or the specific URL you're posting to
+                data: formData,
+                success: function(response) {
+                    // Handle success
+                    console.log(response.answer_status);
+                    updateContentBasedOnStatus(response.answer_status);
+                    // $('#formResponse').html(response); // Display success message or response
+                },
+                error: function(xhr, errmsg, err) {
+                    // Handle error
+                    $('#formResponse').html("Error: " + errmsg); // Display the error
                 }
-                const mediaRecorder = new MediaRecorder(stream, options);
-                mediaRecorder.start();
-
-                const audioChunks = [];
-                mediaRecorder.addEventListener("dataavailable", event => {
-                    audioChunks.push(event.data);
-                });
-
-                mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-                    sendAudioToServer(audioBlob);
-                });
-
-                // Stop recording after 5 seconds
-                setTimeout(() => {
-                    mediaRecorder.stop();
-                }, 5000);
-            })
-            .catch(error => {
-                console.log("Error recording audio:", error);
             });
-    });
-
-    function sendAudioToServer(blob) {
-        const formData = new FormData();
-        formData.append('audio', blob);
-
-        fetch('/process_audio/', { // URL of your Django view
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // Handle the response from the server
-            const messageElement = document.getElementById('message');
-            messageElement.style.display = ''; // Show the message div
-            if (data.status === 'success') {
-                messageElement.className = 'alert alert-success'; // Use Bootstrap success class
-                // messageElement.textContent = 'Success: ' + data.message;
-                messageElement.textContent = 'Success';
-                messageElement.style.textAlign = 'center';
-            } else {
-                messageElement.className = 'alert alert-danger'; // Use Bootstrap danger class for errors
-                messageElement.textContent = 'Failure';
-                messageElement.style.textAlign = 'center';
-            }
-
-        })
-        .catch(error => {
-            console.log("Error sending audio to server:", error);
         });
+    });
+function updateContentBasedOnStatus(status) {
+    // Use jQuery for consistency
+    console.log(status);
+    console.log("Inside update content function")
+    if (status === 'correct') {
+        console.log("Inside the if condition under correct")
+        $('#correct_msg').text('Correct!').show();
+        $('#wrong_msg').hide(); // Optionally hide the other message
+    } else if (status === 'incorrect') {
+        $('#wrong_msg').text('Wrong!').show();
+        $('#correct_msg').hide(); // Optionally hide the other message
     }
+}
     </script>
+
 </body>
 </html>

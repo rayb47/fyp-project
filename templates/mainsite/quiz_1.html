@@ -10,12 +10,12 @@
     .quiz-container {
       max-width: 600px;
       margin: 30px auto;
-      background-color: #f9f9f9;
+      background-color: rgb(255, 255, 255);
       padding: 20px;
       padding-left: 0px;
       padding-right: 0px;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
     }
     .option {
       margin: 10px 0;
@@ -59,6 +59,17 @@
 .option-container {
     margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
 }
+
+.big-close {
+  border: solid 1px #000000; 
+  margin-left: 10px;
+}
+
+.big-arrow {
+  border: solid 1px #000000; margin-right: 10px;
+}
+
+
   </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
@@ -85,7 +96,7 @@
             Culture
           </a>
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
-            <a class="dropdown-item" href="culture.html">Architecture</a>
+            <a class="dropdown-item" href="/architecture">Architecture</a>
             <a class="dropdown-item" href="page2.html">Festivals</a>
             <a class="dropdown-item" href="page3.html">Media</a>
             <!-- More dropdown items -->
@@ -114,24 +125,27 @@
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="#" class="btn btn-light big-arrow">&larr;</a>
-        <b>Unit 3 - Food And Drink</b>
+        <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a>
+        <div style="width: 150px">
+          <b>Unit 3 - Basic Conversation and Phrases </b>
+        </div>
         <div class="progress" style="width: 30%;"> 
           <div class="progress-bar" style="width:70%"></div>
         </div>
         <b>2 of 12</b> 
-        <a href="/home" class="btn btn-light big-close">&times;</a>
+        <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
       </div>
       <hr> 
-      <h2 class="text-center mb-4">Which of these is 'bread'?</h2>
+      <h2 class="text-center mb-4">{{question_text}}</h2>
       <form id="quiz-form" method="post" action="submit_answer">
         {% csrf_token %}
+        <input type="hidden" name="form_type" value="form_a">
         <div class="row">
           <!-- Option 1 -->
           <div class="col-md-6 option-container">
             <label class="option">
               <input type="radio" name="quiz" value="pão" {% if quiz == "pão" %}checked{% endif %} hidden />
-              <img src="{% static 'conversation.jpg' %}" alt="Pão">
+              <img class="quiz-img" src="{% static 'bread.jpg' %}" alt="Pão" style="height:180px">
               <p class="text-center mt-2">A. pão</p>
             </label>
           </div>
@@ -139,7 +153,7 @@
           <div class="col-md-6 option-container">
             <label class="option">
               <input type="radio" name="quiz" value="água" {% if quiz == "água" %}checked{% endif %} hidden/>
-              <img src="{% static 'conversation.jpg' %}" alt="Água">
+              <img class="quiz-img" src="{% static 'water.jpg' %}" alt="Água" style="height:180px">
               <p class="text-center mt-2">B. água</p>
             </label>
           </div>
@@ -147,14 +161,14 @@
           <div class="col-md-6 option-container">
             <label class="option">
               <input type="radio" name="quiz" value="maca" {% if quiz == "maca" %}checked{% endif %} hidden  />
-              <img src="{% static 'conversation.jpg' %}" alt="maca">
+              <img class="quiz-img" src="{% static 'apple.jpg' %}" alt="maca" style="height:180px">
               <p class="text-center mt-2">C. maca</p>
             </label>
           </div>
           <div class="col-md-6 option-container">
             <label class="option">
               <input type="radio" name="quiz" value="laranja" {% if quiz == "laranja" %}checked{% endif %} hidden />
-              <img src="{% static 'conversation.jpg' %}" alt="laranja">
+              <img class="quiz-img" src="{% static 'orange.jpg' %}" alt="laranja" style="height:180px">
               <p class="text-center mt-2">D. laranja</p>
             </label>
           </div>
@@ -186,10 +200,53 @@
             {% endfor %}
           {% endif %}
           <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
+          <!-- <button id="testsubmitButton" type="submit" class="btn btn-success btn-lg">Continue</button> -->
+          <script>
+              document.addEventListener('DOMContentLoaded', () => {
+                  const radioButtons = document.querySelectorAll('input[type="radio"]');
+                  radioButtons.forEach(radio => {
+                      radio.checked = false;
+                  });
+              });
+
+              document.getElementById('quiz-form').addEventListener('submit', function(event) {
+              const submitButton = document.getElementById('submitButton');
+              if (submitButton.textContent === 'Continue') {
+                // Prevent the form from submitting
+                event.preventDefault();
+                var checkedRadio = document.querySelector('input[type="radio"]:checked');
+                var adjacentImage = checkedRadio ? checkedRadio.nextElementSibling : null;
+                if (adjacentImage && adjacentImage.tagName === 'IMG') {
+                  adjacentImage.style.border = 'none'; // Removes the border
+                }
+                
+                // Optionally, call a JavaScript function
+                // onContinueButtonClick();
+              }
+              // If the button text is not 'Continue', the form will submit as usual
+            });
+
+            // Function to be called when button is clicked
+            function onContinueButtonClick() {
+              window.location.href = "/quiz"
+            }
+        
+          // Function to update the button text and attach an event listener if text is 'Continue'
+          function updateButton(text) {
+            const submitButton = document.getElementById('submitButton');
+            submitButton.textContent = text;
+        
+            // Check if the button text is 'Continue' and add click event listener
+            if (submitButton.textContent === 'Continue') {
+              submitButton.onclick = onContinueButtonClick;
+            } 
+          }
+        </script>
           {% for message in messages %}
             {% if 'info' not in message.tags %}
             <script>
-              document.getElementById('submitButton').textContent = 'Continue';
+              // document.getElementById('submitButton').textContent = 'Continue';
+              updateButton('Continue');
               console.log("Yeah made it")
             </script>
             {% endif %}
@@ -203,5 +260,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </body>
 </html>
