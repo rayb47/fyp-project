@@ -120,7 +120,7 @@
       <div class="d-flex justify-content-between align-items-center mb-3">
         <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a>
         <div style="width: 150px">
-          <b>Unit 3 - Colors, Numbers and Basic Objects </b>
+          <b>Unit {{unit_id}} - {{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%;"> 
           <div class="progress-bar" style="width:70%"></div>
@@ -159,11 +159,25 @@
     </div>
     </div>
   </div>
-  
+
+<audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
+<audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <!-- Replace the 'slim' version with the full version of jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+$(document).ready(function(){
+    $('#submitButton').click(function(e){
+        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
+        window.location.reload();
+      }); 
+    });
+
+
 $(document).ready(function() {
+    $('#submitButton').click(function(e){
+        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
+        window.location.reload();
+    }); 
     let lastClicked = null;
 
     $('.match-item').click(function() {
@@ -172,9 +186,13 @@ $(document).ready(function() {
             if (lastClicked.data('match') === currentClicked.attr('data-match')) { // Check if data-match values are equal
                 currentClicked.addClass('matched');
                 lastClicked.addClass('matched');
+                var buzzer = document.getElementById('correctSound');
+                buzzer.play();
             } else {
                 currentClicked.addClass('mismatched');
                 lastClicked.addClass('mismatched');
+                var buzzer = document.getElementById('wrongSound');
+                buzzer.play();
                 // Store lastClicked in a separate variable to use in the timeout function
                 const tempLastClicked = lastClicked;
                 setTimeout(() => {

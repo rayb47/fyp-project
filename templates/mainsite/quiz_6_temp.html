@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translate Phrase</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .input-group-text { font-size: 1.25em; } /* Larger text for the input group's addon */
+        #translationInput { font-size: 1.25em; } /* Larger text for the input field */
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Translate the phrase into Portuguese</h2>
+    <p class="lead">Phrase in English: "What is your name?"</p>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon">Your translation:</span>
+        </div>
+        <input type="text" class="form-control" id="translationInput" aria-label="Translation" aria-describedby="basic-addon">
+    </div>
+    <button id="submitTranslation" class="btn btn-primary">Submit</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

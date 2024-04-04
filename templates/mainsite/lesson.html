@@ -8,7 +8,7 @@
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
 <style>
     .quiz-container {
-      max-width: 600px;
+      max-width: 1000px;
       margin: 30px auto;
       background-color: #f9f9f9;
       padding: 20px;
@@ -31,8 +31,8 @@
         margin-left: 0px;  /* counteract the left padding of the container */
         margin-right: 0px; /* counteract the right padding of the container */
         background-color: #000000; /* or any color that fits the design */
-        margin-top: 20px; /* or any value that fits the design */
-        margin-bottom: 20px; /* or any value that fits the design */
+       /* or any value that fits the design */
+       
     }
 
     .phrase-section h1 {
@@ -81,9 +81,8 @@
 
 
 
-.option-container {
-    margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
-}
+
+
   </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
@@ -137,40 +136,91 @@
     </div>
   </nav>
 
+
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a>
-        <div style="width: 150px">
-          <b>Unit {{unit_id}} - {{unit_name}} </b>
+        <div style="width: auto">
+          <b>Unit 2 - Common Food and Animal Names </b>
         </div>
         <div class="progress" style="width: 30%;"> 
-          <div class="progress-bar" style="width:70%"></div>
+          <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 15%" data-toggle="tooltip" data-placement="top" title="For Quiz 1" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 30%" data-toggle="tooltip" data-placement="top" title="For Quiz 2" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 20%" data-toggle="tooltip" data-placement="top" title="For Quiz 3" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         <b>2 of 12</b> 
         <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
+    </div>
+    <hr>
+    <!-- Word in Portuguese (Word in English)
+    Usage in Portuguese (Meaning of same usage in English)
+    Speaker button to pronounce the word in English
+    Speaker button to pronounce the example sentence usage in English -->
+    <div class="lesson-content" style="margin: 20px;">
+        {% for word in words %}
+        <div class="word-header">
+          <h3>  {{word.portuguese_word}} ({{word.english_translation}}) <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.portuguese_word}}')">🔊</button></h3><br>
+        </div>
+        <div class="example-usage">
+          <h5>Example Usage</h5>
+          <ul>
+            <li>I am a boy <b>/</b> Eu sou um menino <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')" style="font-size: 20px">🔊</button></li>
+            <li><b style="display: inline;">Portuguese:</b> Eu sou um menino <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')" style="font-size: 20px">🔊</button></li>
+          </ul>
+          </div>
+        <hr>
+        {% endfor %}
+        <div id="pagination_box"">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              {% if words.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ words.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">&laquo;&laquo;</span>
+                </li>
+                <li class="page-item disabled">
+                  <span class="page-link">&laquo;</span>
+                </li>
+              {% endif %}
+          
+              <li class="page-item disabled">
+                <span class="page-link">Page {{ words.number }} of {{ words.paginator.num_pages }}</span>
+              </li>
+          
+              {% if words.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ words.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ words.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">&raquo;</span>
+                </li>
+                <li class="page-item disabled">
+                  <span class="page-link">&raquo;&raquo;</span>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
       </div>
-      <hr> 
-      <section class="phrase-section">
-        <h1 class="text-center mb-4">Say the Following Phrase</h1>
-        <div class="phrase">
-            <span><b title="I am a boy">Eu Sou Um Menino</b> <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')">🔊</button></span>
-        </div>
-        <div class="recording">
-            <button class="btn btn-primary" id="recordBtn">Click To Speak</button>
-        </div>
-        <div class="container" style="margin-top:20px">
-          <div id="message" class="alert alert-danger" role="alert" style="width: 100%; display: none"></div>
-          <!-- <div class="row justify-content-center">
-              <div class="col-auto">
-                  <div id="message" role="alert" style="display: none; width: 100%;"></div>
-              </div>
-          </div> -->
-      </div>
-        <div class="text-center" style="padding-top:10px">
-        <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
-        </div>
-    </section>
     </div>
   </div>
   
@@ -179,9 +229,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-    // // JavaScript to handle button click and make AJAX request
+    // JavaScript to handle button click and make AJAX request
     // $('#speakBtn').click(function() {
-    //     var textToSpeak = "Eu Sou Um Menino";  // The text you want to convert to speech
+    //     var textToSpeak = "Menino";  // The text you want to convert to speech
     //     $.ajax({
     //         url: '/text-to-speech/',  // URL to Django view
     //         type: 'POST',
@@ -195,12 +245,6 @@
     //     });
     // });
 
-    $(document).ready(function(){
-    $('#submitButton').click(function(e){
-        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
-        window.location.reload();
-      }); 
-    });
     function convertTextToSpeech(textToSpeak) {
     $.ajax({
         url: '/text-to-speech/',  // URL to Django view
@@ -216,69 +260,10 @@
     });
 }
 
-
-    const recordButton = document.getElementById('recordBtn');
-
-    recordButton.addEventListener('click', () => {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                // Check if the browser supports recording in WAV format
-                let options = {};
-                if (MediaRecorder.isTypeSupported('audio/wav')) {
-                    options = { mimeType: 'audio/wav' };
-                }
-                const mediaRecorder = new MediaRecorder(stream, options);
-                mediaRecorder.start();
-
-                const audioChunks = [];
-                mediaRecorder.addEventListener("dataavailable", event => {
-                    audioChunks.push(event.data);
-                });
-
-                mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-                    sendAudioToServer(audioBlob);
-                });
-
-                // Stop recording after 5 seconds
-                setTimeout(() => {
-                    mediaRecorder.stop();
-                }, 5000);
-            })
-            .catch(error => {
-                console.log("Error recording audio:", error);
-            });
-    });
-
-    function sendAudioToServer(blob) {
-        const formData = new FormData();
-        formData.append('audio', blob);
-
-        fetch('/process_audio/', { // URL of your Django view
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // Handle the response from the server
-            const messageElement = document.getElementById('message');
-            messageElement.style.display = ''; // Show the message div
-            if (data.status === 'success') {
-                messageElement.className = 'alert alert-success'; // Use Bootstrap success class
-                // messageElement.textContent = 'Success: ' + data.message;
-                messageElement.textContent = 'Success';
-                messageElement.style.textAlign = 'center';
-            } else {
-                messageElement.className = 'alert alert-danger'; // Use Bootstrap danger class for errors
-                messageElement.textContent = 'Failure';
-                messageElement.style.textAlign = 'center';
-            }
-
-        })
-        .catch(error => {
-            console.log("Error sending audio to server:", error);
-        });
-    }
-    </script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); // Initialize tooltips
+});
+    
+</script>
 </body>
 </html>

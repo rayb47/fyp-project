@@ -8,7 +8,7 @@
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
 <style>
     .quiz-container {
-      max-width: 600px;
+      max-width: 640px;
       margin: 30px auto;
       background-color: rgb(255, 255, 255);
       padding: 20px;
@@ -19,7 +19,9 @@
     }
     .option {
       margin: 10px 0;
-      padding: 15px;
+      margin-left: 8px;
+      padding: 2px;
+      /* background-color: red; */
       border-radius: 8px;
       transition: all 0.3s;
       cursor: pointer;
@@ -49,10 +51,18 @@
         margin-bottom: 20px; /* or any value that fits the design */
     }
 
-    input[type="radio"]:checked + img {
-  border: 8px solid #4CAF50; /* Green border for selected item */
-  /* padding: 4px; */
+
+
+input[type="radio"]:checked + .content-container {
+  border: 4px solid #e9d206; /* Green border for selected item */
+  padding: 4px;
+  /* If you want padding inside the border */
 }
+/* 
+input[type="radio"]:checked + img {
+  border: 8px solid #4CAF50;
+  padding: 4px;
+} */
 
 
 
@@ -69,10 +79,51 @@
   border: solid 1px #000000; margin-right: 10px;
 }
 
+.clue-button {
+    background-color: #ffc107; /* Changing to a yellow color to match the lightbulb theme */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* Adjust icon size */
+    padding: 10px 15px; /* Padding around the icon */
+    border-radius: 50%; /* Circular shape */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+}
+
+.clue-button:hover, .clue-button:focus {
+    background-color: #e0a800; /* Darker yellow on hover/focus */
+    transform: scale(1.1); /* Slightly larger on hover/focus */
+    outline: none; /* Remove focus outline */
+}
+
+.header-with-button {
+    display: flex; /* Align children horizontally */
+    align-items: center; /* Vertically center align items */
+    justify-content: space-between; /* Space out the h2 and button */
+    
+}
+
+.header-with-button h2 {
+    margin-bottom: 0; /* Remove bottom margin from h2 to align better */
+    flex-grow: 1; /* Allows h2 to take up available space, pushing button to the edge */
+    text-align: left; /* Align the text to the left */
+}
+
+.clue-button {
+  margin-right: 10px;
+  margin-bottom: 10px;  
+
+}
+
+.hidden {
+  display: none;
+}
+
 
   </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
@@ -127,139 +178,164 @@
       <div class="d-flex justify-content-between align-items-center mb-3">
         <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a>
         <div style="width: 150px">
-          <b>Unit 3 - Basic Conversation and Phrases </b>
+          <b>Unit {{unit_id}} - {{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%;"> 
-          <div class="progress-bar" style="width:70%"></div>
+          <div class="progress-bar" role="progressbar" aria-valuenow="25" style="width:70%">25%</div>
         </div>
-        <b>2 of 12</b> 
+        <b>{{question_id}} of 12</b> 
         <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
       </div>
-      <hr> 
-      <h2 class="text-center mb-4">{{question_text}}</h2>
-      <form id="quiz-form" method="post" action="submit_answer">
+      <hr>
+      <div class="header-with-button">
+        <h2 class="text-center mb-4">{{question_text}}</h2>
+        <button id="clue-button" class="clue-button" data-toggle="tooltip" data-placement="top" title="Hint">
+            <i class="fas fa-lightbulb" ></i> <!-- Font Awesome icon -->
+        </button>
+    </div>
+      <form id="quiz-form" method="post">
         {% csrf_token %}
-        <input type="hidden" name="form_type" value="form_a">
+        <input type="hidden" name="form_type" value="{{question_id}}">
         <div class="row">
-          <!-- Option 1 -->
+          <!-- Options -->
+          {% for option, link in options.items %}
           <div class="col-md-6 option-container">
             <label class="option">
-              <input type="radio" name="quiz" value="pão" {% if quiz == "pão" %}checked{% endif %} hidden />
-              <img class="quiz-img" src="{% static 'bread.jpg' %}" alt="Pão" style="height:180px">
-              <p class="text-center mt-2">A. pão</p>
-            </label>
+              <input type="radio" name="quiz" value="{{option}}" {% if quiz == "{{option}}" %}checked{% endif %} hidden />
+              <div class="content-container">
+                <img class="quiz-img hidden" src="{{link}}" alt="Pão" style="height:180px; width: 270px;">
+                <p class="text-center mt-2">A. {{option}}</p>
+              </div>
+              </label>
           </div>
-          <!-- Option 2 -->
+          {% endfor %}
+          
+          
+        
+          <!-- <div class="col-md-6 option-container">
+            <label class="option">
+              <input type="radio" name="quiz" value="pão" {% if quiz == "pão" %}checked{% endif %} hidden />
+              <div class="content-container">
+                <img class="quiz-img hidden" src="{% static 'bread.jpg' %}" alt="Pão" style="height:180px">
+                <p class="text-center mt-2">A. pão</p>
+              </div>
+              </label>
+          </div>
+          
           <div class="col-md-6 option-container">
             <label class="option">
               <input type="radio" name="quiz" value="água" {% if quiz == "água" %}checked{% endif %} hidden/>
-              <img class="quiz-img" src="{% static 'water.jpg' %}" alt="Água" style="height:180px">
-              <p class="text-center mt-2">B. água</p>
+              <div class="content-container">
+                <img class="quiz-img hidden" src="{{water_img}}" alt="Água" style="height:180px">
+                <p class="text-center mt-2">B. água</p>
+              </div>
             </label>
           </div>
-          <!-- More options -->
+          
           <div class="col-md-6 option-container">
             <label class="option">
-              <input type="radio" name="quiz" value="maca" {% if quiz == "maca" %}checked{% endif %} hidden  />
-              <img class="quiz-img" src="{% static 'apple.jpg' %}" alt="maca" style="height:180px">
-              <p class="text-center mt-2">C. maca</p>
+              <input type="radio" name="quiz" value="maçã" {% if quiz == "maca" %}checked{% endif %} hidden  />
+              <div class="content-container">
+                <img class="quiz-img hidden" src="{% static 'apple.jpg' %}" alt="maca" style="height:180px">
+                <p class="text-center mt-2">C. maçã</p>
+              </div>
             </label>
           </div>
           <div class="col-md-6 option-container">
             <label class="option">
               <input type="radio" name="quiz" value="laranja" {% if quiz == "laranja" %}checked{% endif %} hidden />
-              <img class="quiz-img" src="{% static 'orange.jpg' %}" alt="laranja" style="height:180px">
-              <p class="text-center mt-2">D. laranja</p>
+              <div class="content-container">
+                <img class="quiz-img hidden" src="{% static 'orange.jpg' %}" alt="laranja" style="height:180px">
+                <p class="text-center mt-2">D. laranja</p>
+              </div>
             </label>
-          </div>
+          </div> -->
         </div>
         <div class="text-center" style="padding:0px">
-          {% if messages %}
-            {% for message in messages %}
-              <!-- Check if the message is a success message -->
-              {% if 'success' in message.tags %}
-                <div class="alert alert-success" role="alert">
-                  {{ message }}
-                </div>
-              {% endif %}
-                
-              <!-- Check if the message is an error message -->
-              {% if 'error' in message.tags %}
-                <div class="alert alert-danger" role="alert">
-                  {{ message }}
-                  
-                </div>
-              {% endif %}
-
-                            <!-- Check if the message is an error message -->
-                            {% if 'info' in message.tags %}
-                            <div class="alert alert-danger" role="alert">
-                              {{ message }}                             
-                            </div>
-                          {% endif %}              
-            {% endfor %}
-          {% endif %}
-          <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
-          <!-- <button id="testsubmitButton" type="submit" class="btn btn-success btn-lg">Continue</button> -->
-          <script>
-              document.addEventListener('DOMContentLoaded', () => {
-                  const radioButtons = document.querySelectorAll('input[type="radio"]');
-                  radioButtons.forEach(radio => {
-                      radio.checked = false;
-                  });
-              });
-
-              document.getElementById('quiz-form').addEventListener('submit', function(event) {
-              const submitButton = document.getElementById('submitButton');
-              if (submitButton.textContent === 'Continue') {
-                // Prevent the form from submitting
-                event.preventDefault();
-                var checkedRadio = document.querySelector('input[type="radio"]:checked');
-                var adjacentImage = checkedRadio ? checkedRadio.nextElementSibling : null;
-                if (adjacentImage && adjacentImage.tagName === 'IMG') {
-                  adjacentImage.style.border = 'none'; // Removes the border
-                }
-                
-                // Optionally, call a JavaScript function
-                // onContinueButtonClick();
-              }
-              // If the button text is not 'Continue', the form will submit as usual
-            });
-
-            // Function to be called when button is clicked
-            function onContinueButtonClick() {
-              window.location.href = "/quiz"
-            }
-        
-          // Function to update the button text and attach an event listener if text is 'Continue'
-          function updateButton(text) {
-            const submitButton = document.getElementById('submitButton');
-            submitButton.textContent = text;
-        
-            // Check if the button text is 'Continue' and add click event listener
-            if (submitButton.textContent === 'Continue') {
-              submitButton.onclick = onContinueButtonClick;
-            } 
-          }
-        </script>
-          {% for message in messages %}
-            {% if 'info' not in message.tags %}
-            <script>
-              // document.getElementById('submitButton').textContent = 'Continue';
-              updateButton('Continue');
-              console.log("Yeah made it")
-            </script>
-            {% endif %}
-          {% endfor %}
+          <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button><br>
+          <div id="message-container"></div>
         </div>
       </form>
     </div>
   </div>
   
+  <audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
+  <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <!-- Replace the 'slim' version with the full version of jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  // Using jQuery
+$(document).ready(function() {
+  $('#clue-button').click(function() {
+    $('.quiz-img').toggleClass('hidden');
+  });
 
+  $('input[type="radio"][name="quiz"]').click(function() {
+        // This gets the value of the clicked radio button
+        var textToSpeak = $(this).val();
+        
+        // Call the convertTextToSpeech function with the radio button's value
+        convertTextToSpeech(textToSpeak);
+    });
+
+    function convertTextToSpeech(textToSpeak) {
+        $.ajax({
+            url: '/text-to-speech/',  // URL to Django view
+            type: 'POST',
+            data: { 'text': textToSpeak },
+            success: function(response) {
+                console.log(response.message);
+                // Optional: Play the response if it includes audio data
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+});
+
+
+
+$('#submitButton').click(function() {
+    event.preventDefault();
+    var formData = $('#quiz-form').serialize();  // Serialize form data
+    var button = $(this);
+    if (button.text().trim() === 'Check') {
+      console.log(formData);
+      $.ajax({
+          type: 'POST',
+          url: '/submit_answer',  // URL to your Django view
+          data: formData,
+          success: function(response) {
+              var contentContainer = $('input[type="radio"]:checked').next('.content-container');
+              var selectedOptionValue = $('input[type="radio"][name="quiz"]:checked').val();
+              console.log(selectedOptionValue);
+              if(response.is_correct) {
+                  console.log('Correct answer!');
+                  // $('#message-container').text(response.message);  // Assuming you have a div with this ID
+                  contentContainer.css('border', '4px solid #4CAF50'); // Green for correct
+                  var buzzer = document.getElementById('correctSound');
+                  buzzer.play();
+                  
+              } else {
+                  console.log('Incorrect answer, try again.');
+                  // $('#message-container').text(response.message);  // Display error message
+                  contentContainer.css('border', '4px solid #FF0000'); // Red for incorrect
+                  var buzzer = document.getElementById('wrongSound');
+                  buzzer.play();
+              }
+              $('#submitButton').text('Continue');
+          },
+          error: function(response) {
+              alert('There was an error processing your answer.');
+          }
+      });
+  } else {
+    window.location.reload();
+  }
+});
+</script>
 </body>
 </html>

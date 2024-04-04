@@ -6,9 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz - Unit 3: Food And Drink</title>
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
-<style>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+        #sortable li { margin: 3px 3px 3px 0; padding: 8px; float: left;  font-size: 1.5em; text-align: center;}
+    
+
     .quiz-container {
-      max-width: 650px;
+      max-width: 660px;
       margin: 30px auto;
       background-color: #f9f9f9;
       padding-top: 20px;
@@ -129,6 +137,35 @@
     label:hover {
         background-color: #ddd;
     }
+
+    .horizontal-list {
+  list-style: none; /* Removes the default list item styling */
+  padding: 0; /* Removes the default padding */
+  margin: 0; /* Adjust the margin as needed */
+  display: flex; /* Enables flexbox layout mode */
+  justify-content: center; /* Center the items horizontally */
+  gap: 10px; /* Adds space between items */
+}
+
+.horizontal-list .ui-state-default {
+  cursor: pointer; /* Indicates that items are movable */
+  user-select: none; /* Prevents text selection */
+  padding: 10px 15px; /* Add some padding around the text */
+  background-color: #f2f2f2; /* Light grey background */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 4px; /* Rounded corners */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow effect */
+}
+
+.correct-answer {
+  border: 2px solid green;
+  background-color: #d4edda; /* A light green background */
+}
+
+.incorrect-answer {
+  border: 2px solid red;
+  background-color: #f8d7da; /* A light red background */
+}
   </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
@@ -197,105 +234,79 @@
       </div>
       <hr> 
       <div class="mcq-container">
-        <h2 class="text-center mb-4">{{question_text}}</h2>
-        <form id="quiz-form" method="post" action="submit_answer">
+        <form>
         {% csrf_token %}
-        <input type="hidden" name="form_type" value="{{question_id}}">
-        <ul class="options">
-            {% for option in options %}
-            <li>
-                <input type="radio" id="option{{forloop.counter}}" name="quiz" value="{{option}}">
-                <label for="option{{forloop.counter}}">{{option}}</label>
-            </li>
-            {% endfor %}
-
-            <!-- <li>
-                <input type="radio" id="option1" name="quiz" value="london">
-                <label for="option1">Eu sou um meninho</label>
-            </li>
-            <li>
-                <input type="radio" id="option2" name="quiz" value="paris">
-                <label for="option2">Eu tenho um carro</label>
-            </li>
-            <li>
-                <input type="radio" id="option3" name="quiz" value="berlin">
-                <label for="option3">Ela tehno uma maca</label>
-            </li>
-            <li>
-                <input type="radio" id="option4" name="quiz" value="madrid">
-                <label for="option4">Eu nao tehno um jornal</label>
-            </li> -->
+        <center><h2>Arrange the words to form a sentence</h2></center>
+        <ul id="sortable" class="horizontal-list" style="margin-left:20px; margin-top: 50px;">
+          {% for word in jumbled_answer %}
+            <li class="ui-state-default">{{word}}</li>
+          {% endfor %}
         </ul>
-        <!-- {% if answer_status == 'correct' %} -->
-        <div id="correct_msg" class="alert alert-success" role="alert" style="width:100%">
-            <!-- Right answer given!                          -->
-        </div>
-        <!-- {% elif answer_status == 'wrong' %} -->
-        <div id="wrong_msg" class="alert alert-danger" role="alert" style="width:100%">
-            <!-- Wrong answer given!                              -->
-        </div>
-        <!-- {% endif %} -->
-        <div class="text-center">
-            <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
+        <div class="text-center" style="margin-top: 60px;">
+            <button id="checkOrder" class="btn btn-success btn-lg">Check</button>
         </div>
         </form>
-        <!-- <div class="text-center">
-            <button class="btn btn-success btn-lg">Check</button>
-            <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
-        </div> -->
-    </div>
+      </div>
     </div>
   </div>
   
 <!-- Replace the 'slim' version with the full version of jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 <audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
 <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <script>
 
 $(document).ready(function() {
-    $('#submitButton').click(function(event) {
-        event.preventDefault();  // Prevent the default form submission
-        var formData = $('#quiz-form').serialize();  // Serialize form data
-        var button = $(this);
-        if (button.text().trim() === 'Check') {
-          $.ajax({
-              type: 'POST',
-              url: '/submit_answer',  // Adjust the URL to your Django view as needed
-              data: formData,
-              success: function(response) {
-                  var selectedLabel = $('input[type="radio"][name="quiz"]:checked').next('label');
+    $("#sortable").sortable();
+    $("#sortable").disableSelection();
 
-                  // Assuming response.is_correct is a boolean and response.message contains the feedback
-                  if (response.is_correct) {
-                      
-                      // Optionally, play a sound for correct answer
-                      $('#correctSound')[0].play();
-                      selectedLabel.css({
-                        'border': '4px solid #4CAF50', // Green border
-                        'background-color': '#e7ffe7' // Light green background
-                    });
-                  } else {
-                      
-                      // Optionally, play a sound for incorrect answer
-                      $('#wrongSound')[0].play();
-                      selectedLabel.css({
-                        'border': '4px solid #dd2323', // Red border
-                        'background-color': '#ffdddb' // Light red background
-                    });
-                  }
-                  
-                  $('#submitButton').text('Continue');
-              },
-              error: function() {
-                  alert('There was an error processing your answer.');  // Basic error handling
-              }
-          });
-        } else {
-          window.location.reload();
-        }
+    $("#checkOrder").click(function() {
+        event.preventDefault()
+        var button = $(this);
+        var correctOrder = ["What", "is", "your", "name", "?"];
+        var userOrder = $("#sortable li").map(function() {
+            return $(this).text().trim();
+        }).get();
+
+        console.log(userOrder);
+        
+        // Perform AJAX call to submit the user order to the server
+        if (button.text().trim() === 'Check') {
+        $.ajax({
+            url: '/submit_answer',  // URL to the Django view
+            type: 'POST',  // HTTP method, Django typically uses POST for form submissions
+            data: {
+                'quiz': JSON.stringify(userOrder),  // Send the userOrder as a JSON string
+                'form_type': "{{question_id}}",
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // CSRF token for Django
+            },
+            success: function(response) {
+                // Process server response here
+                if(response.is_correct) {
+                  $("#sortable li").css({
+                      "border": "2px solid green",
+                      "background-color": "#d4edda" // A light green background
+                  });
+                  $('#correctSound')[0].play();
+                } else {
+                  $("#sortable li").css({
+                      "border": "2px solid red",
+                      "background-color": "#f8d7da" // A light red background
+                  });
+                  $('#wrongSound')[0].play();
+                }
+                $('#checkOrder').text('Continue');
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors here
+                console.error("Error submitting order:", error);
+            }
+        });
+      } else {
+        window.location.reload();
+      }
+      
     });
 });
 
