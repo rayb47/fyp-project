@@ -23,7 +23,7 @@
           <a class="nav-link active-tab" href="men_tester.html">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="gearth.html">Vocabulary</a>
+          <a class="nav-link" href="/vocab">Vocabulary</a>
       </li>
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -155,8 +155,7 @@
                         <div class="progress-bar" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">30%</div>
                     </div>
                     </div>
-                    <!-- <button type="button" class="btn btn-primary" href="/quiz/1">Access Quiz</button> -->
-                    <a href="/quiz/1/1" class="btn btn-primary">Access Quiz</a>
+                    <a href="#" class="btn btn-primary">Access Quiz</a>
                 </li>
                 <!-- Quiz 2 -->
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -166,7 +165,6 @@
                         <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
                     </div>
                     </div>
-                    <!-- <button type="button" class="btn btn-primary" onclick="accessQuiz(2)">Access Quiz</button> -->
                     <a href="#" class="btn btn-primary">Access Quiz</a>
                 </li>
                 <!-- Quiz 3 -->
@@ -177,20 +175,18 @@
                         <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
                     </div>
                     </div>
-                    <!-- <button type="button" class="btn btn-primary" onclick="accessQuiz(3)">Access Quiz</button> -->
                     <a href="#" class="btn btn-primary">Access Quiz</a>
                 </li>
                 <!-- Quiz 4 -->
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                     Quiz 4: <strong>10 out of 10 questions answered</strong>
                     <div class="progress" style="height: 20px; margin-top: 10px; width: 80%;">
                         <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
                     </div>
                     </div>
-                    <!-- <button type="button" class="btn btn-primary" onclick="accessQuiz(4)">Access Quiz</button> -->
                     <a href="#" class="btn btn-primary">Access Quiz</a>
-                </li>
+                </li> -->
                 </ul>
             </div>
             <div class="modal-footer">
@@ -254,19 +250,56 @@
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
+  
+  
   $(document).ready(function(){
     $('.quiz-button').click(function() {
-        var unitId = $(this).data('unit'); // Retrieve the data-unit attribute
+        // var unitId = $(this).data('unit'); // Retrieve the data-unit attribute
+        // console.log("Clicked on unit:"+unitId);
+        // // Now update the href attribute for each Access Quiz button in the modal
+        // $('#quizModal').find('.list-group-item').each(function(index) {
+        //     $(this).find('a').attr('href', '/quiz/' + unitId + '/' + (index + 1));
+        //     // or if you have an array with paths
+        //     // $(this).find('a').attr('href', yourArrayWithPaths[index]);
+        // });
+
+    var unitId = $(this).data('unit');
+         // Get the unit ID from the button's data attribute
         
-        // Now update the href attribute for each Access Quiz button in the modal
-        $('#quizModal').find('.list-group-item').each(function(index) {
-            $(this).find('a').attr('href', '/quiz/' + unitId + '/' + (index + 1));
-            // or if you have an array with paths
-            // $(this).find('a').attr('href', yourArrayWithPaths[index]);
+        // Make an AJAX call to your Django view
+        $.ajax({
+            url: '/get_quiz_data',  // URL to your Django view that returns quiz data
+            type: 'GET',
+            data: {'unit_id': unitId},
+            success: function(response) {
+                // Assuming 'response' is an object with a 'quizzes' array
+                // Clear the list
+                var quizList = $('.modal-body .list-group').empty();
+                
+                // Iterate through quizzes and append to the list
+                response.quizzes.forEach(function(quiz) {
+                    var quizItem = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            Quiz ${quiz.number}: <strong>${quiz.questions_answered} out of ${quiz.total_questions} questions answered</strong>
+                            <div class="progress" style="height: 20px; margin-top: 10px; width: 80%;">
+                                <div class="progress-bar" role="progressbar" style="width: ${quiz.progress_percent}%;" aria-valuenow="${quiz.progress_percent}" aria-valuemin="0" aria-valuemax="100">${quiz.progress_percent}%</div>
+                            </div>
+                        </div>
+                        <a href="/quiz/${unitId}/${quiz.number}" class="btn btn-primary">Access Quiz</a>
+                    </li>`;
+                    quizList.append(quizItem);
+                });
+                
+                // Show the modal after updating its content
+                $('#quizModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching quiz data:", error);
+            }
         });
     });
 });
