@@ -53,15 +53,6 @@ class Lesson(models.Model):
     def __str__(self):
         return f"{self.difficulty} lesson in {self.unit.name}"
     
-class UserAttempts(models.Model):
-    quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE)  # Use your actual Quiz model
-    questions_answered = models.IntegerField(default=0)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Assuming using Django's built-in User model
-    attempt_date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.username}'s attempt on {self.attempt_date.strftime('%Y-%m-%d %H:%M')}"
-    
 class Word(models.Model):
     portuguese_word = models.CharField(max_length=255)
     english_translation = models.CharField(max_length=255)
@@ -72,6 +63,65 @@ class Word(models.Model):
 
     class Meta:
         ordering = ['id']
+
+class Match(models.Model):
+    question = models.ForeignKey('Question', on_delete=models.CASCADE)  # Replace 'YourQuestionModel' with your actual question model name
+    left_option = models.CharField(max_length=255)
+    right_option = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return f"{self.left_option} - {self.right_option}"
+    
+    class Meta:
+        ordering = ['id']
+
+class ExampleUsage(models.Model):
+    word = models.ForeignKey(Word, on_delete=models.CASCADE, related_name='example_usages')
+    english_usage = models.TextField()
+    portuguese_usage = models.TextField()
+
+    def __str__(self):
+        return f'Usage of "{self.word.portuguese_word}" / "{self.word.english_translation}"'
+    
+class UserSavedWords(models.Model):
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} saved {self.word.portuguese_word}"
+
+
+class UserAttempts(models.Model):
+
+    quiz = models.ForeignKey('Quiz', on_delete=models.SET_NULL, null=True, blank=True, related_name='attempts')
+    lesson = models.ForeignKey('Lesson', on_delete=models.SET_NULL, null=True, blank=True, related_name='attempts')
+    questions_answered = models.IntegerField(null=True, blank=True)
+    pages_covered = models.IntegerField(null=True, blank=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='attempts')
+    attempt_date = models.DateTimeField(auto_now_add=True)  # Automatically set to now when object is created
+
+    def __str__(self):
+        return f"Attempt {self.id} by User {self.user_id}"
+    
+    class Meta:
+        verbose_name_plural = "User Attempts"
+
+class UserAnswers(models.Model):
+    # Replace 'Attempt' and 'Question' with your actual model names for attempts and questions
+    attempt = models.ForeignKey('UserAttempts', on_delete=models.CASCADE, related_name='user_answers')
+    question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name='user_answers')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_answers')
+    answer_text = models.CharField(max_length=255)
+    is_correct = models.BooleanField()
+    answer_date = models.DateTimeField(auto_now_add=True)  # Automatically set when object is created
+
+    def __str__(self):
+        return f"User {self.user.username}'s answer for question {self.question_id}"
+
+    class Meta:
+        verbose_name_plural = "User Answers"
+
+
     
     
 

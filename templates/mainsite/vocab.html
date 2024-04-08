@@ -1,0 +1,511 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Correct FontAwesome link -->
+<link rel="stylesheet" href="{% static 'architecture.css' %}">
+<style>
+    .sound-button {
+        background: none;
+        border: none;
+        font-size: 20px;
+    }
+
+    .sound-button:hover {
+        transform: scale(1.1);
+    }
+
+    .sound-button:focus {
+    outline: none;
+    box-shadow: none; /* Also remove any box-shadow if applied by Bootstrap */
+    background: none;
+}
+
+.align-middle {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+            color: #495057;
+            background-color: #fff;
+            border-color: #000000 #000000 #000000;
+        }
+        .nav-tabs .nav-link {
+            border: 1px solid transparent;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+            color: #007bff;
+            background: #e9ecef;
+            margin-right: 2px;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #dee2e6;
+        }
+        .tab-content > .tab-pane {
+            padding: 20px;
+            background: none;
+            border: 0px solid #dee2e6;
+            border-top: none;
+        }
+</style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'portu_flag_pic.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      <span class="text-green">Portu</span><span class="text-red">Pro</span>
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link active-tab" href="gearth.html">Vocabulary</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Culture
+            </a>
+            <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+              <a class="dropdown-item" href="page1.html">Architecture</a>
+              <a class="dropdown-item" href="page2.html">Festivals</a>
+              <a class="dropdown-item" href="page3.html">Media</a>
+              <!-- More dropdown items -->
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            More
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="page1.html">Diacritics</a>
+            <a class="dropdown-item" href="page2.html">OS Language</a>
+            <a class="dropdown-item" href="page3.html">Music & More</a>
+            <!-- More dropdown items -->
+          </div>
+        <li class="nav-item">
+          <a class="nav-link" href="gearth.html">Settings</a>
+      </li>
+
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="/signout" class="settings-link">Logout</a>
+      </span>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="mb-4 heading">Vocabulary</h1>
+
+    <div class="card mb-3 culture-card">
+        <div class="card-body">
+            <!-- Tab navs -->
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="user-saved-tab" data-toggle="tab" href="#user-saved" role="tab" aria-controls="user-saved" aria-selected="true">User Saved List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="overall-list-tab" data-toggle="tab" href="#overall-list" role="tab" aria-controls="overall-list" aria-selected="false">Overall List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="general-search-tab" data-toggle="tab" href="#general-search" role="tab" aria-controls="general-search" aria-selected="false">General Search</a>
+                </li>
+                
+            </ul>
+    
+            <!-- Tab content -->
+            <div class="tab-content" id="myTabContent">
+                <!-- User Saved List Tab Pane -->
+                <div class="tab-pane fade show active" id="user-saved" role="tabpanel" aria-labelledby="user-saved-tab">
+                    <div style="display: flex; align-items: center; margin-top: 10px;">
+                        <h2 style="margin-right: 10px;">User Saved</h2>
+                        <button style="border: 1px solid black; border-radius:5px">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                    <form>
+                        {% csrf_token %}
+                        <div class="row mt-4">
+                            <div class="col">
+                                <table class="table table-dark table-striped saved-words-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Portuguese</th>
+                                            <th scope="col">English</th>
+                                            <th scope="col">English Usage</th>
+                                            <th scope="col">Portuguese Usage</th>
+                                            <th scope="col"><center>Actions</center></th> <!-- New column for actions -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for word in saved_words %}
+                                        <tr id="savedWordRow_{{word.id}}">
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                <span class="align-middle">
+                                                {{word.word.portuguese_word}}
+                                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="align-middle">
+                                                    {{word.word.english_translation}}
+                                                </span>
+                                            </td>
+                                            {% with word.word.example_usages.all.first as usage %}
+                                                <td>
+                                                    <span class="align-middle">
+                                                        {{usage.english_usage}}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="align-middle">
+                                                        {{usage.portuguese_usage}}
+                                                        <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                    </span>
+                                                </td>
+                                            {% endwith %}
+                                            <td><center><button class="btn btn-danger btn-sm delete-button" data-id="{{word.id}}"><i class="fas fa-trash-alt"></i></button></center></td> <!-- Delete icon button -->
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+    
+                <!-- Overall List Tab Pane -->
+                <div class="tab-pane fade" id="overall-list" role="tabpanel" aria-labelledby="overall-list-tab">
+                    <h2 style="margin-top: 10px;">Overall List</h2>
+                    <form>
+                        {% csrf_token %}
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <form id="searchForm">
+                                    <div class="input-group mb-3" style="width: 50%;">
+                                        <input type="text" class="form-control" placeholder="Search for words..." id="searchQueryOverall">
+                                        <!-- <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                        </div> -->
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <table class="table table-dark table-striped saved-words-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Portuguese</th>
+                                            <th scope="col">English</th>
+                                            <th scope="col">English Usage</th>
+                                            <th scope="col">Portuguese Usage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for word in words %}
+                                        <tr id="savedWordRow_{{word.id}}">
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                <span class="align-middle">
+                                                {{word.portuguese_word}}
+                                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="align-middle">
+                                                    {{word.english_translation}}
+                                                </span>
+                                            </td>
+                                            {% with word.example_usages.all.first as usage %}
+                                                <td>
+                                                    <span class="align-middle">
+                                                        {{usage.english_usage}}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="align-middle">
+                                                        {{usage.portuguese_usage}}
+                                                        <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                    </span>
+                                                </td>
+                                            {% endwith %}
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Overall List Tab Pane -->
+                <div class="tab-pane fade" id="general-search" role="tabpanel" aria-labelledby="general-search-tab">
+                    <h2 style="margin-top: 10px;">General Search</h2>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <form id="searchForm">
+                                <div class="input-group mb-3" style="width: 50%;">
+                                    <input type="text" class="form-control" placeholder="Search for words..." id="searchQuery">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Portuguese</th>
+                                    <th scope="col">English</th>
+                                    <th scope="col">English Usage</th>
+                                    <th scope="col">Portuguese Usage</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>livro</td>
+                                    <td>book</td>
+                                    <td>I am reading a book.</td>
+                                    <td>Estou lendo um livro.</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                    </td>
+                                </tr>
+                                <!-- More rows can be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="card mb-3 culture-card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="text" class="form-control" placeholder="Enter search term...">
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                        <label class="form-check-label" for="inlineRadio1">English</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                        <label class="form-check-label" for="inlineRadio2">Portuguese</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Username</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+
+        </div>
+    </div> 
+
+    
+    
+  </div>
+
+  <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 200px; z-index: 1050;">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
+      <div class="toast-header">
+        <strong class="mr-auto text-success">Notification</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        Word deleted successfully.
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+// $(document).ready(function() {
+//     $('.filter-option').click(function(e) {
+//         e.preventDefault(); // Prevent the default anchor behavior
+//         var selectedFilter = $(this).text();
+//         $('#filter-dropdown').text(selectedFilter); // Set the button text to the selected filter
+//         $('#filter-dropdown').append(' <span class="caret"></span>'); // Re-add the caret symbol to the button
+//     });
+// });
+
+$(document).ready(function() {
+    $('.delete-button').click(function() {
+        var button = $(this);
+        var savedWordId = button.data('id');
+        event.preventDefault()
+        $.ajax({
+            url: '/save_word/',  // URL to the Django view
+            type: 'POST',  // or 'POST' if you are sending data to the server
+            
+            data: {
+              'word_id': savedWordId,
+              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(), // Any data you need to pass to Django
+              'add_or_remove': 'remove',
+            },
+            success: function(response) {
+                console.log("Success");
+                // $('.toast').toast('show');
+                var row = $('#savedWordRow_' + savedWordId);
+                row.fadeOut('slow', function() { 
+                    $(this).remove();
+                    // After removal, update the indexes of all subsequent rows.
+                    $('.saved-words-table tbody tr').each(function(index) {
+                        $(this).find('th:first').text(index + 1); // Assuming the first th in each row contains the index number.
+                    });
+                });
+            },
+            error: function(xhr, errmsg, err) {
+                // Handle errors
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+    // $('.toast').toast();
+});
+
+function convertTextToSpeech(textToSpeak) {
+      event.preventDefault()
+    $.ajax({
+        url: '/text-to-speech/',  // URL to Django view
+        type: 'POST',
+        data: { 'text': textToSpeak },
+        success: function(response) {
+            console.log(response.message);
+            // Optional: Play the response if it includes audio data
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $('#searchQueryOverall').on('input', function() {
+        var query = $(this).val();
+
+        $.ajax({
+            url: '/search_word',  // Your endpoint for searching words
+            type: 'GET',
+            data: {'query': query},
+            success: function(response) {
+                // Clear the existing table rows
+                $('.saved-words-table tbody').empty();
+
+                if (response.words.length === 0) {
+                    // If no words are returned, display a row of '-' under each column
+                    var emptyRow = `<tr>
+                                        <th scope="row">-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>`;
+                    $('.saved-words-table tbody').append(emptyRow);
+                } else {
+                    // Iterate over the response to build new table rows
+                    response.words.forEach(function(word, index) {
+                        var newRow = `<tr id="savedWordRow_${word.id}">
+                                          <th scope="row">${index + 1}</th>
+                                          <td>
+                                              <span class="align-middle">
+                                                  ${word.portuguese_word}
+                                                  <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${word.portuguese_word}')">🔊</button>
+                                              </span>
+                                          </td>
+                                          <td>
+                                              <span class="align-middle">
+                                                  ${word.english_translation}
+                                              </span>
+                                          </td>
+                                          <td>
+                                              <span class="align-middle">
+                                                  ${word.example_usage ? word.example_usage.english_usage : '-'}
+                                              </span>
+                                          </td>
+                                          <td>
+                                              <span class="align-middle">
+                                                  ${word.example_usage ? word.example_usage.portuguese_usage : '-'}
+                                                  ${word.example_usage ? `<button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${word.example_usage.portuguese_usage}')">🔊</button>` : ''}
+                                              </span>
+                                          </td>
+                                      </tr>`;
+                        $('.saved-words-table tbody').append(newRow);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error during search:", error);
+            }
+        });
+    });
+});
+
+
+</script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,33 +131,31 @@
       </div>
       <hr> 
       <center><h2>Match the Following</h2></center>
+    <form id="quiz-form">
+    {% csrf_token %}
+    <input type="hidden" name="form_type" value="{{question_id}}">
     <div class="row" style="margin-top: 20px;">
         <div class="col-6">
-            <u><h5 style="text-align: center;">English</h5></u>
+            <u><h5 style="text-align: center;">Portuguese</h5></u>
             <ul class="list-group" id="listA" style="margin-left: 10px;">
-                <li class="list-group-item match-item" data-match="A1">Newspaper</li>
-                <li class="list-group-item match-item" data-match="A2">Man</li>
-                <li class="list-group-item match-item" data-match="A3">Morning</li>
-                <li class="list-group-item match-item" data-match="A4">Night</li>
-                <li class="list-group-item match-item" data-match="A5">Orange</li>
-                <li class="list-group-item match-item" data-match="A6">Bye</li>
+              {% for item, value in match_items.items %}
+                <li class="list-group-item match-item" data-match="{{value}}">{{value}}</li>
+              {% endfor %}
             </ul>
         </div>
         <div class="col-6">
-            <u><h5 style="text-align: center;">Portguese</h5></u>
+            <u><h5 style="text-align: center;">English</h5></u>
             <ul class="list-group" id="listB" style="margin-right: 10px;">
-                <li class="list-group-item match-item" data-match="A6">Tchau</li>
-                <li class="list-group-item match-item" data-match="A3">Dia</li>
-                <li class="list-group-item match-item" data-match="A2">Homem</li>
-                <li class="list-group-item match-item" data-match="A1">Jornal</li>
-                <li class="list-group-item match-item" data-match="A4">Nuit</li>
-                <li class="list-group-item match-item" data-match="A5">Laranja</li>
+              {% for item in left_col_q %}
+                <li class="list-group-item match-item" data-match="{{ match_items|get_item:item }}">{{item}}</li>
+              {% endfor %}
             </ul>
         </div>
     </div>
     <div class="text-center" style="padding-top:25px">
       <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
     </div>
+    </form>
     </div>
   </div>
 
@@ -165,21 +164,28 @@
 <!-- Replace the 'slim' version with the full version of jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function(){
-    $('#submitButton').click(function(e){
-        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
-        window.location.reload();
-      }); 
-    });
-
-
 $(document).ready(function() {
     $('#submitButton').click(function(e){
         e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
-        window.location.reload();
+        var formData = $('#quiz-form').serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/submit_answer',  // Change to your actual view URL
+            data: formData,
+            success: function(response) {
+                // Do something with the response if needed
+                console.log("Success");
+                window.location.reload()
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors here
+                console.error('Error on AJAX request: ' + error);
+                // window.location.reload();
+            }
+        });
+        // window.location.reload();
     }); 
     let lastClicked = null;
-
     $('.match-item').click(function() {
         const currentClicked = $(this);
         if (lastClicked && lastClicked[0] !== currentClicked[0]) { // Ensure they are different elements

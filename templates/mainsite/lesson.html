@@ -77,6 +77,29 @@
     width: 100%;
 }
 
+.sound-button, .plus-button {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.sound-button i, .plus-button i {
+    pointer-events: none; /* Prevents the icon from capturing click events directly */
+}
+
+.sound-button, .plus-button {
+    transition: transform 0.2s ease-in-out;
+}
+
+.sound-button:hover, .plus-button:hover {
+    transform: scale(1.1);
+}
+
+.sound-button:focus, .plus-button:focus {
+    outline: none;
+    box-shadow: none; /* Also remove any box-shadow if applied by Bootstrap */
+    background-color: #8b1f1f;
+    background: none;
+}
 
 
 
@@ -85,6 +108,7 @@
 
   </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
 <body>
@@ -158,14 +182,21 @@
     Speaker button to pronounce the word in English
     Speaker button to pronounce the example sentence usage in English -->
     <div class="lesson-content" style="margin: 20px;">
+      <form>
+        {% csrf_token %}
         {% for word in words %}
         <div class="word-header">
-          <h3>  {{word.portuguese_word}} ({{word.english_translation}}) <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.portuguese_word}}')">🔊</button></h3><br>
+          <h3>{{word.portuguese_word}} ({{word.english_translation}}) 
+              <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.portuguese_word}}')">🔊</button>
+              <button class="btn btn-outline-success plus-button" id="plusBtn" data-word-id="{{ word.id }}"><i class="fas fa-plus"></i></button>
+          </h3><br>
         </div>
         <div class="example-usage">
           <h5>Example Usage</h5>
           <ul>
-            <li>I am a boy <b>/</b> Eu sou um menino <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')" style="font-size: 20px">🔊</button></li>
+            {% for usage in word.example_usages.all %}
+            <li> {{usage.english_usage}} <b>/</b> {{usage.portuguese_usage}} <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')" style="font-size: 20px">🔊</button></li>
+            {% endfor %}
             <li><b style="display: inline;">Portuguese:</b> Eu sou um menino <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')" style="font-size: 20px">🔊</button></li>
           </ul>
           </div>
@@ -220,9 +251,25 @@
             </ul>
           </nav>
         </div>
+      </form>
       </div>
     </div>
   </div>
+
+  <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 200px; z-index: 1050;">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
+      <div class="toast-header">
+        <strong class="mr-auto text-success">Notification</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        Word saved successfully.
+      </div>
+    </div>
+  </div>
+  
   
 <!-- Replace the 'slim' version with the full version of jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -244,8 +291,34 @@
     //         }
     //     });
     // });
+    $(document).ready(function() {
+    $('.plus-button').click(function() {
+        var wordId = $(this).data('word-id');
+        event.preventDefault()
+        $.ajax({
+            url: '/save_word/',  // URL to the Django view
+            type: 'POST',  // or 'POST' if you are sending data to the server
+            
+            data: {
+              'word_id': wordId,
+              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()// Any data you need to pass to Django
+            },
+            success: function(response) {
+                // Do something with the response
+                console.log("Success");
+                $('.toast').toast('show');
+            },
+            error: function(xhr, errmsg, err) {
+                // Handle errors
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+    $('.toast').toast();
+});
 
     function convertTextToSpeech(textToSpeak) {
+      event.preventDefault()
     $.ajax({
         url: '/text-to-speech/',  // URL to Django view
         type: 'POST',

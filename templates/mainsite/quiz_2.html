@@ -152,6 +152,9 @@
       </div>
       <hr> 
       <section class="phrase-section">
+        <form id="quiz-form" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="{{question_id}}">
         <h1 class="text-center mb-4">Say the Following Phrase</h1>
         <div class="phrase">
             <span><b title="I am a boy">Eu Sou Um Menino</b> <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')">🔊</button></span>
@@ -170,6 +173,7 @@
         <div class="text-center" style="padding-top:10px">
         <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
         </div>
+      </form>
     </section>
     </div>
   </div>
@@ -198,9 +202,37 @@
     $(document).ready(function(){
     $('#submitButton').click(function(e){
         e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
-        window.location.reload();
+        $.ajax({
+            type: 'POST',
+            url: '/submit_answer',  // Change to your actual view URL
+            data:{
+              'form_type': "{{question_id}}",
+              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // CSRF token for Django
+            }
+              
+            ,
+            success: function(response) {
+                // Do something with the response if needed
+                console.log("Success");
+                window.location.reload();
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors here
+                console.error('Error on AJAX request: ' + error);
+                // window.location.reload();
+            }
+          });
+        // window.location.reload();
       }); 
     });
+
+
+    $(document).ready(function(){
+    $('#recordBtn').click(function(e){
+        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
+      }); 
+    });
+
     function convertTextToSpeech(textToSpeak) {
     $.ajax({
         url: '/text-to-speech/',  // URL to Django view

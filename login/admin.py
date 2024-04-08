@@ -6,7 +6,7 @@ from .models import CustomUser
 class CustomUserAdmin(UserAdmin):
     # Define a new User admin
     model = CustomUser
-    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'proficiency_level', 'study_frequency', 'study_frequency_amount', 'portuguese_default') # Add your custom fields here
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'proficiency_level', 'study_frequency', 'study_frequency_amount', 'portuguese_default', 'username') # Add your custom fields here
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),

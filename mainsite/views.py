@@ -15,9 +15,11 @@ import time
 from django.views.decorators.csrf import csrf_exempt
 from pydub import AudioSegment
 import random
+from django.core import serializers
 from mainsite.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
+from django.db.models import Q
 
 # Include message for streak
 # Include English Text to Portuguese using the TTS
@@ -97,6 +99,43 @@ def quiz4(request):
 def architecture(request):
     return render(request, 'mainsite/architecture.html')
 
+def vocab(request):
+    search_query = request.GET.get('query', None)
+    search = request.GET.get('search', False)
+    user_id = request.user.id
+    user_saved_words = UserSavedWords.objects.filter(user=user_id)
+    if search == 'True':
+        words = Word.objects.filter(portuguese_word__icontains=search_query)
+        print("Words inside filter:",words)
+        print("Search term is:",search)
+    else:
+        words = Word.objects.all()
+    return render(request, 'mainsite/vocab.html', {'saved_words': user_saved_words, 'words': words})
+
+def search_word(request):
+    search_query = request.GET.get('query', None)
+    words = Word.objects.filter(
+    Q(portuguese_word__icontains=search_query) | 
+    Q(english_translation__icontains=search_query)
+)
+
+    # Serialize the words along with their example usages
+    words_data = []
+    for word in words:
+        # Getting the first example usage for simplicity; adjust according to your needs
+        example_usage = word.example_usages.first()  
+        words_data.append({
+            'id': word.id,
+            'portuguese_word': word.portuguese_word,
+            'english_translation': word.english_translation,
+            'example_usage': {
+                'english_usage': example_usage.english_usage if example_usage else '',
+                'portuguese_usage': example_usage.portuguese_usage if example_usage else '',
+            }
+        })
+
+    return JsonResponse({'words': words_data})
+
 def lesson(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
     words_list = lesson.word_set.all()
@@ -118,8 +157,62 @@ def lesson(request, lesson_id):
     except EmptyPage:
         # If the 'page' parameter is out of range (e.g., 9999), show the last page of results
         words = paginator.page(paginator.num_pages)
+    print("WORDS:",words.__dict__)
+    usage_dict = {}
+    test = {
+        'word': {
+            'english_usage': [],
+            'portuguese_usage': []
+        }
+    }
+    
+    example_usages_1 = words[0].example_usages.all()
+    word_1_usages = []
+    word_1_usages.append(example_usages_1)
+    try:
+        example_usages_2 = words[1].example_usages.all()
+    except:
+        example_usages_2 = []
+    word_2_usages = []
+    word_2_usages.append(example_usages_2)
+    
+    # for word in words:
+    #     example_usages = word.example_usages.all()
+    #     print("EXU:",example_usages)
+    #     print(word)
+    #     usages = ExampleUsage.objects.get(word=word)
+        
+    #     print(usages)
 
-    return render(request, 'mainsite/quiz_6.html', {'lesson': lesson, 'words': words})
+    
+
+
+    return render(request, 'mainsite/lesson.html', {'lesson': lesson, 'words': words, 'word_1_usages':word_1_usages, 'word_2_usages':word_2_usages})
+
+
+def save_word(request):
+    data = {
+        'key': 'value',
+    }
+    is_correct = True
+    word_id = request.POST.get('word_id')
+    add_or_remove = request.POST.get('add_or_remove', 'add')
+    
+    if add_or_remove == 'add':
+        try:
+            UserSavedWords.objects.get(word_id=word_id)
+            print("SAVED WORD NOT ADDED")
+        except:
+            UserSavedWords.objects.create(
+                user=request.user,
+                word=Word.objects.get(id=int(word_id))
+            )
+    else:
+        a = 1
+        print("INSIDE DELETING A SAVED WORD!")
+
+
+    return JsonResponse({'is_correct': is_correct, "message": "Word successfully saved!"}, status=200)
 
 def quiz(request, unit_id, quiz_id):
     # Image API
@@ -131,8 +224,6 @@ def quiz(request, unit_id, quiz_id):
         'Authorization': api_key
     }
 
-
-
     # Translation API 
     url = "https://text-translator2.p.rapidapi.com/translate"
     headers = {
@@ -141,16 +232,48 @@ def quiz(request, unit_id, quiz_id):
         "X-RapidAPI-Host": "text-translator2.p.rapidapi.com"
     }
     # return render(request, 'mainsite/quiz_2.html')
-    number = random.randint(1, 9)
+    # To get all questions for quiz 1 of unit 1
+    # Quiz.objects.filter(unit_id=1)[0].questions.all()
+    number = random.randint(1, 11)
     water_img = ''
     options = {}
     img_links = []
-    question_obj = Question.objects.get(id=number)
+    match_dict = {}
+    left_col_q = []
+    right_col_q = []
+    # print(Quiz.objects.filter(unit_id=unit_id)[quiz_id-1].questions.all())
+    quiz_accessed = Quiz.objects.filter(unit_id=unit_id)[quiz_id-1]
+    questions_for_quiz = quiz_accessed.questions.all()
+    print(quiz_accessed.questions.all())
+    print(quiz_accessed.__dict__)
+    if UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user).exists():
+        print("This quiz has been accessed")
+    else:
+        UserAttempts.objects.create(quiz=quiz_accessed, user=request.user)
+        print("This quiz has not been accessed")
+    
+    # if unit_id == 2:
+    #     question_obj = Question.objects.get(id=number)
+    # else:
+    #     question_obj = Question.objects.get(id=number)
     # question_obj = Question.objects.get(id=number)
-    question_obj = Question.objects.last()
-    print("Inside quiz view.")
-    print("Question:", question_obj.question_text)
+    # question_obj = Question.objects.last()
     jumbled_answer = []
+
+    unanswered_questions = Question.objects.filter(
+        quiz_id=quiz_id
+    ).exclude(
+        id__in=UserAnswers.objects.filter(
+            question__quiz_id=quiz_id,
+            user=request.user
+        ).values_list('question_id', flat=True)
+    )
+    if unanswered_questions:
+        question_obj = unanswered_questions.first()
+    else:
+        number = random.randint(1, 11)
+        question_obj = Question.objects.get(quiz=quiz_accessed, id=number)
+    print("Unanswered questions are:", unanswered_questions)
 
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
@@ -171,8 +294,8 @@ def quiz(request, unit_id, quiz_id):
             image_response = requests.get(image_url, headers=image_headers, params=image_params)
             photo = image_response.json()['photos'][0]['src']['original']
 
-            image_response = requests.get('https://pixabay.com/api/?key=40135184-dc7bf4341a3143778714e9097&q={}'.format(option))
-            data = image_response.json()
+            # image_response = requests.get('https://pixabay.com/api/?key=40135184-dc7bf4341a3143778714e9097&q={}'.format(option))
+            # data = image_response.json()
             options[option] = photo
     elif question_obj.question_type == 'MCQ_Text':
         options_list = question_obj.option_set.all()
@@ -182,27 +305,35 @@ def quiz(request, unit_id, quiz_id):
         random.shuffle(jumbled_answer)
     elif question_obj.question_type == 'Translate':
         a = 1
+    elif question_obj.question_type == 'Match':
+        matches = question_obj.match_set.all()
+        for match in matches:
+            left_col_q.append(match.left_option)
+            right_col_q.append(match.right_option)
+            match_dict[match.left_option] = match.right_option
+        print(match_dict)
+        random.shuffle(left_col_q)
+        random.shuffle(right_col_q)
+            
 
     submitted_answer = request.session.get('submitted_answer', '')
-    source_view = request.session.get('source_view')
     unit_name = question_obj.quiz.unit.name
     unit_id = question_obj.quiz.unit.id
 
-    image_response = requests.get(f'https://pixabay.com/api/?key=40135184-dc7bf4341a3143778714e9097&q=water')
+    # image_response = requests.get(f'https://pixabay.com/api/?key=40135184-dc7bf4341a3143778714e9097&q=water')
     
 
-    if image_response.status_code == 200:
-        data = image_response.json()
-        water_img = data['hits'][0]['webformatURL']
-    else:
-        print(f'Error: {image_response.status_code}')
+    # if image_response.status_code == 200:
+    #     data = image_response.json()
+    #     water_img = data['hits'][0]['webformatURL']
+    # else:
+    #     print(f'Error: {image_response.status_code}')
     #     # Process the data as needed
     #     # For example, you can access the image URLs using data['hits'][0]['webformatURL']
     # else:
     #     print(f'Error: {response.status_code}')
 
     # --------------------------
-    print("Inside the quiz view!")
     
     template_name = 'mainsite/quiz_1.html'
     if question_obj.question_type == 'Speech':
@@ -218,10 +349,8 @@ def quiz(request, unit_id, quiz_id):
     if question_obj.question_type == 'Translate':
         template_name = 'mainsite/quiz_6.html'
 
-
     return render(request, template_name, {
         'quiz': submitted_answer, 
-        'source_view': source_view, 
         'question_text': question_obj.question_text, 
         'question_answer': question_obj.correct_answer,
         'question_id': question_obj.id,
@@ -229,7 +358,10 @@ def quiz(request, unit_id, quiz_id):
         'unit_name': unit_name,
         'unit_id': unit_id,
         'options': options,
-        'jumbled_answer': jumbled_answer
+        'jumbled_answer': jumbled_answer,
+        'match_items': match_dict,
+        'left_col_q':left_col_q,
+        'right_col_q': right_col_q,
     })
 
 # Include different messages for answering questions correctly
@@ -237,69 +369,76 @@ def quiz(request, unit_id, quiz_id):
 # Include public holidays for Portugal
 # Change greeting to 'Good afternoon/morning' based on local time
 def submit_answer(request):
-    print("Inside submit answer")
+    print("Inside the submit answer view")
     valu = ''
     is_correct = False
     submitted_answer = request.POST.get('quiz')
+    question_id = request.POST.get('form_type')
+    question_type = request.POST.get('question_type', None)
     correct_ans_msgs = ['Correct Answer!','Well Done!','Spot on!','You got it!']
     success_msg = random.choice(correct_ans_msgs)
-
-    form_type = request.POST.get('form_type')
-    question_id = request.POST.get('form_type')
+    
     try:
         question_obj = Question.objects.get(id=int(question_id))
     except:
         pass
-    print("Inside the submit_answer view!")
-    print("Question ID:", question_id)
-    print("Correct answer:",question_obj.correct_answer)
-    print("Submitted Answer:", submitted_answer)
-    if question_obj.question_type == 'Arrange':
+    try:
+        user_attempt = UserAttempts.objects.get(quiz=question_obj.quiz, user=request.user, questions_answered__lt=11)
+    except:
+        testing = True
+    # print("USER ATTEMPT:",user_attempt)
+    if question_obj.question_type in ['Match', 'Speech']:
+        is_correct = True
+    elif question_obj.question_type == 'Arrange':
         submitted_answer = json.loads(submitted_answer)
         sentence = ' '.join(submitted_answer)
         print("Submitted sentence:", sentence)
         if sentence == question_obj.correct_answer:
             is_correct = True
             print("Arrange answer is correct")
-        return JsonResponse({'is_correct': is_correct, "message": "Correct answer!"}, status=200)
-
+        # return JsonResponse({'is_correct': is_correct, "message": "Correct answer!"}, status=200)
     else:
         if (question_obj.correct_answer).lower() == submitted_answer.lower():
             is_correct = True
-            return JsonResponse({'is_correct': is_correct, "message": "Correct answer!"}, status=200)
-        else:
-            return JsonResponse({'is_correct': is_correct, "message": "Incorrect! OH NO!"}, status=200)
+        #     return JsonResponse({'is_correct': is_correct, "message": "Correct answer!"}, status=200)
+        # else:
+        #     return JsonResponse({'is_correct': is_correct, "message": "Incorrect! OH NO!"}, status=200)
+    if is_correct == True:
+        if testing == False:
+            try:
+                UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=submitted_answer, is_correct=is_correct)
+            except:
+                UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=question_obj.correct_answer, is_correct=is_correct)
 
-    if form_type == 'form_a':
-        print("Inside form A type:", form_type)
-        is_correct = False
-        if request.method == 'POST':
-            submitted_answer = request.POST.get('quiz')
-            valu = submitted_answer
-            if submitted_answer == 'maçã':
-                is_correct = True
-                print("Inside is correct True")
-                return JsonResponse({'is_correct': is_correct, "message": "Correct answer!"}, status=200)
-            else:
-                
-                return JsonResponse({'is_correct': is_correct, "message": "Incorrect! OH NO!"}, status=200)
-            # print("Submitted answer:",submitted_answer)
-            # if not submitted_answer:
-            #     messages.info(request, 'Please select an answer!')
-            #     return redirect('mainsite:quiz')
-            # if is_correct:
-            #     messages.success(request, success_msg)
-            # else:
-            #     messages.error(request, 'Incorrect Answer')
-        else:
-            print("This is not a post request!!!!!!!!!!!")
-        request.session['submitted_answer'] = valu
-        request.session['source_view'] = 'submitted_answer'
-        # return redirect('mainsite:quiz')
-        # return render(request, 'mainsite/quiz_1.html', {'quiz': valu})
-        # return JsonResponse({'answer_status': answer_status}, status=200)
-        # return redirect('mainsite:quiz4')
-        # return render(request, 'mainsite/quiz_4.html')
+            user_attempt.questions_answered += 1  # increment by 1
+            user_attempt.save()
+        return JsonResponse({'is_correct': is_correct, "message": success_msg}, status=200)
+    else:
+        if testing == False:
+            UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=submitted_answer, is_correct=is_correct)
+        return JsonResponse({'is_correct': is_correct, "message": "Incorrect! OH NO!"}, status=200)
+    
+def get_quiz_data(request):
+    print("Inside get_quiz_data")
+    quizzes = []
+    unit_id = request.GET.get('unit_id')
+    quiz_data = Quiz.objects.filter(unit_id=int(unit_id))
+    quiz_number = 0
+    for quiz in quiz_data:
+        print("FEGEGE",UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).count())
+        total_questions = quiz.questions.all().count() 
+        print("Total questions:",total_questions)
+        questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).count()
+        quiz_number += 1
+        quizzes.append({
+            'id': quiz.id,
+            'total_questions': total_questions,
+            'questions_answered': questions_answered,
+            'progress_percent': int(( questions_answered / total_questions ) * 100) if total_questions > 0 else 0,
+            'number': quiz_number
+        })
+
+    return JsonResponse({'quizzes': quizzes})
         
 
 @csrf_exempt  # Disable CSRF token for simplicity (not recommended for production)

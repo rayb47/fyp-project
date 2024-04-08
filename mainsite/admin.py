@@ -34,12 +34,6 @@ class LessonAdmin(admin.ModelAdmin):
 
 admin.site.register(Lesson, LessonAdmin)
 
-class UserAttemptAdmin(admin.ModelAdmin):
-    list_display = ('quiz', 'questions_answered', 'user', 'attempt_date')  # Fields to display in the admin list view
-    search_fields = ('quiz', 'user')  # Fields to search in the admin list view
-
-admin.site.register(UserAttempts, UserAttemptAdmin)
-
 
 class WordAdmin(admin.ModelAdmin):
     list_display = ('portuguese_word', 'english_translation', 'lesson',)  # Fields to display in the admin list view
@@ -47,6 +41,35 @@ class WordAdmin(admin.ModelAdmin):
 
 admin.site.register(Word, WordAdmin)
 
+class MatchAdmin(admin.ModelAdmin):
+    list_display = ('question', 'left_option', 'right_option',)  # Fields to display in the admin list view
+    search_fields = ('question', 'left_option', 'right_option',)  # Fields to search in the admin list view
+
+admin.site.register(Match, MatchAdmin)
+
+class ExampleUsageAdmin(admin.ModelAdmin):
+    list_display = ('word', 'english_usage', 'portuguese_usage',)  # Fields to display in the admin list view
+    search_fields = ('word', 'english_usage', 'portuguese_usage',)  # Fields to search in the admin list view
+
+admin.site.register(ExampleUsage, ExampleUsageAdmin)
+
+class UserSavedWordsAdmin(admin.ModelAdmin):
+    list_display = ('word', 'user')  # Fields to display in the admin list view
+    search_fields = ('word', 'user',)  # Fields to search in the admin list view
+
+admin.site.register(UserSavedWords, UserSavedWordsAdmin)
+
+class UserAttemptsAdmin(admin.ModelAdmin):
+    list_display = ('quiz', 'lesson', 'questions_answered', 'pages_covered', 'user', 'attempt_date')  # Fields to display in the admin list view
+    search_fields = ('quiz', 'lesson', 'questions_answered', 'pages_covered', 'user', 'attempt_date')  # Fields to search in the admin list view
+
+admin.site.register(UserAttempts, UserAttemptsAdmin)
+
+class UserAnswersAdmin(admin.ModelAdmin):
+    list_display = ('attempt', 'question', 'user', 'answer_text', 'is_correct', 'answer_date')  # Fields to display in the admin list view
+    search_fields = ('attempt', 'question', 'user', 'answer_text', 'is_correct', 'answer_date')  # Fields to search in the admin list view
+
+admin.site.register(UserAnswers, UserAnswersAdmin)
 
 
 
