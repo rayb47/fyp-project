@@ -7,6 +7,7 @@ from login.models import CustomUser
 from mainsite.models import Unit
 import requests
 import speech_recognition as sr
+from random import shuffle
 from django.http import JsonResponse
 from gtts import gTTS
 import pygame
@@ -19,7 +20,7 @@ from django.core import serializers
 from mainsite.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
-from django.db.models import Q
+from django.db.models import Q, Count
 
 # Include message for streak
 # Include English Text to Portuguese using the TTS
@@ -136,15 +137,38 @@ def search_word(request):
 
     return JsonResponse({'words': words_data})
 
+def store_page_number(request):
+    page = request.POST.get('page_number',None)
+    lesson_id = request.POST.get('lesson_id',None)
+    print("Next page number is:",page)
+    print("Lesson ID is:",lesson_id)
+    lesson_obj = Lesson.objects.get(id=int(lesson_id))
+    if not UserAttempts.objects.filter(lesson=lesson_obj, user=request.user).exists():
+        UserAttempts.objects.create(lesson=lesson_obj, user=request.user)
+    else:
+        user_attempt = UserAttempts.objects.get(lesson=lesson_obj, user=request.user)
+        user_attempt.pages_covered = int(page)-1
+        user_attempt.save()
+
+
+    return JsonResponse({'is_correct': True, "message": "Word successfully saved!"}, status=200)
+
 def lesson(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
     words_list = lesson.word_set.all()
+
+
+    default = 1
+    if UserAttempts.objects.filter(lesson=lesson, user=request.user).exists():
+        print("Inside check!!!!!s")
+        print(UserAttempts.objects.filter(lesson=lesson, user=request.user))
+        default = int(UserAttempts.objects.filter(lesson=lesson, user=request.user)[0].pages_covered)
 
     # Define the number of words per page
     words_per_page = 2
 
     # Get the 'page' GET parameter, which indicates the current page
-    page = request.GET.get('page', 1)  # Default to the first page
+    page = request.GET.get('page', default)  # Default to the first page
 
     # Create a Paginator object with your words and the number of words per page
     paginator = Paginator(words_list, words_per_page)
@@ -158,6 +182,14 @@ def lesson(request, lesson_id):
         # If the 'page' parameter is out of range (e.g., 9999), show the last page of results
         words = paginator.page(paginator.num_pages)
     print("WORDS:",words.__dict__)
+
+    if not UserAttempts.objects.filter(lesson=lesson, user=request.user).exists():
+        UserAttempts.objects.create(lesson=lesson, user=request.user)
+    else:
+        user_attempt = UserAttempts.objects.get(lesson=lesson, user=request.user)
+        user_attempt.pages_covered = int(page)
+        user_attempt.save()
+
     usage_dict = {}
     test = {
         'word': {
@@ -236,6 +268,8 @@ def quiz(request, unit_id, quiz_id):
     # Quiz.objects.filter(unit_id=1)[0].questions.all()
     number = random.randint(1, 11)
     water_img = ''
+    question_obj = None
+    repeated_question = False
     options = {}
     img_links = []
     match_dict = {}
@@ -248,8 +282,9 @@ def quiz(request, unit_id, quiz_id):
     print(quiz_accessed.__dict__)
     if UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user).exists():
         print("This quiz has been accessed")
+        user_attempt = UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user)[0]
     else:
-        UserAttempts.objects.create(quiz=quiz_accessed, user=request.user)
+        user_attempt = UserAttempts.objects.create(quiz=quiz_accessed, user=request.user)
         print("This quiz has not been accessed")
     
     # if unit_id == 2:
@@ -259,7 +294,7 @@ def quiz(request, unit_id, quiz_id):
     # question_obj = Question.objects.get(id=number)
     # question_obj = Question.objects.last()
     jumbled_answer = []
-
+    questions_not_answered_correctly = []
     unanswered_questions = Question.objects.filter(
         quiz_id=quiz_id
     ).exclude(
@@ -268,13 +303,64 @@ def quiz(request, unit_id, quiz_id):
             user=request.user
         ).values_list('question_id', flat=True)
     )
+
+    
+    # questions_answered_correctly_twice = UserAnswers.objects.filter(
+    #     question__quiz_id=quiz_id,
+    #     user_id=request.user,
+    #     is_correct=True
+    # ).values(
+    #     'question_id'
+    # ).annotate(
+    #     correct_count=Count('id')
+    # ).filter(
+    #     correct_count__gte=2
+    # ).values_list('question_id', flat=True)
+        
+    print("Number of incorrect answers in this quiz are:",UserAnswers.objects.filter(attempt=user_attempt, user=request.user, is_correct=False).count())
     if unanswered_questions:
-        question_obj = unanswered_questions.first()
+        if user_attempt.questions_answered > 3 and random.randint(1,100) <= 20:
+            answered_questions = Question.objects.filter(
+                quiz_id=quiz_id,
+                id__in=UserAnswers.objects.filter(
+                    question__quiz_id=quiz_id,
+                    user=request.user
+                ).values_list('question_id', flat=True)
+            )
+            answered_questions_list = list(answered_questions)
+            question_obj = random.choice(answered_questions_list)
+            repeated_question = True
+        else:
+            question_obj = unanswered_questions.first()
     else:
-        number = random.randint(1, 11)
-        question_obj = Question.objects.get(quiz=quiz_accessed, id=number)
+        repeated_question = True
+        print("All questions have been answered once.")
+        print(questions_for_quiz)
+        # Loops through questions for the quiz
+        questions_for_quiz_copy = list(questions_for_quiz)
+        shuffle(questions_for_quiz_copy)
+        for question in questions_for_quiz_copy:
+            print(UserAnswers.objects.filter(attempt=user_attempt, user=request.user, question=question, is_correct=True))
+            # Checks if questions that haven't been answered corrrectly yet exist, if so, displays one of those next.
+            if not UserAnswers.objects.filter(attempt=user_attempt, user=request.user, question=question, is_correct=True).exists():
+                question_obj = question
+                break
+                repeated_question = True
+            # elif UserAnswers.objects.filter(attempt=user_attempt, user=request.user, question=question, is_correct=True).count() < 2:
+            #     print("Inside less than 2 check")
+            #     question_obj = question
+            #     break
+            else:
+                print("Inside the else")
+        if not question_obj:
+            return render(request, 'mainsite/cube.html')
+        # user_answer = UserAnswers.objects.filter(attempt=user_attempt, user=request.user, is_correct=False)[0]
+        # number = random.randint(1, 11)
+        # question_obj = Question.objects.get(quiz=quiz_accessed, id=number)
+        # question_obj = user_answer.question
     print("Unanswered questions are:", unanswered_questions)
 
+    question_obj = Question.objects.get(question_type='Speech')
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
@@ -362,6 +448,7 @@ def quiz(request, unit_id, quiz_id):
         'match_items': match_dict,
         'left_col_q':left_col_q,
         'right_col_q': right_col_q,
+        'repeated_question': repeated_question,
     })
 
 # Include different messages for answering questions correctly
@@ -372,20 +459,24 @@ def submit_answer(request):
     print("Inside the submit answer view")
     valu = ''
     is_correct = False
+    first_time = True
     submitted_answer = request.POST.get('quiz')
     question_id = request.POST.get('form_type')
     question_type = request.POST.get('question_type', None)
     correct_ans_msgs = ['Correct Answer!','Well Done!','Spot on!','You got it!']
     success_msg = random.choice(correct_ans_msgs)
-    
+    testing = False
     try:
         question_obj = Question.objects.get(id=int(question_id))
     except:
         pass
     try:
-        user_attempt = UserAttempts.objects.get(quiz=question_obj.quiz, user=request.user, questions_answered__lt=11)
+        user_attempt = UserAttempts.objects.get(quiz=question_obj.quiz, user=request.user, questions_answered__lt=12)
     except:
         testing = True
+    if UserAnswers.objects.filter(question=question_obj, user=request.user, is_correct=True).exists():
+        first_time = False
+    # print("Number of incorrect answers in this quiz are:",UserAnswers.objects.filter(attempt=user_attempt, user=request.user, is_correct=False).count())
     # print("USER ATTEMPT:",user_attempt)
     if question_obj.question_type in ['Match', 'Speech']:
         is_correct = True
@@ -410,8 +501,9 @@ def submit_answer(request):
             except:
                 UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=question_obj.correct_answer, is_correct=is_correct)
 
-            user_attempt.questions_answered += 1  # increment by 1
-            user_attempt.save()
+            if first_time == True:
+                user_attempt.questions_answered += 1  # increment by 1
+                user_attempt.save()
         return JsonResponse({'is_correct': is_correct, "message": success_msg}, status=200)
     else:
         if testing == False:
@@ -428,7 +520,7 @@ def get_quiz_data(request):
         print("FEGEGE",UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).count())
         total_questions = quiz.questions.all().count() 
         print("Total questions:",total_questions)
-        questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).count()
+        questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).values('question').distinct().count()
         quiz_number += 1
         quizzes.append({
             'id': quiz.id,

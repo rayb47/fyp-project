@@ -231,12 +231,12 @@
           
               {% if words.has_next %}
                 <li class="page-item">
-                  <a class="page-link" href="?page={{ words.next_page_number }}" aria-label="Next">
+                  <a class="page-link" href="?page={{ words.next_page_number }}" aria-label="Next" id="nextBtn">
                     <span aria-hidden="true">&raquo;</span>
                   </a>
                 </li>
                 <li class="page-item">
-                  <a class="page-link" href="?page={{ words.paginator.num_pages }}" aria-label="Last">
+                  <a class="page-link" href="?page={{ words.paginator.num_pages }}" aria-label="Last" id="lastBtn">
                     <span aria-hidden="true">&raquo;&raquo;</span>
                   </a>
                 </li>
@@ -292,7 +292,37 @@
     //     });
     // });
     $(document).ready(function() {
-    $('.plus-button').click(function() {
+      var lessonId = "{{ lesson.id }}";
+    //   $('#nextBtn').click(function(e) {
+    //     // e.preventDefault(); // Prevent the default action of the anchor tag
+    //     e.preventDefault(); // Prevent the default action of the anchor tag
+    //     var nextPage = $(this).attr('href').match(/page=(\d+)/)[1]; // Extract the page number from the href
+        
+    //     // AJAX POST request to Django view
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/store_page_number', // URL of your Django view
+    //         data: {
+    //             'page_number': nextPage, // Pass the extracted page number
+    //             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(), // CSRF token for Django
+    //             'lesson_id': lessonId
+    //         },
+    //         success: function(response) {
+    //             // Handle success
+    //             console.log('Page number stored successfully.');
+    //             // If you want to navigate to the next page after storing
+    //             // window.location.href = $('#nextBtn').attr('href');
+    //         },
+    //         error: function(xhr, errmsg, err) {
+    //             // Handle error
+    //             console.log('Error storing page number: ' + errmsg);
+    //         }
+    //     });
+    //     // If you need to navigate after the log, you can uncomment the line below
+    //     // window.location.href = $(this).attr('href');
+    // });
+    
+      $('.plus-button').click(function() {
         var wordId = $(this).data('word-id');
         event.preventDefault()
         $.ajax({

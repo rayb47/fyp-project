@@ -14,6 +14,7 @@ urlpatterns = [
     path('quiz2', views.quiz2, name='quiz2'),
     path('quiz3', views.quiz3, name='quiz3'),
     path('quiz4', views.quiz4, name='quiz4'),
+    path('store_page_number', views.store_page_number, name='store_page_number'),
     path('lesson/<int:lesson_id>/', views.lesson, name='lesson'),
     path('save_word/', views.save_word, name='save_word'),
     path('search_word/', views.search_word, name='search_word'),

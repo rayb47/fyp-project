@@ -192,7 +192,11 @@
         <div class="progress" style="width: 30%;"> 
           <div class="progress-bar" style="width:70%"></div>
         </div>
-        <b>{{question_id}} of 12</b> 
+        {% if not repeated_question %}
+        <b>{{question_id}} of 11</b>
+      {% else %}
+        <b>Repeated Question</b>
+      {% endif %}  
         <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
       </div>
       <hr> 
