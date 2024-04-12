@@ -9,6 +9,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Correct FontAwesome link -->
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <style>
     .sound-button {
         background: none;
@@ -33,41 +34,46 @@
 }
 
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-            color: #495057;
+            color: #1ae43b;
             background-color: #fff;
             border-color: #000000 #000000 #000000;
         }
         .nav-tabs .nav-link {
-            border: 1px solid transparent;
+            border: 2px solid black;
             border-top-left-radius: 0.25rem;
             border-top-right-radius: 0.25rem;
             color: #007bff;
-            background: #e9ecef;
+            background: #a5a8ac;
             margin-right: 2px;
+            border-bottom: 1px solid black;
         }
         .nav-tabs {
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid black;
         }
         .tab-content > .tab-pane {
             padding: 20px;
             background: none;
-            border: 0px solid #dee2e6;
+            border: 0px solid black;
             border-top: none;
+        }
+
+        #user-saved-tab:hover, #overall-list-tab:hover, #general-search-tab:hover {
+            border: 1px solid black;
         }
 </style>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <a class="navbar-brand" href="#">
-      <img src="{% static 'portu_flag_pic.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      <span class="text-green">Portu</span><span class="text-red">Pro</span>
+        <img src="{% static 'Logo1.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+        <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
     </a>
     
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav mr-auto" id="navbarUL">
         <li class="nav-item">
           <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
         </li>
@@ -110,7 +116,7 @@
   <div class="container mt-4">
     <h1 class="mb-4 heading">Vocabulary</h1>
 
-    <div class="card mb-3 culture-card">
+    <div class="card mb-3 vocab-card">
         <div class="card-body">
             <!-- Tab navs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -199,7 +205,7 @@
                             <div class="col-12">
                                 <form id="searchForm">
                                     <div class="input-group mb-3" style="width: 50%;">
-                                        <input type="text" class="form-control" placeholder="Search for words..." id="searchQueryOverall">
+                                        <input type="text" class="form-control" placeholder="Search for words (in English or Portuguese)" id="searchQueryOverall">
                                         <!-- <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
                                         </div> -->

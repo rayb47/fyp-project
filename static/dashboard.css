@@ -1,11 +1,12 @@
 .lesson-card {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 0 0 20px 20px;
+    /* border-radius: 0 0 20px 20px; */
+    border-radius: 20px;
     border-width: 3px;
     border-color: black;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Horizontal offset, vertical offset, blur radius, spread radius, color */
     transition: 0.3s; /* Optional: adds a transition effect when the shadow changes */
-    background-color: black;
+    background-color: rgb(0, 0, 0);
     height: 100%;
   }
 
@@ -16,9 +17,35 @@
   .card-img-top {
     height:200px
   }
+
+  .unit-img {
+    border-radius: 20px 20px 0px 0px;
+  }
   
   .settings-link {
     color: #fff;
+  }
+
+  .nav-link {
+    font-size:22px;
+    margin-left:35px;
+
+  }
+  
+ 
+  
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-brand img {
+    margin-right: 8px; /* Adjust the space between the image and text as needed */
+  }
+  
+  .navbar-brand h1 {
+    margin-bottom: 0; /* Removes the bottom margin from h1 */
   }
   
   .weather-widget {
@@ -27,9 +54,12 @@
     border-radius: 20px;
     border-width: 3px;
     border-color: black;
-    height: 15%;
+    /* height: 15%; */
     width: 100%;
+    height: 250px;
   }
+
+
 
   /* body, html {
     min-height: 100%;
@@ -92,16 +122,23 @@
 
 .calendar td.today {
   background-color: #ffff88;
+  border: 1px solid black;
+  
 }
 
 .calendar td.logged-in {
   background-color: #88ff88;
+  border: 1px solid black;
 }
 
-.calendar {
-  background-color: #CBD095;
+.calendar-widget {
+  background-color: #f2edcb;
   margin-bottom: 10px;
   border-radius: 10px;
+}
+
+#calendar-container {
+  background-color: #f2edcb;
 }
 
 .calendar {
@@ -154,6 +191,7 @@
 
 
 
+
   
   /* Ensure that all parent elements of your content also stretch to the full height */
   .container {
@@ -178,6 +216,14 @@
   }
   /* Add more custom styles as needed */
 
+  #navbarNav {
+    height: 70px;
+  }
+
+  #navbarUL {
+    margin-left: 60px;
+  }
+
   
 /* New styles for the brand name */
 .text-green {
@@ -197,5 +243,126 @@
     height: 200px; /* Adjust the height as needed *//* This helps to preserve the aspect ratio */
 }
 
-
+.quiz-container {
+    border-radius: 30px;
+    box-shadow: 3px 2px 1px 2px;
+    background-color: #f2edcb;
+    margin-top: 65px;
+    border: 3px solid black;
   
+}
+
+.progress-bar {
+  border: 0px solid black;
+  background-color: #87db88;
+  color: black;
+  font-weight: bold;
+  border-right: 2px solid black;
+}
+
+.progress {
+  background-color: 0px solid black;
+  background-color: rgb(226, 226, 226);
+  height: 25px;
+  width: 30%;
+  border: 2px solid black;
+}
+
+.unit_heading {
+  width: 200px;
+  margin-left: 30px;
+}
+
+.lead {
+  font-weight: bold;
+}
+
+#translationInput {
+  border: 2px solid black
+}
+
+#basic-addon {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  font-weight: bold;
+  color: black;
+}
+
+#big_close {
+  border: 2px solid black;
+  margin-right: 20px;
+  box-shadow: inset 0px 0px 5px 0px black;
+
+}
+
+#answer-addon {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+
+#checkAnswer, #submitButton, #checkOrder {
+  border: 2px solid black;
+  box-shadow:  inset 0px 0px 5px 0px black;
+  
+}
+
+.mcq_option {
+  border-radius: 5px;
+  border: 2px solid black;
+  box-shadow: inset 0px 0px 2.5px 0px black;
+  /* box-shadow: #000 0px 0px 5px 0px; */
+}
+
+.vocab-card {
+  border-radius: 30px;
+  box-shadow: 3px 2px 1px 2px;
+  background-color: #f2edcb;
+  margin-top: 30px;
+  border: 3px solid black;
+
+}
+
+.analytics-card {
+  border-radius: 30px;
+  box-shadow: 3px 2px 1px 2px;
+  background-color: #f2edcb;
+  margin-top: 30px;
+  border: 3px solid black;
+
+}
+
+.settings-card {
+  border-radius: 30px;
+  box-shadow: 3px 2px 1px 2px;
+  background-color: #f2edcb;
+  margin-top: 30px;
+  border: 3px solid black;
+
+}
+
+#searchQueryOverall {
+  border: 2px solid black;
+}
+
+
+.content-container {
+  border: 2px solid black;
+  border-radius: 15px;
+  margin: 10px;
+  margin-left: 25px;
+  font-size: 22px;
+  background-color: #f3e095;
+  padding: 6px;
+  box-shadow:  0px 0px 5px 0px black;
+  box-shadow: inset 0px 0px 5px 0px black;
+}
+
+.content-container:hover {
+  background-color: #fffb00;
+}
+
+.mcq-option {
+  margin: 10px;
+}

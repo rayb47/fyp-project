@@ -12,14 +12,19 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <style>
   body {
-    background: linear-gradient(to bottom, #33A251, #BB4B3C);
+    background: linear-gradient(to right, #33A251, #BB4B3C); /* Start and end colors of the gradient */
+    background-attachment: fixed; /* Fix the background to the viewport */
+    background-repeat: no-repeat; /* Do not repeat the background */
+    background-size: cover; /* Cover the entire page */
   }
   .registration-container {
-    max-width: 400px;
+    max-width: 600px;
     margin: 50px auto;
     background: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 30px;
+    box-shadow: 10px 10px 5px 5px;
+    background-color: #f2edcb;
   }
   .registration-container h1 {
     text-align: center;
@@ -38,14 +43,14 @@
 <body>
 
 <div class="registration-container">
-  <a href="home" class="text-secondary">&larr; Login</a>
-  <img src="{% static 'portu_flag_pic.png' %}" alt="Portuguese Flag" style="width: 100px;"> <!-- Adjust size as needed -->
-  <h1>PortuPro</h1>
+  <a href="/signin" class="text-secondary"><b>&larr; Login</b></a>
+  <img src="{% static 'Logo1.png' %}" class="mb-4" alt="Portuguese Flag" style="width: 200px; height: 150px;"> <!-- Adjust size as needed -->
+  <h1><b><span class="text-green" style="color:green">Portu</span><span class="text-red" style="color:rgb(202, 41, 41)">Pro</span></b></h1>
   <p class="text-center">A Portuguese language learning website to help you sharpen and develop your Portuguese. Enter your details to register for an account below.</p>
   
   <form action="signup" method="post">
     {% csrf_token %}
-    <div class="form-group">
+    <!-- <div class="form-group">
         <label for="inputUsername">Username</label>
         <input type="username" name="username" id="inputUsername" class="form-control" placeholder="Username..." required autofocus>
       </div>
@@ -53,20 +58,34 @@
     <div class="form-group">
       <label for="inputEmail">Email</label>
       <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email..." value="{{ form_data.email|default_if_none:'' }}" required autofocus>
+    </div> -->
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputUsername"><b>Username</b></label>
+        <input type="username" name="username" id="inputUsername" class="form-control" placeholder="Username..." required autofocus>
+      </div>
+      
+      <div class="form-group col-md-6">
+        <label for="inputEmail"><b>Email</b></label>
+        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email..." value="{{ form_data.email|default_if_none:'' }}" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputPassword"><b>Password</b></label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="inputPasswordConfirm"><b>Re-Enter Password</b></label>
+        <input type="password" name="passwordConfirm" id="inputPasswordConfirm" class="form-control" placeholder="Re-Enter Password" required>
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="inputPassword">Password</label>
-      <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    </div>
-
-    <div class="form-group">
-      <label for="inputPasswordConfirm">Re-Enter Password</label>
-      <input type="password" name="passwordConfirm" id="inputPasswordConfirm" class="form-control" placeholder="Re-Enter Password" required>
-    </div>
-
-    <div class="form-group">
-        <label for="studyFrequency">Study Frequency</label>
+        <label for="studyFrequency"><b>Study Frequency</b></label>
         <div class="input-group">
           <input type="number" name="studyFrequency" id="studyFrequency" class="form-control" placeholder="Number" aria-label="Study frequency number">
           <div class="input-group-append">
@@ -78,8 +97,9 @@
         </div>
       </div>
 
-    <fieldset class="form-group">
-      <legend class="col-form-label pt-0">Proficiency Level</legend>
+    <div class="form-row">
+    <fieldset class="form-group col-md-6">
+      <legend class="col-form-label pt-0"><b>Proficiency Level</b></legend>
       <div class="form-check">
         <input class="form-check-input" name="beginner_lvl" type="checkbox" name="proficiencyLevel" id="beginner" value="beginner">
         <label class="form-check-label" for="beginner">
@@ -100,7 +120,7 @@
       </div>
     </fieldset>
 
-    <fieldset class="form-group">
+    <fieldset class="form-group col-md-6">
       <legend class="col-form-label pt-0">Default site language to Portuguese?</legend>
       <div class="form-check">
         <input class="form-check-input" name="languageYes" type="checkbox" name="siteLanguage" id="languageYes" value="yes">
@@ -115,6 +135,7 @@
         </label>
       </div>
     </fieldset>
+    </div>
 
     <button type="submit" class="btn btn-primary btn-block">Submit</button>
   </form>

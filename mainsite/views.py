@@ -21,12 +21,13 @@ from mainsite.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 from django.db.models import Q, Count
-
+from django.contrib.auth.decorators import login_required
 # Include message for streak
 # Include English Text to Portuguese using the TTS
 
 # Create your views here.
 
+@login_required
 def weather_data(request):
     data = []
     cities = ['Lisbon', 'Madeira']
@@ -45,6 +46,7 @@ def weather_data(request):
 
     
 
+@login_required
 def home(request):
 
     # Units
@@ -96,10 +98,18 @@ def quiz4(request):
     print("Answer status:", answer_status)
     return render(request, 'mainsite/quiz_4.html', {'answer_status': answer_status})
 
+def analytics(request):
+    return render(request, 'mainsite/analytics.html')
 
+def settings(request):
+    return render(request, 'mainsite/settings.html')
+
+
+@login_required
 def architecture(request):
     return render(request, 'mainsite/architecture.html')
 
+@login_required
 def vocab(request):
     search_query = request.GET.get('query', None)
     search = request.GET.get('search', False)
@@ -113,6 +123,7 @@ def vocab(request):
         words = Word.objects.all()
     return render(request, 'mainsite/vocab.html', {'saved_words': user_saved_words, 'words': words})
 
+@login_required
 def search_word(request):
     search_query = request.GET.get('query', None)
     words = Word.objects.filter(
@@ -137,6 +148,7 @@ def search_word(request):
 
     return JsonResponse({'words': words_data})
 
+@login_required
 def store_page_number(request):
     page = request.POST.get('page_number',None)
     lesson_id = request.POST.get('lesson_id',None)
@@ -153,6 +165,7 @@ def store_page_number(request):
 
     return JsonResponse({'is_correct': True, "message": "Word successfully saved!"}, status=200)
 
+@login_required
 def lesson(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
     words_list = lesson.word_set.all()
@@ -222,6 +235,7 @@ def lesson(request, lesson_id):
     return render(request, 'mainsite/lesson.html', {'lesson': lesson, 'words': words, 'word_1_usages':word_1_usages, 'word_2_usages':word_2_usages})
 
 
+@login_required
 def save_word(request):
     data = {
         'key': 'value',
@@ -246,6 +260,7 @@ def save_word(request):
 
     return JsonResponse({'is_correct': is_correct, "message": "Word successfully saved!"}, status=200)
 
+@login_required
 def quiz(request, unit_id, quiz_id):
     # Image API
     api_key = 'TD3tzuMg9GoBdmw2QLf2jrheWlkp9L91Hk1DXyUtVuIWzrkadRZXv1o2'
@@ -360,26 +375,32 @@ def quiz(request, unit_id, quiz_id):
         # question_obj = user_answer.question
     print("Unanswered questions are:", unanswered_questions)
 
-    question_obj = Question.objects.get(question_type='Speech')
+    question_obj = Question.objects.filter(question_type='MCQ')[0]
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
             print("Options:", option)
-            payload = {
-                "source_language": "pt",
-                "target_language": "en",
-                "text": option
-            }
-            translation_response = requests.post(url, data=payload, headers=headers)
+            word = Word.objects.get(portuguese_word=option)
+            # payload = {
+            #     "source_language": "pt",
+            #     "target_language": "en",
+            #     "text": option
+            # }
+            # translation_response = requests.post(url, data=payload, headers=headers)
             #print("English option:", translation_response.json()['data']['translatedText'])
+            # image_params = {
+            #     'query': translation_response.json()['data']['translatedText'],  # The search term you're looking for
+            #     'per_page': 10,     # Number of results per page
+            #     'page': 1           # Page number (if you want to implement pagination)
+            # }
             image_params = {
-                'query': translation_response.json()['data']['translatedText'],  # The search term you're looking for
-                'per_page': 10,     # Number of results per page
-                'page': 1           # Page number (if you want to implement pagination)
+                'query': word.english_translation,
+                'per_page': 10,
+                'page': 1
             }
-            image_response = requests.get(image_url, headers=image_headers, params=image_params)
-            photo = image_response.json()['photos'][0]['src']['original']
-
+            # image_response = requests.get(image_url, headers=image_headers, params=image_params)
+            # photo = image_response.json()['photos'][0]['src']['original']
+            photo = "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
             # image_response = requests.get('https://pixabay.com/api/?key=40135184-dc7bf4341a3143778714e9097&q={}'.format(option))
             # data = image_response.json()
             options[option] = photo
@@ -455,6 +476,7 @@ def quiz(request, unit_id, quiz_id):
 # Include scrollbar for different temperatures in cities for portugal - scrolls automatically
 # Include public holidays for Portugal
 # Change greeting to 'Good afternoon/morning' based on local time
+@login_required
 def submit_answer(request):
     print("Inside the submit answer view")
     valu = ''
@@ -510,6 +532,7 @@ def submit_answer(request):
             UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=submitted_answer, is_correct=is_correct)
         return JsonResponse({'is_correct': is_correct, "message": "Incorrect! OH NO!"}, status=200)
     
+@login_required
 def get_quiz_data(request):
     print("Inside get_quiz_data")
     quizzes = []

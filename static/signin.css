@@ -5,10 +5,78 @@ body {
     background-size: cover; /* Cover the entire page */
   }
   
-.card {
-border-radius: 15px; /* Rounded corners for the card */
-}
 
 .btn-primary {
 background-color: #0056b3; /* Custom color for the primary button */
+}
+
+#login-card {
+  border-radius: 30px;
+  box-shadow: 10px 10px 5px 5px;
+  background-color: #f2edcb;
+  margin-top: 45px;
+  border: 3px solid black;
+}
+
+#inputPasswordtotal, #inputUsername {
+  border: 1px solid #000000;
+}
+
+#loginBtn {
+  border-radius: 10px;
+  width: 60%;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes rotateY {
+  from {
+    transform: translateY(-50%) rotateY(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotateY(360deg);
+  }
+}
+
+/* Position the first image on the left side */
+.gif-background {
+  height: 55vh;
+  width: 520px;
+  margin-left: 60px;
+  position: fixed; /* Or 'absolute' if you want it to scroll with the page */
+  left: 0; /* Align to the left side */
+  top: 70%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust to center the image vertically */
+   /* Ensure it overlaps the background */
+
+}
+
+/* Position the second image on the right side */
+.gif-background2 {
+  height: 20vh;
+  width: 600px;
+  margin-right: 30px;
+  position: fixed; /* Or 'absolute' if you want it to scroll with the page */
+  right: 0; /* Align to the right side */
+  top: 75%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust to center the image vertically */
+  
+  /* Ensure it overlaps the background */
+}
+
+.gif-background3 {
+  height: 20vh;
+  width: 600px;
+  margin-right: 30px;
+  position: fixed; /* Or 'absolute' if you want it to scroll with the page */
+  right: 0; /* Align to the right side */
+  top: 45%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust to center the image vertically */
+  
+  /* Ensure it overlaps the background */
+}
+
+
+body {
+  perspective: 1000px;
 }

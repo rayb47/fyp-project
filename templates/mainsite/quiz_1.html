@@ -8,7 +8,7 @@
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
 <style>
     .quiz-container {
-      max-width: 640px;
+      max-width: 780px;
       margin: 30px auto;
       background-color: rgb(255, 255, 255);
       padding: 20px;
@@ -16,10 +16,11 @@
       padding-right: 0px;
       border-radius: 8px;
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 400px;
     }
     .option {
-      margin: 10px 0;
-      margin-left: 8px;
+      margin: 0px 0;
+      margin-left: 15px;
       padding: 2px;
       /* background-color: red; */
       border-radius: 8px;
@@ -27,16 +28,15 @@
       cursor: pointer;
     }
     .option:hover {
-      background-color: #f0f0f0;
+      background-color: none
     }
     .option img {
       width: 100%;
       height: auto;
       border-radius: 8px;
+      border: 2px solid black;
     }
-    .progress {
-      height: 20px;
-    }
+
     .progress-bar {
       background-color: #4CAF50;
     }
@@ -56,6 +56,7 @@
 input[type="radio"]:checked + .content-container {
   border: 4px solid #e9d206; /* Green border for selected item */
   padding: 4px;
+  padding-bottom: 1px;
   /* If you want padding inside the border */
 }
 /* 
@@ -71,7 +72,7 @@ input[type="radio"]:checked + img {
 }
 
 .big-close {
-  border: solid 1px #000000; 
+  border: solid 1px #e6a9a9; 
   margin-left: 10px;
 }
 
@@ -86,11 +87,12 @@ input[type="radio"]:checked + img {
     cursor: pointer;
     font-size: 20px; /* Adjust icon size */
     padding: 10px 15px; /* Padding around the icon */
-    border-radius: 50%; /* Circular shape */
+    border-radius: 100%; /* Circular shape */
     transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+    box-shadow: inset 0 0 5px 0px black;
 }
 
-.clue-button:hover, .clue-button:focus {
+.clue-button:hover {
     background-color: #e0a800; /* Darker yellow on hover/focus */
     transform: scale(1.1); /* Slightly larger on hover/focus */
     outline: none; /* Remove focus outline */
@@ -106,12 +108,15 @@ input[type="radio"]:checked + img {
 .header-with-button h2 {
     margin-bottom: 0; /* Remove bottom margin from h2 to align better */
     flex-grow: 1; /* Allows h2 to take up available space, pushing button to the edge */
-    text-align: left; /* Align the text to the left */
+    text-align: center; /* Align the text to the left */
 }
 
 .clue-button {
   margin-right: 10px;
   margin-bottom: 10px;  
+  border: 1px solid black;
+  box-shadow: inset 0 0 4px 0px black;
+  font-size: 20px;
 
 }
 
@@ -128,19 +133,19 @@ input[type="radio"]:checked + img {
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <a class="navbar-brand" href="#">
-      <img src="{% static 'portu_flag_pic.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      <span class="text-green">Portu</span><span class="text-red">Pro</span>
+      <img src="{% static 'Logo1.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+      <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav mr-auto" id="navbarUL">
         <li class="nav-item">
-          <a class="nav-link" href="men_tester.html">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link nb-item" href="men_tester.html">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="gearth.html">Vocabulary</a>
+          <a class="nav-link nb-item" href="gearth.html">Vocabulary</a>
       </li>
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -176,26 +181,26 @@ input[type="radio"]:checked + img {
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a>
-        <div style="width: 150px">
-          <b>Unit {{unit_id}} - {{unit_name}} </b>
+        <div class="unit_heading">
+          <b>{{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%;"> 
-          <div class="progress-bar" role="progressbar" aria-valuenow="25" style="width:70%">25%</div>
+          <div class="progress-bar progress-bar-striped" style="width:70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
         </div>
         {% if not repeated_question %}
           <b>{{question_id}} of 11</b>
         {% else %}
           <b>Repeated Question</b>
         {% endif %} 
-        <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
+        <a href="/home" class="btn btn-light big-close" id="big_close" style="border: solid 1px #000000; margin-right: 10px;"><b>&times;</b></a>
       </div>
       <hr>
-      <div class="header-with-button">
-        <h2 class="text-center mb-4">{{question_text}}</h2>
-        <button id="clue-button" class="clue-button" data-toggle="tooltip" data-placement="top" title="Hint">
-            <i class="fas fa-lightbulb" ></i> <!-- Font Awesome icon -->
-        </button>
+      <div class="header-with-button d-flex justify-content-center align-items-center">
+        <h2 class="text-center mb-4 flex-grow-1">{{question_text}}</h2>
+        <button id="clue-button" class="clue-button ml-2" data-toggle="tooltip" data-placement="top" title="Hint">
+          <i class="fas fa-eye" id="toggleClue"></i> <!-- Font Awesome eye icon -->
+          <div style="font-size:12px">Clue</div>
+      </button>
     </div>
       <form id="quiz-form" method="post">
         {% csrf_token %}
@@ -207,8 +212,8 @@ input[type="radio"]:checked + img {
             <label class="option">
               <input type="radio" name="quiz" value="{{option}}" {% if quiz == "{{option}}" %}checked{% endif %} hidden />
               <div class="content-container">
-                <img class="quiz-img hidden" src="{{link}}" alt="Pão" style="height:180px; width: 270px;">
-                <p class="text-center mt-2">A. {{option}}</p>
+                <img class="quiz-img hidden" src="{{link}}" alt="Pão" style="height:130px; width: 230px;">
+                <p class="text-center mt-2"><b>{{option}}</b></p>
               </div>
               </label>
           </div>
@@ -269,7 +274,15 @@ input[type="radio"]:checked + img {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
 <script>
+
+document.getElementById('clue-button').addEventListener('click', function() {
+    var icon = document.getElementById('toggleClue'); // Get the icon element
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
+});
   // Using jQuery
 $(document).ready(function() {
   $('#clue-button').click(function() {
@@ -320,13 +333,15 @@ $('#submitButton').click(function() {
                   console.log('Correct answer!');
                   // $('#message-container').text(response.message);  // Assuming you have a div with this ID
                   contentContainer.css('border', '4px solid #4CAF50'); // Green for correct
+                  contentContainer.css('background-color', '#a9e6ac'); 
                   var buzzer = document.getElementById('correctSound');
                   buzzer.play();
                   
               } else {
                   console.log('Incorrect answer, try again.');
                   // $('#message-container').text(response.message);  // Display error message
-                  contentContainer.css('border', '4px solid #FF0000'); // Red for incorrect
+                  contentContainer.css('border', '4px solid #FF0000'); // Red for incorrect e6a9a9
+                  contentContainer.css('background-color', '#e6a9a9');
                   var buzzer = document.getElementById('wrongSound');
                   buzzer.play();
               }
