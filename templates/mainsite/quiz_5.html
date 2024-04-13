@@ -18,9 +18,9 @@
           float: left;  
           font-size: 1.5em; 
           text-align: center;
-          border: 1px solid black;
+          border: 1.5px solid black;
           /* box-shadow: #000000 2px 2px; */
-          box-shadow: inset 0px 0px 3px 0px black;
+          box-shadow: inset 0px 0px 5px 0px black;
         }
 
         #sortable li:hover {
@@ -241,7 +241,7 @@
 
         </div>
         {% if not repeated_question %}
-        <b>{{question_id}} of 11</b>
+        <div class='numbering'><b>{{question_id}} of 11</b></div>
       {% else %}
         <b>Repeated Question</b>
       {% endif %}  
@@ -251,10 +251,10 @@
       <div class="mcq-container">
         <form>
         {% csrf_token %}
-        <h1 class="text-center mb-4">Arrange in Sequence</h1>
+        <h1 class="text-center mb-4">Arrange in sequence</h1>
         <ul id="sortable" class="horizontal-list" style="margin-left:20px; margin-top: 50px;">
           {% for word in jumbled_answer %}
-            <li class="ui-state-default">{{word}}</li>
+            <li class="ui-state-default"><b>{{word}}</b></li>
           {% endfor %}
         </ul>
         <div class="text-center" style="margin-top: 60px;">

@@ -9,7 +9,7 @@
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
 <style>
     .quiz-container {
-      max-width: 600px;
+      max-width: 68%;
       margin: 30px auto;
       background-color: #f9f9f9;
       padding: 20px;
@@ -56,14 +56,44 @@
 }
 
 .match-item { cursor: pointer; }
-.matched { background-color: #198754; color: green; font-weight: bold; }
+.matched { background-color: #198754; color: rgb(34, 190, 34); font-weight: 600; }
 .mismatched { color: red; font-weight: bold;}
+
 
 
 
 .option-container {
     margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
 }
+
+.list-group.match-list {
+        margin: 20px;
+        border-radius: 5px;
+    }
+    #listA {
+        border: 3px solid black;  /* Light grey background */
+    }
+
+    #listB {
+        border: 3px solid black;  /* Light grey background */
+    }
+
+    #columnA, #columnB {
+      border-bottom: 1.5px solid black; /* Light grey background */
+      box-shadow:  0 0 5px 0px;
+      background-color: #eeeee4;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+
+    #columnA:hover, #columnB:hover {
+      background-color: #b9b987;
+    }
+
+
+
+
   </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
@@ -119,45 +149,47 @@
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a>
-        <div style="width: 150px">
-          <b>Unit {{unit_id}} - {{unit_name}} </b>
+        <div class="unit_heading">
+          <b>{{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%;"> 
           <div class="progress-bar" style="width:70%"></div>
         </div>
         {% if not repeated_question %}
-        <b>{{question_id}} of 11</b>
+        <div class='numbering'><b>{{question_id}} of 11</b></div>
       {% else %}
         <b>Repeated Question</b>
       {% endif %} 
-        <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
+        <a href="/home" class="btn btn-light big-close" id="big_close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
       </div>
       <hr> 
-      <center><h2>Match the Following</h2></center>
+      <center><h2>Match the following</h2></center>
     <form id="quiz-form">
     {% csrf_token %}
     <input type="hidden" name="form_type" value="{{question_id}}">
+    <input type="hidden" id="matchCount" value="{{ match_items|length }}">
     <div class="row" style="margin-top: 20px;">
         <div class="col-6">
-            <u><h5 style="text-align: center;">Portuguese</h5></u>
-            <ul class="list-group" id="listA" style="margin-left: 10px;">
+            <u><h5 style="text-align: center;"><b>Portuguese</b></h5></u>
+            <ul class="list-group match-list" id="listA" style="margin-left: 30px;">
               {% for item, value in match_items.items %}
-                <li class="list-group-item match-item" data-match="{{value}}">{{value}}</li>
+                <li class="list-group-item match-item" data-match="{{value}}" id="columnA">
+                  {{value}}
+                </li>
               {% endfor %}
             </ul>
         </div>
         <div class="col-6">
-            <u><h5 style="text-align: center;">English</h5></u>
-            <ul class="list-group" id="listB" style="margin-right: 10px;">
+            <u><h5 style="text-align: center;"><b>English</b></h5></u>
+            <ul class="list-group match-list" id="listB" style="margin-right: 30px;">
               {% for item in left_col_q %}
-                <li class="list-group-item match-item" data-match="{{ match_items|get_item:item }}">{{item}}</li>
+                <li class="list-group-item match-item" data-match="{{ match_items|get_item:item }}" id="columnA">{{item}}</li>
               {% endfor %}
             </ul>
         </div>
     </div>
     <div class="text-center" style="padding-top:25px">
-      <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
+      <button id="submitButton" class="btn btn-success btn-lg" disabled>Continue</button>
     </div>
     </form>
     </div>
@@ -189,34 +221,71 @@ $(document).ready(function() {
         });
         // window.location.reload();
     }); 
-    let lastClicked = null;
-    $('.match-item').click(function() {
-        const currentClicked = $(this);
-        if (lastClicked && lastClicked[0] !== currentClicked[0]) { // Ensure they are different elements
-            if (lastClicked.data('match') === currentClicked.attr('data-match')) { // Check if data-match values are equal
-                currentClicked.addClass('matched');
-                lastClicked.addClass('matched');
+    // let lastClicked = null;
+    // $('.match-item').click(function() {
+    //     const currentClicked = $(this);
+    //     if (lastClicked && lastClicked[0] !== currentClicked[0]) { // Ensure they are different elements
+    //         if (lastClicked.data('match') === currentClicked.attr('data-match')) { // Check if data-match values are equal
+    //             currentClicked.addClass('matched');
+    //             lastClicked.addClass('matched');
+    //             var buzzer = document.getElementById('correctSound');
+    //             buzzer.play();
+    //         } else {
+    //             currentClicked.addClass('mismatched');
+    //             lastClicked.addClass('mismatched');
+    //             var buzzer = document.getElementById('wrongSound');
+    //             buzzer.play();
+    //             // Store lastClicked in a separate variable to use in the timeout function
+    //             const tempLastClicked = lastClicked;
+    //             setTimeout(() => {
+    //                 // Remove 'mismatched' class from both last clicked and current clicked elements
+    //                 currentClicked.removeClass('mismatched');
+    //                 tempLastClicked.removeClass('mismatched');
+    //             }, 1000);
+    //         }
+    //         lastClicked = null; // Reset lastClicked after handling
+    //     } else {
+    //         lastClicked = currentClicked; // Set currentClicked as lastClicked for the next click
+    //     }
+    // });
+});
+
+let lastClicked = null;
+let totalMatchesRequired = parseInt(document.getElementById('matchCount').value);
+let currentMatches = 0;
+
+$('.match-item').click(function() {
+    const currentClicked = $(this);
+    console.log(currentMatches);
+    if (lastClicked && lastClicked[0] !== currentClicked[0]) {
+        if (lastClicked.data('match') === currentClicked.attr('data-match')) {
+            if (!currentClicked.hasClass('matched') && !lastClicked.hasClass('matched')) {
+                currentMatches++;
+                currentClicked.addClass('matched').off('click');
+                lastClicked.addClass('matched').off('click');
                 var buzzer = document.getElementById('correctSound');
                 buzzer.play();
-            } else {
-                currentClicked.addClass('mismatched');
-                lastClicked.addClass('mismatched');
-                var buzzer = document.getElementById('wrongSound');
-                buzzer.play();
-                // Store lastClicked in a separate variable to use in the timeout function
-                const tempLastClicked = lastClicked;
-                setTimeout(() => {
-                    // Remove 'mismatched' class from both last clicked and current clicked elements
-                    currentClicked.removeClass('mismatched');
-                    tempLastClicked.removeClass('mismatched');
-                }, 1000);
+                if (currentMatches == totalMatchesRequired) {
+                    $('#submitButton').removeAttr('disabled');
+                }
             }
-            lastClicked = null; // Reset lastClicked after handling
         } else {
-            lastClicked = currentClicked; // Set currentClicked as lastClicked for the next click
+            currentClicked.addClass('mismatched');
+            lastClicked.addClass('mismatched');
+            var buzzer = document.getElementById('wrongSound');
+            buzzer.play();
+            const tempLastClicked = lastClicked;
+            setTimeout(() => {
+                currentClicked.removeClass('mismatched');
+                tempLastClicked.removeClass('mismatched');
+            }, 1000);
         }
-    });
+        lastClicked = null;
+    } else {
+        lastClicked = currentClicked;
+    }
 });
+
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

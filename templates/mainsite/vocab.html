@@ -60,6 +60,47 @@
         #user-saved-tab:hover, #overall-list-tab:hover, #general-search-tab:hover {
             border: 1px solid black;
         }
+
+        #plusBtnGeneral {
+            background-color: rgb(67, 187, 56);
+            border: 2px solid black;
+            color: white;
+        }
+
+        #plusBtnGeneral:hover {
+            background-color: rgb(45, 102, 40);
+            box-shadow: inset 0 0 4px 0px black;
+        }
+
+        #deleteWord {
+            font-weight: bold;
+            border: 2px solid black;
+        }
+
+        #deleteWord:hover {
+            background-color: rgb(150, 44, 44);
+            box-shadow: inset 0 0 4px 0px black;
+            font-weight: bold;
+        }
+        .scrollable-table-container {
+        max-height: 450px;  /* Set maximum height of the table container */
+        overflow-y: auto;   /* Enable vertical scrolling */
+        overflow-x: hidden; /* Hide horizontal scroll */
+    }
+
+    .user-saved-words-table thead th {
+        position: sticky;
+        top: 0; /* Set the top of the header to align with the top of the table */
+        background-color: #343a40; /* Ensure the background is not transparent */
+        color: white; /* Set text color */
+        z-index: 1020; /* Makes sure the header is above other content */
+    }
+
+    .scrollable-table-container_2 {
+        max-height: 400px;  /* Set maximum height of the table container */
+        overflow-y: auto;   /* Enable vertical scrolling */
+        overflow-x: hidden; /* Hide horizontal scroll */
+    }
 </style>
 </head>
 <body>
@@ -113,7 +154,7 @@
     </div>
   </nav>
 
-  <div class="container mt-4">
+  <div class="container mt-3">
     <h1 class="mb-4 heading">Vocabulary</h1>
 
     <div class="card mb-3 vocab-card">
@@ -146,7 +187,8 @@
                         {% csrf_token %}
                         <div class="row mt-4">
                             <div class="col">
-                                <table class="table table-dark table-striped saved-words-table">
+                                <div class="scrollable-table-container">
+                                <table class="table table-dark table-striped user-saved-words-table">
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
@@ -163,34 +205,52 @@
                                             <th scope="row">{{forloop.counter}}</th>
                                             <td>
                                                 <span class="align-middle">
-                                                {{word.word.portuguese_word}}
-                                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
+                                                {% if word.custom_portuguese %}
+                                                    {{word.custom_portuguese}}
+                                                    <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.custom_portuguese}}')">🔊</button>
+                                                {% else %}
+                                                    {{word.word.portuguese_word}}
+                                                    <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
+                                                {% endif %}
+                                                
                                                 </span>
                                             </td>
                                             <td>
                                                 <span class="align-middle">
-                                                    {{word.word.english_translation}}
+                                                    {% if word.custom_english %}
+                                                        {{word.custom_english}}
+                                                    {% else %}
+                                                        {{word.word.english_translation}}
+                                                    {% endif %}
                                                 </span>
                                             </td>
                                             {% with word.word.example_usages.all.first as usage %}
                                                 <td>
                                                     <span class="align-middle">
-                                                        {{usage.english_usage}}
+                                                        {% if usage.english_usage %}
+                                                            {{usage.english_usage}}
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
                                                     </span>
                                                 </td>
                                                 <td>
                                                     <span class="align-middle">
-                                                        {{usage.portuguese_usage}}
-                                                        <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                        {% if usage.portuguese_usage %}
+                                                            {{usage.portuguese_usage}}
+                                                            <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
                                                     </span>
                                                 </td>
                                             {% endwith %}
-                                            <td><center><button class="btn btn-danger btn-sm delete-button" data-id="{{word.id}}"><i class="fas fa-trash-alt"></i></button></center></td> <!-- Delete icon button -->
+                                            <td><center><button class="btn btn-danger btn-sm delete-button" id="deleteWord" data-id="{{word.id}}"><i class="fas fa-trash-alt"></i>      Delete</button></center></td> <!-- Delete icon button -->
                                         </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                                
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -213,6 +273,7 @@
                                 </form>
                             </div>
                             <div class="col">
+                                <div class="scrollable-table-container_2">
                                 <table class="table table-dark table-striped saved-words-table">
                                     <thead>
                                         <tr>
@@ -241,13 +302,21 @@
                                             {% with word.example_usages.all.first as usage %}
                                                 <td>
                                                     <span class="align-middle">
-                                                        {{usage.english_usage}}
+                                                        {% if usage.english_usage %}
+                                                            {{usage.english_usage}}
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
                                                     </span>
                                                 </td>
                                                 <td>
                                                     <span class="align-middle">
-                                                        {{usage.portuguese_usage}}
-                                                        <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                        {% if usage.portuguese_usage %}
+                                                            {{usage.portuguese_usage}}
+                                                            <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
                                                     </span>
                                                 </td>
                                             {% endwith %}
@@ -255,7 +324,7 @@
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                                
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -263,41 +332,36 @@
 
                 <!-- Overall List Tab Pane -->
                 <div class="tab-pane fade" id="general-search" role="tabpanel" aria-labelledby="general-search-tab">
-                    <h2 style="margin-top: 10px;">General Search</h2>
-                    <div class="row mt-3">
+                    <h2 style="margin-top: 10px;">General Search</h2><div class="row mt-3">
                         <div class="col-12">
-                            <form id="searchForm">
-                                <div class="input-group mb-3" style="width: 50%;">
-                                    <input type="text" class="form-control" placeholder="Search for words..." id="searchQuery">
+                            <form id="generalSearchForm">
+                                <div class="input-group mb-3" style="width: 100%;">
+                                    <input type="text" class="form-control" placeholder="Search for words or phrases..." id="searchQueryGeneral" aria-label="Search for words" aria-describedby="button-search">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                        <button class="btn btn-outline-primary" type="submit" id="searchButton">Search</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
+                    
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-dark table-striped">
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Portuguese</th>
                                     <th scope="col">English</th>
-                                    <th scope="col">English Usage</th>
-                                    <th scope="col">Portuguese Usage</th>
-                                    <th scope="col">Actions</th>
+                                    <th scope="col"><center>Actions</center></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="searchResults">
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>livro</td>
-                                    <td>book</td>
-                                    <td>I am reading a book.</td>
-                                    <td>Estou lendo um livro.</td>
+                                    <th scope="row">-</th>
+                                    <td>-</td>
+                                    <td>-</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                        <center><button class="btn btn-outline-success plus-button" id="plusBtnGeneral"><i class="fas fa-plus"></i>    Add to List</button></center>
                                     </td>
                                 </tr>
                                 <!-- More rows can be added here -->
@@ -509,6 +573,62 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('#generalSearchForm').submit(function(event) {
+        event.preventDefault();
+        var searchQuery = $('#searchQueryGeneral').val();
+
+        $.ajax({
+            url: '/vocab_search',  // Ensure this matches your Django URL
+            type: 'GET',
+            data: { 'query': searchQuery },
+            success: function(data) {
+                var tbody = $('#searchResults');
+                console.log(data);
+                tbody.empty();  // Clear existing data
+                data.words.forEach(function(item, index) {
+                    var row = `<tr>
+                        <th scope="row">${index + 1}</th>
+                        <td>
+                            <span class="align-middle">
+                                ${item.portuguese}
+                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${item.portuguese}')">🔊</button>
+                        </td>
+                        <td>${item.english}</td>
+                        <td>
+                            <center><button class="btn btn-outline-success plus-button" data-portuguese="${item.portuguese}" data-english="${item.english}" id="plusBtnGeneral"><i class="fas fa-plus"></i>    Add to List</button></center>
+                        </td>
+                    </tr>`;
+                    tbody.append(row);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    });
+
+    $('#searchResults').on('click', '.plus-button', function() {
+    var portuguese = $(this).data('portuguese');
+    var english = $(this).data('english');
+
+    $.ajax({
+        url: '/save_word/',  // Update this URL to the endpoint in your Django app that handles this request
+        type: 'POST',
+        data: {
+            'portuguese': portuguese,
+            'english': english,
+            'word_type': 'general'
+        },
+        success: function(response) {
+            console.log('Added to list successfully:', response);
+            // Optionally update the UI to reflect the addition
+        },
+        error: function(xhr, status, error) {
+            console.error('Error adding to list:', error);
+        }
+    });
+});
 });
 
 

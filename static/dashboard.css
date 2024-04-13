@@ -293,7 +293,13 @@
   border: 2px solid black;
   margin-right: 20px;
   box-shadow: inset 0px 0px 5px 0px black;
+  background-color: rgb(219, 213, 213);
+  font-size: 20px; 
+  font-weight: bold;
+}
 
+#big_close:hover {
+  background-color: rgb(151, 151, 151);
 }
 
 #answer-addon {
@@ -359,10 +365,25 @@
   box-shadow: inset 0px 0px 5px 0px black;
 }
 
-.content-container:hover {
-  background-color: #fffb00;
-}
 
 .mcq-option {
   margin: 10px;
+}
+
+.page-item {
+  border: 1px solid rgb(0, 0, 0);
+  box-shadow: 0px 0px 4px 0px;
+
+}
+
+.numbering {
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+#recordBtn {
+  border: 2px solid black;
+  border-radius: 5px;
+  box-shadow: 0px 0px 4px 0px black;
+  font-weight: bold;
 }

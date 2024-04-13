@@ -18,12 +18,7 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     
-    .progress {
-      height: 20px;
-    }
-    .progress-bar {
-      background-color: #4CAF50;
-    }
+
     hr {
         border: none;
         height: 1px;
@@ -101,6 +96,10 @@
     background: none;
 }
 
+#plusBtn {
+  border: 2px solid green
+}
+
 
 
 
@@ -166,16 +165,13 @@
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <!-- <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a> -->
-        <div style="width: auto; margin-left:20px">
+        <div style="width: auto; margin-left:20px; font-size: 18px">
           <b>Unit 2 - Common Food and Animal Names </b>
         </div>
         <div class="progress" style="width: 30%;"> 
-          <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 15%" data-toggle="tooltip" data-placement="top" title="For Quiz 1" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 30%" data-toggle="tooltip" data-placement="top" title="For Quiz 2" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 20%" data-toggle="tooltip" data-placement="top" title="For Quiz 3" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 30%" data-toggle="tooltip" data-placement="top" title="For Quiz 2" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">70%</div>
         </div>
-        <b>2 of 12</b> 
-        <a href="/home" class="btn btn-light big-close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
+        <a href="/home" class="btn btn-light big-close" id="big_close">&times;</a>
     </div>
     <hr>
     <!-- Word in Portuguese (Word in English)
@@ -186,67 +182,67 @@
       <form>
         {% csrf_token %}
         {% for word in words %}
-        <div class="word-header">
-          <h3>{{word.portuguese_word}} ({{word.english_translation}}) 
-              <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.portuguese_word}}')">🔊</button>
-              <button class="btn btn-outline-success plus-button" id="plusBtn" data-word-id="{{ word.id }}"><i class="fas fa-plus"></i></button>
-          </h3><br>
+        <div class="word-header" style="margin-top: 30px;">
+          <h1>{{word.portuguese_word}} ({{word.english_translation}}) 
+              <button class="sound-button" id="speakBtn" style="font-size:32px" onclick="convertTextToSpeech('{{word.portuguese_word}}')">🔊</button>
+              <button class="btn btn-outline-success plus-button" id="plusBtn" data-word-id="{{ word.id }}"><i class="fas fa-plus"></i>    Add to List</button>
+          </h1><br>
         </div>
         <div class="example-usage">
-          <h5>Example Usage</h5>
+          <h4>Example Usage</h4>
           <ul>
             {% for usage in word.example_usages.all %}
-            <li> {{usage.english_usage}} <b>/</b> {{usage.portuguese_usage}} <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')" style="font-size: 20px">🔊</button></li>
+            <li style="font-size:24px; margin-left: 12px;"> {{usage.english_usage}} <b>   /   </b> {{usage.portuguese_usage}} <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')" style="font-size: 24px; margin-left: 20px;">🔊</button></li>
             {% endfor %}
-            <li><b style="display: inline;">Portuguese:</b> Eu sou um menino <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')" style="font-size: 20px">🔊</button></li>
+            <!-- <li><b style="display: inline;">Portuguese:</b> Eu sou um menino <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')" style="font-size: 20px">🔊</button></li> -->
           </ul>
           </div>
-        <hr>
+        <hr style="margin-top:30px">
         {% endfor %}
-        <div id="pagination_box"">
-          <nav aria-label="Page navigation example">
+        <div id="pagination_box">
+          <nav id="pagination-nav" aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               {% if words.has_previous %}
                 <li class="page-item">
-                  <a class="page-link" href="?page=1" aria-label="First">
-                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  <a class="page-link" href="?page=1" aria-label="First" style="background-color:rgb(219, 213, 213); font-weight: bold; font-size:24px">
+                    <span aria-hidden="true" style="color: rgb(0, 0, 0);">&laquo;&laquo;</span>
                   </a>
                 </li>
                 <li class="page-item">
-                  <a class="page-link" href="?page={{ words.previous_page_number }}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
+                  <a class="page-link" href="?page={{ words.previous_page_number }}" aria-label="Previous" style="background-color: rgb(219, 213, 213); font-weight: bold; font-size:24px">
+                    <span aria-hidden="true" style="color: rgb(0, 0, 0);">&laquo;</span>
                   </a>
                 </li>
               {% else %}
-                <li class="page-item disabled">
-                  <span class="page-link">&laquo;&laquo;</span>
+                <li class="page-item disabled" style="background-color: rgb(219, 213, 213); font-weight: bold; font-size:24px">
+                  <span class="page-link" style="color: rgb(0, 0, 0);">&laquo;&laquo;</span>
                 </li>
-                <li class="page-item disabled">
-                  <span class="page-link">&laquo;</span>
+                <li class="page-item disabled" style="background-color: rgb(219, 213, 213); font-weight: bold; font-size:24px">
+                  <span class="page-link" style="color: rgb(0, 0, 0);">&laquo;</span>
                 </li>
               {% endif %}
           
               <li class="page-item disabled">
-                <span class="page-link">Page {{ words.number }} of {{ words.paginator.num_pages }}</span>
+                <span class="page-link" style="background-color: rgb(255, 255, 255); font-size:24px; color: black;">Page <b>{{ words.number }}</b> of <b>{{ words.paginator.num_pages }}</b></span>
               </li>
           
               {% if words.has_next %}
                 <li class="page-item">
-                  <a class="page-link" href="?page={{ words.next_page_number }}" aria-label="Next" id="nextBtn">
-                    <span aria-hidden="true">&raquo;</span>
+                  <a class="page-link" href="?page={{ words.next_page_number }}" aria-label="Next" id="nextBtn" style="background-color: rgb(219, 213, 213); font-weight: bold; font-size:24px">
+                    <span aria-hidden="true" style="color: rgb(0, 0, 0);">&raquo;</span>
                   </a>
                 </li>
                 <li class="page-item">
-                  <a class="page-link" href="?page={{ words.paginator.num_pages }}" aria-label="Last" id="lastBtn">
-                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  <a class="page-link" href="?page={{ words.paginator.num_pages }}" aria-label="Last" id="lastBtn" style="background-color: rgb(219, 213, 213)  ; font-weight: bold; font-size:24px">
+                    <span aria-hidden="true" style="color: rgb(0, 0, 0);">&raquo;&raquo;</span>
                   </a>
                 </li>
               {% else %}
-                <li class="page-item disabled">
-                  <span class="page-link">&raquo;</span>
+                <li class="page-item disabled" style="background-color: rgb(219, 213, 213); font-weight: bold; font-size:24px">
+                  <span class="page-link" style="color: rgb(0, 0, 0);">&raquo;</span>
                 </li>
-                <li class="page-item disabled">
-                  <span class="page-link">&raquo;&raquo;</span>
+                <li class="page-item disabled" style="background-color: rgb(219, 213, 213); font-weight: bold; font-size:24px">
+                  <span class="page-link" style="color: rgb(0, 0, 0);">&raquo;&raquo;</span>
                 </li>
               {% endif %}
             </ul>

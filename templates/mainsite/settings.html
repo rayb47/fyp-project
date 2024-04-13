@@ -18,7 +18,27 @@
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <style>
+.container {
+    max-width: 800px; /* Limiting the width for better readability */
+}
 
+.form-control, .btn {
+    border-radius: 0.25rem; /* Slightly rounded borders for form controls and button */
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.form-group label {
+    font-weight: bold; /* Makes labels bold */
+}
+
+textarea {
+    resize: none; /* Prevent resizing of the textarea */
+}
 
 
 </style>
@@ -116,6 +136,18 @@
                 </div>
             </div>
 
+            <!-- Feedback Box -->
+            <!-- Feedback Box -->
+            <div class="form-group">
+              <label for="feedback">Feedback</label>
+              <textarea class="form-control" id="feedback" rows="3" placeholder="Enter your feedback here..."></textarea>
+          </div>
+
+          <!-- Submit Button for Feedback -->
+          <div class="form-group text-center">
+              <button type="button" class="btn btn-secondary">Submit Feedback</button>
+          </div>
+
             <!-- Save Button -->
             <div class="form-group text-center">
                 <button type="button" class="btn btn-primary">Save Settings</button>
@@ -123,6 +155,7 @@
         </div>
     </div>
 </div>
+
 
     
     

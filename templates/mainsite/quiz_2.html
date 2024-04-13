@@ -8,7 +8,7 @@
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
 <style>
     .quiz-container {
-      max-width: 600px;
+      max-width: 70%;
       margin: 30px auto;
       background-color: #f9f9f9;
       padding: 20px;
@@ -141,13 +141,13 @@
       <div class="d-flex justify-content-between align-items-center mb-3">
         <!-- <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a> -->
         <div class='unit_heading'>
-          <b>Unit {{unit_id}} - {{unit_name}} </b>
+          <b>{{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%; border: 2px solid black;"> 
           <div class="progress-bar progress-bar-striped" style="width:70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
         </div>
         {% if not repeated_question %}
-        <b>{{question_id}} of 11</b>
+        <div class='numbering'><b>{{question_id}} of 11</b></div>
       {% else %}
         <b>Repeated Question</b>
       {% endif %} 
@@ -158,15 +158,15 @@
         <form id="quiz-form" method="post">
           {% csrf_token %}
           <input type="hidden" name="form_type" value="{{question_id}}">
-        <h1 class="text-center mb-4">Say the Following Phrase</h1>
+        <h1 class="text-center mb-4">Say the following phrase</h1>
         <div class="phrase">
-            <span><b>{{question_text}}</b> <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{question_text}}')">🔊</button></span>
+            <span style="font-size:28px"><b>{{question_text}}</b> <button class="sound-button" id="speakBtn" style="margin-left: 10px;" onclick="convertTextToSpeech('{{question_text}}')">🔊</button></span>
         </div>
         <div class="recording">
             <button class="btn btn-primary" id="recordBtn">Click To Speak</button>
         </div>
         <div class="container" style="margin-top:20px">
-          <div id="message" class="alert alert-danger" role="alert" style="width: 100%; display: none"></div>
+          <div id="message" class="alert alert-danger" role="alert" style="width: 100%; display: none; border: 2px solid;"></div>
           <!-- <div class="row justify-content-center">
               <div class="col-auto">
                   <div id="message" role="alert" style="display: none; width: 100%;"></div>
@@ -180,7 +180,8 @@
     </section>
     </div>
   </div>
-  
+  <audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
+  <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <!-- Replace the 'slim' version with the full version of jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -302,13 +303,23 @@
             if (data.status === 'success') {
                 messageElement.className = 'alert alert-success'; // Use Bootstrap success class
                 // messageElement.textContent = 'Success: ' + data.message;
-                messageElement.textContent = 'Success';
+                messageElement.textContent = 'Correct!';
                 messageElement.style.textAlign = 'center';
+                messageElement.style.fontSize = '20px';
+                messageElement.style.fontWeight = 'bold';
+                messageElement.style.borderColor = 'green';
+                var buzzer = document.getElementById('correctSound');
+                buzzer.play();
                 $('#submitButton').prop('disabled', false);
             } else {
                 messageElement.className = 'alert alert-danger'; // Use Bootstrap danger class for errors
-                messageElement.textContent = 'Failure';
+                messageElement.textContent = 'Incorrect!';
+                messageElement.style.fontSize = '20px';
                 messageElement.style.textAlign = 'center';
+                messageElement.style.fontWeight = 'bold';
+                messageElement.style.borderColor = 'red';
+                var buzzer = document.getElementById('wrongSound');
+                buzzer.play();
             }
 
         })

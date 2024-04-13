@@ -110,7 +110,30 @@ def architecture(request):
     return render(request, 'mainsite/architecture.html')
 
 @login_required
+def vocab_search(request):
+    # ADD VALIDATION FOR PASSING BLANK STRINGS IF NONSENSE IS INPUTTED
+    query = request.GET.get('query',None)
+    print("Inside vocab general view")
+    # Translation API 
+    url = "https://text-translator2.p.rapidapi.com/translate"
+    headers = {
+        "content-type": "application/x-www-form-urlencoded",
+        "X-RapidAPI-Key": "7223147287mshb3ab5722c178634p1818bbjsn832d911c373c",
+        "X-RapidAPI-Host": "text-translator2.p.rapidapi.com"
+    }
+    payload = {
+                "source_language": "en",
+                "target_language": "pt",
+                "text": query
+            }
+    translation_response = requests.post(url, data=payload, headers=headers)
+
+
+    return JsonResponse({'words': [{'english': 'hello', 'portuguese': 'oi'}, {'english': query, 'portuguese': translation_response.json()['data']['translatedText']}]}, safe=False)
+
+@login_required
 def vocab(request):
+    # FILTER OVERALL WORD DISPLAY BASED ON UNIT
     search_query = request.GET.get('query', None)
     search = request.GET.get('search', False)
     user_id = request.user.id
@@ -236,23 +259,37 @@ def lesson(request, lesson_id):
 
 
 @login_required
+@csrf_exempt
 def save_word(request):
     data = {
         'key': 'value',
     }
+    word_type = request.POST.get('word_type', None)
+    custom_english = request.POST.get('english', None)
+    custom_portuguese = request.POST.get('portuguese', None)
     is_correct = True
     word_id = request.POST.get('word_id')
     add_or_remove = request.POST.get('add_or_remove', 'add')
     
     if add_or_remove == 'add':
-        try:
-            UserSavedWords.objects.get(word_id=word_id)
-            print("SAVED WORD NOT ADDED")
-        except:
-            UserSavedWords.objects.create(
-                user=request.user,
-                word=Word.objects.get(id=int(word_id))
-            )
+        if word_type:
+            try:
+                UserSavedWords.objects.get(custom_english=custom_english)
+            except:
+                UserSavedWords.objects.create(
+                    user=request.user,
+                    custom_english=custom_english,
+                    custom_portuguese=custom_portuguese
+                )
+        else:
+            try:
+                UserSavedWords.objects.get(word_id=word_id)
+                print("SAVED WORD NOT ADDED")
+            except:
+                UserSavedWords.objects.create(
+                    user=request.user,
+                    word=Word.objects.get(id=int(word_id))
+                )
     else:
         a = 1
         print("INSIDE DELETING A SAVED WORD!")
@@ -375,7 +412,7 @@ def quiz(request, unit_id, quiz_id):
         # question_obj = user_answer.question
     print("Unanswered questions are:", unanswered_questions)
 
-    question_obj = Question.objects.filter(question_type='MCQ')[0]
+    question_obj = Question.objects.filter(question_type='Speech')[0]
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:

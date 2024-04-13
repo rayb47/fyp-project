@@ -54,8 +54,8 @@ class ExampleUsageAdmin(admin.ModelAdmin):
 admin.site.register(ExampleUsage, ExampleUsageAdmin)
 
 class UserSavedWordsAdmin(admin.ModelAdmin):
-    list_display = ('word', 'user')  # Fields to display in the admin list view
-    search_fields = ('word', 'user',)  # Fields to search in the admin list view
+    list_display = ('word', 'user', 'custom_english', 'custom_portuguese')  # Fields to display in the admin list view
+    search_fields = ('word', 'user', 'custom_english', 'custom_portuguese')  # Fields to search in the admin list view
 
 admin.site.register(UserSavedWords, UserSavedWordsAdmin)
 

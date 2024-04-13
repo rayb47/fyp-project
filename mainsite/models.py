@@ -84,12 +84,17 @@ class ExampleUsage(models.Model):
         return f'Usage of "{self.word.portuguese_word}" / "{self.word.english_translation}"'
     
 class UserSavedWords(models.Model):
-    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    custom_english = models.CharField(max_length=255, null=True, blank=True)
+    custom_portuguese = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.user.username} saved {self.word.portuguese_word}"
-
+        # Adjusted __str__ method to handle cases where `word` might be None
+        if self.word:
+            return f"{self.user.username} saved {self.word.portuguese_word}"
+        else:
+            return f"{self.user.username} saved {self.custom_english}"
 
 class UserAttempts(models.Model):
 
