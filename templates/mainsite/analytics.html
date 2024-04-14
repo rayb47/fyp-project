@@ -20,7 +20,7 @@
 <style>
 
 .analytics-card {
-    padding: 20px;
+    padding: 2.5%;
 }
 
 .nav-tabs .nav-link {
@@ -36,6 +36,44 @@
 .card-title {
     color: black;
 }
+
+#analyticsTabs {
+    border-bottom: 2px solid black;
+}
+
+#unit-wise-tab {
+    background-color: #aaa582
+}
+
+#overall-tab, #unit-wise-tab {
+    border: 2px solid black;
+    box-shadow: inset 0px 0px 6px 0px black;
+}
+
+#unit-wise-tab:hover, #overall-tab:hover {
+    background-color: red;
+}
+
+#unit-wise-tab:focus {
+    background-color:blue
+}
+
+#analyticsTabContent {
+    margin-top:2%
+}
+
+.card {
+    border-radius: 15px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 6px 0px;
+}
+
+.card-header {
+    border-bottom: 2px solid black;
+    font-weight: bold;
+    background-color: #aaaaa6;
+}
+
 
 </style>
 </head>
@@ -112,11 +150,11 @@
                             <!-- Total Correct Answers -->
                             <div class="col-md-4">
                                 <div class="card text-center">
-                                    <div class="card-header">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Total Correct Answers
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title">120</h5>
+                                        <h5 class="card-title">{{total_correct_answers}} answers</h5>
                                     </div>
                                 </div>
                             </div>
@@ -124,11 +162,11 @@
                             <!-- Total Incorrect Answers -->
                             <div class="col-md-4">
                                 <div class="card text-center">
-                                    <div class="card-header">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Total Incorrect Answers
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title">30</h5>
+                                        <h5 class="card-title">{{total_incorrect_answers}} answers</h5>
                                     </div>
                                 </div>
                             </div>
@@ -136,11 +174,11 @@
                             <!-- Best Performed Unit Lesson -->
                             <div class="col-md-4">
                                 <div class="card text-center">
-                                    <div class="card-header">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Total Words Studied
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title">Unit 3: Advanced Topics</h5>
+                                        <h5 class="card-title">{{total_words_studied}} words/phrases</h5>
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +188,7 @@
                             <!-- Worst Performed Unit Lesson -->
                             <div class="col-md-4">
                                 <div class="card text-center">
-                                    <div class="card-header">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Best Performed Unit Lesson
                                     </div>
                                     <div class="card-body">
@@ -162,7 +200,7 @@
                             <!-- Active Days This Week -->
                             <div class="col-md-4">
                                 <div class="card text-center">
-                                    <div class="card-header">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Worst Performed Unit Lesson
                                     </div>
                                     <div class="card-body">
@@ -174,7 +212,7 @@
                             <!-- Active Days This Month -->
                             <div class="col-md-4">
                                 <div class="card text-center">
-                                    <div class="card-header">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Active Days This Month
                                     </div>
                                     <div class="card-body">
@@ -188,10 +226,10 @@
                             <!-- Correct Answers Today/This Week/This Month -->
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header text-center">
+                                    <div class="card-header text-center" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Correct and Incorrect Answers
                                     </div>
-                                    <ul class="list-group list-group-flush">
+                                    <ul class="list-group list-group-flush" style="border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
                                         <li class="list-group-item">Today: 15 Answers</li>
                                         <li class="list-group-item">This Week: 70 Answers</li>
                                         <li class="list-group-item">This Month: 285 Answers</li>
@@ -254,7 +292,7 @@
             
                     <!-- Dynamic card for unit details -->
                     <div class="card mb-4 shadow-sm">
-                        <div class="card-header bg-primary text-white">
+                        <div class="card-header bg-primary text-white" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                             <h4 class="my-0 fw-normal" id="unitTitle">Unit 1 Analytics</h4>
                         </div>
                         <div class="card-body">

@@ -22,6 +22,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
+import csv
 # Include message for streak
 # Include English Text to Portuguese using the TTS
 
@@ -48,7 +50,7 @@ def weather_data(request):
 
 @login_required
 def home(request):
-
+    print("IN HOME REQUEST")
     # Units
     units = Unit.objects.all()    
 
@@ -65,6 +67,14 @@ def home(request):
         greeting = "Good afternoon"
     else:
         greeting = "Good evening"
+    print("Local time variable:", type(current_date))
+    date_obj = datetime.strptime(current_date, '%Y-%m-%d')
+    added_suffix = ''
+    if 4 <= date_obj.day <= 20 or 24 <= date_obj.day <= 30:
+        added_suffix = str(date_obj.day) + "th"
+    else:
+        added_suffix = str(date_obj.day) + ["st", "nd", "rd"][date_obj.day % 10 - 1]
+    current_date = f"{added_suffix} {date_obj.strftime('%B')}, {date_obj.year}"
     data = {
         'uname': request.session.get('uname'),
         'city': r['location']['name'],
@@ -99,7 +109,48 @@ def quiz4(request):
     return render(request, 'mainsite/quiz_4.html', {'answer_status': answer_status})
 
 def analytics(request):
-    return render(request, 'mainsite/analytics.html')
+    word_count_studied = 1
+    correct_count = UserAnswers.objects.filter(user=request.user, is_correct=True).count()
+    incorrect_count = UserAnswers.objects.filter(user=request.user, is_correct=False).count()
+    lessons_done = UserAttempts.objects.filter(user=request.user, lesson__isnull=False)
+    for lesson in lessons_done:
+        word_count_studied *= int(lesson.pages_covered)
+    data = {
+        'total_correct_answers':correct_count,
+        'total_incorrect_answers':incorrect_count,
+        'total_words_studied':word_count_studied
+    }
+    print("total_words_studied:", word_count_studied)
+    print("correct_count:", correct_count)
+    print("incorrect_count:", incorrect_count)
+    return render(request, 'mainsite/analytics.html', data)
+
+def download_table(request):
+    if request.method == 'POST':
+        table_data = request.POST.getlist('table_data[]')
+
+        response = HttpResponse(content_type='text/csv; charset=utf-8-sig')  # Note the charset change to 'utf-8-sig'
+        response['Content-Disposition'] = 'attachment; filename="saved-words.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['No.', 'Portuguese', 'English', 'English Example Usage', 'Portuguese Example Usage'])
+        for row in table_data:
+            columns = row.split(',')
+            # Make sure to handle the Unicode strings properly by ensuring they are in the correct format
+            writer.writerow([col for col in columns])
+
+        return response
+
+@login_required
+def delete_all_saved_words(request):
+    # Assuming you have a function to delete items, adapt as necessary.
+    try:
+        # Your deletion logic here
+        # Item.objects.filter(user=request.user).delete()
+        UserSavedWords.objects.filter(user=request.user).delete()
+        return JsonResponse({"success": True}, status=200)
+    except Exception as e:
+        return JsonResponse({"success": False, "error": str(e)}, status=500)
 
 def settings(request):
     return render(request, 'mainsite/settings.html')
@@ -574,6 +625,7 @@ def get_quiz_data(request):
     print("Inside get_quiz_data")
     quizzes = []
     unit_id = request.GET.get('unit_id')
+    print("Searching quizzes for unit",unit_id)
     quiz_data = Quiz.objects.filter(unit_id=int(unit_id))
     quiz_number = 0
     for quiz in quiz_data:

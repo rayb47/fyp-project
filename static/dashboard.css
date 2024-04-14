@@ -48,16 +48,7 @@
     margin-bottom: 0; /* Removes the bottom margin from h1 */
   }
   
-  .weather-widget {
-    background: linear-gradient(to right, #6dd5ed, #2193b0);
-    color: white;
-    border-radius: 20px;
-    border-width: 3px;
-    border-color: black;
-    /* height: 15%; */
-    width: 100%;
-    height: 250px;
-  }
+
 
 
 
@@ -116,13 +107,15 @@
 } */
   
 .calendar th, .calendar td {
-  padding: 10px;
+  padding: 0px;
   text-align: center;
 }
 
 .calendar td.today {
-  background-color: #ffff88;
-  border: 1px solid black;
+  background-color: #f8f851;
+  border: 1.5px solid black;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+  font-weight: bold;
   
 }
 
@@ -131,15 +124,51 @@
   border: 1px solid black;
 }
 
-.calendar-widget {
+.calendar {
   background-color: #f2edcb;
-  margin-bottom: 10px;
-  border-radius: 10px;
+  margin-bottom: 0px;
+  padding-left: 0; /* Reset left padding */
+  padding-right: 0; /* Reset right padding */
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 15px; 
+  width: 120%;
+  
 }
 
-#calendar-container {
-  background-color: #f2edcb;
+@media (min-width: 768px) {
+  .calendar {
+    padding-left: 1rem; /* Adjust left padding on larger screens if needed */
+    padding-right: 1rem; /* Adjust right padding on larger screens if needed */
+  }
 }
+
+.weather-widget {
+  background: linear-gradient(to right, #6dd5ed, #14758d);
+  /* background-color: #f2edcb; */
+  color: black;
+  border-radius: 20px;
+  border-width: 3px;
+  border-color: black;
+  /* height: 15%; */
+  width: 120%;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  height: 250px;
+}
+
+/* .weather-widget:hover{
+  box-shadow: inset 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+} */
+
+#calendar-container {
+  border-radius: 15px; 
+  border: 3px solid black;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 120%;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+
 
 .calendar {
   border-collapse: collapse; /* Ensures the borders between cells are merged */
@@ -177,8 +206,27 @@
   
 }
 
-.calendar .calendar-header th {
-  padding: 10px 0; /* Adjust padding as needed */
+#loginCalendar thead th {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+#loginCalendar tbody td {
+  text-align: center;
+  padding: 0.5rem;
+  overflow: hidden; /* Prevent text from overflowing */
+  white-space: nowrap; /* Keep the content on a single line */
+}
+
+#prevMonth, #nextMonth {
+  padding: 0.25rem 0.5rem; /* Adjust as necessary */
+  box-shadow: inset 0px 0px 3px 0px black;
+  font-weight: bold;
+  background-color: #d1dad3;
+}
+
+#prevMonth:hover, #nextMonth:hover {
+  background-color: #6dd5ed;
 }
 
 #monthYear {
@@ -187,7 +235,15 @@
 
 #monthYear {
   font-weight: bold;
+  padding: 0.25rem;
+  white-space: nowrap; 
 }
+
+/* Ensure buttons do not stretch beyond the table's width */
+.calendar button {
+  max-width: none;
+}
+
 
 
 

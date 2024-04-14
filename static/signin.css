@@ -84,6 +84,13 @@ background-color: #0056b3; /* Custom color for the primary button */
   /* Ensure it overlaps the background */
 }
 
+@media (max-width: 1600px) {
+  .gif-background,
+  .gif-background2,
+  .gif-background3 {
+    display: none;
+  }
+}
 
 body {
   perspective: 1000px;

@@ -101,11 +101,11 @@ textarea {
             <div class="form-row">
                 <div class="col-md-6 form-group">
                     <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" value="username123" readonly>
+                    <input type="text" class="form-control" id="username" value="{{user.username}}" readonly>
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="userEmail">Email</label>
-                    <input type="email" class="form-control" id="userEmail" value="user@example.com" readonly>
+                    <input type="email" class="form-control" id="userEmail" value="{{user.email}}" readonly>
                 </div>
             </div>
 
@@ -113,11 +113,11 @@ textarea {
             <div class="form-row">
                 <div class="col-md-6 form-group">
                     <label for="firstName">First Name</label>
-                    <input type="text" class="form-control" id="firstName" value="John" readonly>
+                    <input type="text" class="form-control" id="firstName" value="{{user.first_name}}" readonly>
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" value="Doe" readonly>
+                    <input type="text" class="form-control" id="lastName" value="{{user.last_name}}" readonly>
                 </div>
             </div>
 
