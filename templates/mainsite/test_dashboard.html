@@ -7,6 +7,8 @@
 <title>PortuguesePro Learning Dashboard</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 <style>
   .lesson-card .card-body {
     display: flex;
@@ -49,6 +51,18 @@
   padding-left: 5rem; /* Keep your existing padding */
   flex-basis: 350px; /* Example max-width, adjust as needed */
 }
+
+#discordLogo {
+  color: #cab2fb;
+}
+
+#discordLogo:hover{
+  color: #7e61ab;
+}
+
+#discordHref {
+  text-decoration: none
+}
 </style>
 </head>
 <body>
@@ -79,7 +93,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
             <a class="dropdown-item" href="/architecture">Architecture</a>
-            <a class="dropdown-item" href="page2.html">Festivals</a>
+            <a class="dropdown-item" href="/festivals">Festivals</a>
             <a class="dropdown-item" href="page3.html">Media</a>
             <!-- More dropdown items -->
           </div>
@@ -100,6 +114,9 @@
         <!-- More nav items -->
       </ul>
       <span class="navbar-text">
+        <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
+          <i id="discordLogo" class="fab fa-discord"></i>
+      </a>
         <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
       </span>
     </div>
@@ -208,9 +225,9 @@
             
             <h2 class="card-title city-title" style="color: black; font-weight: bold; margin-top: 10px; font-family: Arial, Helvetica, sans-serif;">{{city}}</h2>
             <div style="position: absolute; top: 10%; right: 10%;">
-              <img src="{{image}}" alt="Weather Icon" style="width: 140%;">
+              <img src="{{image}}" alt="Weather Icon" style="width: 120%;">
             </div>
-            <h3 id="localTime" class="card-text" style="margin-top: 10%">{{local_time}}</h3>
+            <h3 id="localTime" class="card-text" style="margin-top: 15%">{{local_time}}</h3>
             <h4 id="liveTime"></h4>
             
             <h5 id="localTemp" class="card-text">{{temp_c}}</h5>
@@ -226,13 +243,13 @@
         <table id="loginCalendar" class="calendar">
           <thead>
             <tr>
-              <th colspan="7">
+              <th colspan="7" style="background-color: #ece092;" >
                   <button id="prevMonth">&#8592;</button>
                   <span id="monthYear"></span>
                   <button id="nextMonth">&#8594;</button>
               </th>
             </tr>
-            <tr>
+            <tr style="background-color: #ddd186;" >
                 <th>Sun</th>
                 <th>Mon</th>
                 <th>Tue</th>
@@ -255,6 +272,28 @@
     </div>
   </div>
 </div>
+
+<!-- Discord Modal -->
+<div class="modal fade" id="discordModal" tabindex="-1" role="dialog" aria-labelledby="discordModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="discordModalLabel">Join Our Discord</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              Join our discord to interact with the community
+              <a href="https://discord.gg/placeholder" target="_blank">https://discord.gg/placeholder</a>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -395,7 +434,7 @@ function markLoginDates(loginDates, date) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const weatherData = [
-        { country: 'Porto', local_time: '13th April, 2024', temp_c: '13.0°C' },
+        { country: 'Porto', local_time: '13th September, 2024', temp_c: '13.0°C' },
         { country: 'Madeira', local_time: '13th April, 2024', temp_c: '16°C'}
         // Add more cities as needed
     ];

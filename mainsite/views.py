@@ -161,6 +161,10 @@ def architecture(request):
     return render(request, 'mainsite/architecture.html')
 
 @login_required
+def festivals(request):
+    return render(request, 'mainsite/festivals.html')
+
+@login_required
 def vocab_search(request):
     # ADD VALIDATION FOR PASSING BLANK STRINGS IF NONSENSE IS INPUTTED
     query = request.GET.get('query',None)
@@ -668,7 +672,7 @@ def text_to_speech(request):
         while pygame.mixer.music.get_busy():
             time.sleep(2)
 
-        # # Clean up the audio file
+        # Clean up the audio file
         # os.remove("output.mp3")
             
         # Stop the mixer
@@ -708,6 +712,8 @@ def process_audio(request):
             with sr.AudioFile("converted_audio.wav") as source:
                 audio_data = recognizer.record(source)
                 text = recognizer.recognize_google(audio_data, language='pt-BR')
+                if os.path.exists('converted_audio.wav'):
+                    os.remove('converted_audio.wav')
                 if text == "eu sou um menino":
                     return JsonResponse({'status': 'success', 'transcript': text})
                 else:
