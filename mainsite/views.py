@@ -11,6 +11,7 @@ from random import shuffle
 from django.http import JsonResponse
 from gtts import gTTS
 import pygame
+from django.utils.dateformat import DateFormat
 import os
 import time
 from django.views.decorators.csrf import csrf_exempt
@@ -23,11 +24,22 @@ import json
 from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from datetime import date
 import csv
 # Include message for streak
 # Include English Text to Portuguese using the TTS
 
 # Create your views here.
+
+from django.utils import timezone
+
+def test_session(request):
+    now = timezone.now()
+    formatted_now = now.isoformat()
+    request.session['test_time'] = formatted_now
+    
+    retrieved_time = request.session.get('test_time', None)
+    return HttpResponse(f"Stored time: {formatted_now}, Retrieved time: {retrieved_time}")
 
 @login_required
 def weather_data(request):
@@ -50,7 +62,15 @@ def weather_data(request):
 
 @login_required
 def home(request):
+
+    user_activity_dates = [
+    DateFormat(date).format('Y-m-d') for date in UserActivity.objects.filter(
+        user=request.user,
+        date__lt=date.today()  # Using date.today() directly since date is imported
+    ).values_list('date', flat=True).distinct()
+    ]
     print("IN HOME REQUEST")
+    combined_city_data = []
     # Units
     units = Unit.objects.all()    
 
@@ -60,6 +80,18 @@ def home(request):
     current_hour = int(r['location']['localtime'].split(' ')[1].split(':')[0])
     current_date = r['location']['localtime'].split(' ')[0]
     print("Hour:", current_hour)
+    print("Current date:", current_date)
+
+    # for city_name in ['Porto', 'Madeira']:
+    #     res = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city_name))
+    #     res = res.json()
+    #     combined_city_data.append({
+    #         'city': city_name,
+    #         'temp_c': str(res['current']['temp_c']) + '°C',
+    #         # 'image': res['current']['condition']['icon'],
+    #     })
+    # print("Combined city data is:", combined_city_data)
+
     greeting = ''
     if current_hour < 12:
         greeting = "Good morning"
@@ -79,11 +111,13 @@ def home(request):
         'uname': request.session.get('uname'),
         'city': r['location']['name'],
         'country': r['location']['country'],
-        'local_time': current_date,
+        'current_date': current_date,
         'temp_c': str(r['current']['temp_c']) + '°C',
         'image': r['current']['condition']['icon'],
         'greeting': greeting,
-        'units': units
+        'units': units,
+        'combined_city_data': combined_city_data,
+        'user_activity_dates': user_activity_dates,
     }
     
     for unit in units:
@@ -163,6 +197,14 @@ def architecture(request):
 @login_required
 def festivals(request):
     return render(request, 'mainsite/festivals.html')
+
+@login_required
+def testdiacritics(request):
+    return render(request, 'mainsite/test_diacritics.html')
+
+@login_required
+def diacritics(request):
+    return render(request, 'mainsite/diacritics.html')
 
 @login_required
 def vocab_search(request):
@@ -467,7 +509,7 @@ def quiz(request, unit_id, quiz_id):
         # question_obj = user_answer.question
     print("Unanswered questions are:", unanswered_questions)
 
-    question_obj = Question.objects.filter(question_type='Speech')[0]
+    question_obj = Question.objects.filter(question_type='MCQ_Text')[0]
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
@@ -698,6 +740,7 @@ def text_to_speech(request):
 def process_audio(request):
     try:
         if request.method == 'POST':
+            result = ''
             audio_file = request.FILES['audio']
             file_name = audio_file.name
             file_extension = os.path.splitext(file_name)[1]
@@ -712,12 +755,15 @@ def process_audio(request):
             with sr.AudioFile("converted_audio.wav") as source:
                 audio_data = recognizer.record(source)
                 text = recognizer.recognize_google(audio_data, language='pt-BR')
-                if os.path.exists('converted_audio.wav'):
-                    os.remove('converted_audio.wav')
                 if text == "eu sou um menino":
-                    return JsonResponse({'status': 'success', 'transcript': text})
+                    result = 'success'
+                    
                 else:
-                    return JsonResponse({'status': 'error', 'transcript': text})
+                    result = 'error'
+                    
+            if os.path.exists('converted_audio.wav'):
+                os.remove('converted_audio.wav')
+            return JsonResponse({'status': result, 'transcript': text})
 
             
 

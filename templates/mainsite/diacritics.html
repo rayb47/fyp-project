@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'architecture.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'Logo1.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+      <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto" id="navbarUL">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="gearth.html">Vocabulary</a>
+        </li>
+        <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle active-tab" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Culture
+            </a>
+            <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+              <a class="dropdown-item" href="page1.html">Architecture</a>
+              <a class="dropdown-item" href="page2.html">Festivals</a>
+              <a class="dropdown-item" href="page3.html">Media</a>
+              <!-- More dropdown items -->
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            More
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="page1.html">Diacritics</a>
+            <a class="dropdown-item" href="page2.html">OS Language</a>
+            <a class="dropdown-item" href="page3.html">Music & More</a>
+            <!-- More dropdown items -->
+          </div>
+        <li class="nav-item">
+          <a class="nav-link" href="gearth.html">Settings</a>
+      </li>
+
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="/signout" class="settings-link">Logout</a>
+      </span>
+    </div>
+  </nav>
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portuguese Festivals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .header { color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; }
+        .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
+        .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
+        .card { 
+            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 0px ; background-color: beige; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
+        }
+        .card-header { 
+            border-top-right-radius: 10px;
+        }
+        .sub-heading { color: #343a40; font-size: 1.5rem; }
+        .intro-text { 
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            border-width: 1px;
+            border-color: black;
+            box-shadow: inset 0 0 10px 2px #000000; /* Horizontal offset, vertical offset, blur radius, spread radius, color */
+            transition: 0.8s; /* Optional: adds a transition effect when the shadow changes */
+            background-color: beige;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #usage-tips, #common-mistakes, #overview {
+            font-size: 22px;
+        }
+
+    /* Custom styles for nav-tabs */
+    .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus {
+        background-color: #007bff; /* Change this to your preferred color */
+        color: white;
+        border-color: #dee2e6 #dee2e6 #fff; /* Adjust the border color if needed */
+    }
+
+    </style>
+</head>
+<body onload="initMaps()">
+    <div class="container mt-4">
+        <h1 class="mb-4 header">Diacritics</h1>
+        <div class="intro-text" style="margin-bottom: 40px;">
+            <h2 class="sub-heading">What are Diacritics?</h2>
+            <p>Diacritics are marks placed above or below a letter to alter its sound. In Portuguese, diacritics are used to indicate stress, 
+                vowel height, nasalization, and to differentiate homographs. 
+                Understanding these can greatly improve your pronunciation and comprehension of Portuguese. Below, we shall go over the most commonly used diacritics in Portuguese,
+                as well as how they're used.
+            </p>
+        </div>
+        <section>
+            <div class="card">
+                <ul class="nav nav-tabs" id="diacriticTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="usage-tips-tab" data-bs-toggle="tab" data-bs-target="#usage-tips" type="button" role="tab" aria-controls="usage-tips" aria-selected="false">Usage Tips</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="common-mistakes-tab" data-bs-toggle="tab" data-bs-target="#common-mistakes" type="button" role="tab" aria-controls="common-mistakes" aria-selected="false">Common Mistakes</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="diacriticTabsContent">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                        <table>
+                            <tr style="background-color:rgb(202, 202, 171)">
+                                <th>Diacritic</th>
+                                <th>Function</th>
+                                <th>Examples</th>
+                            </tr>
+                            <tr>
+                                <td>Á, á (acute accent)</td>
+                                <td>Indicates stress on a syllable and changes vowel sound.</td>
+                                <td>cágado (turtle), avó (grandmother)</td>
+                            </tr>
+                            <tr>
+                                <td>Ã, ã (tilde)</td>
+                                <td>Indicates nasalization of a vowel.</td>
+                                <td>mãe (mother), pão (bread)</td>
+                            </tr>
+                            <tr>
+                                <td>Ê, ê (circumflex)</td>
+                                <td>Indicates a closed vowel.</td>
+                                <td>pêssego (peach), você (you)</td>
+                            </tr>
+                            <tr>
+                                <td>Ç, ç (cedilla)</td>
+                                <td>Indicates a soft 'c' sound before 'a', 'o', 'u'.</td>
+                                <td>coração (heart), ação (action)</td>
+                            </tr>
+                            <tr>
+                                <td>Ô, ô (circumflex)</td>
+                                <td>Indicates a stressed, closed vowel sound.</td>
+                                <td>avião (airplane), pôr (to put)</td>
+                            </tr>
+                            <tr>
+                                <td>À, à (grave accent)</td>
+                                <td>Used to denote stress and also in contractions such as à (to the) combining a preposition and a definite article.</td>
+                                <td>à noite (at night), à vontade (at ease)</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="usage-tips" role="tabpanel" aria-labelledby="usage-tips-tab">
+                        <p>Understanding when and how to use these diacritics can be challenging for learners of Portuguese. Here are some tips:</p>
+                        <ul>
+                            <li><strong>Acute Accent (á, é, í, ó, ú)</strong>: Usually marks the stressed vowel in a word. Pay attention to the pronunciation differences it causes.</li>
+                            <li><strong>Circumflex (â, ê, ô)</strong>: Generally used on vowels that are stressed and closed. It appears frequently in verb conjugations and plurals.</li>
+                            <li><strong>Tilde (ã, õ)</strong>: Always signals nasal vowels. Nasalization is a key feature in Portuguese pronunciation that can change the meaning of words.</li>
+                            <li><strong>Cedilla (ç)</strong>: Turns the pronunciation of 'c' from a 'k' sound to an 's' sound before 'a', 'o', 'u'. It's crucial for correct pronunciation of common words.</li>
+                            <li><strong>Grave Accent (à)</strong>: Typically used in prepositional contractions, understanding its use can significantly help in mastering prepositions in Portuguese.</li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="common-mistakes" role="tabpanel" aria-labelledby="common-mistakes-tab">
+                        <p>Avoid these frequent errors when using Portuguese diacritics:</p>
+                        <ul>
+                            <li>Misplacing the acute accent can lead to mispronunciations or misunderstanding, as it changes the stressed syllable of the word.</li>
+                            <li>Confusing 'ê' and 'é' can alter the meaning of words, as these denote different vowel sounds and can distinguish different verb tenses.</li>
+                            <li>Forgetting to use 'ç' can result in a completely different pronunciation, potentially confusing words like 'copo' (glass) and 'copos' (glasses).</li>
+                            <li>Overlooking the use of 'à' in prepositions can change the meaning of sentences, making it essential to grasp for proficiency in Portuguese grammar.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtutlR-5LD8Hzjs2uR1I5Sbku7_aml5pQ&callback=initMap" async defer></script>
+    <script>
+   
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

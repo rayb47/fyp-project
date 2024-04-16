@@ -1,5 +1,6 @@
 from django.db import models
 from login.models import *
+from django.utils import timezone
 
 # Create your models here.
 class Unit(models.Model):
@@ -125,6 +126,15 @@ class UserAnswers(models.Model):
 
     class Meta:
         verbose_name_plural = "User Answers"
+
+
+class UserActivity(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='activities')
+    date = models.DateField(default=timezone.now)
+    duration = models.DurationField(default=timezone.timedelta)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date} - {self.duration}"
 
 
     

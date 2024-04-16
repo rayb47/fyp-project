@@ -213,7 +213,9 @@ input[type="radio"]:checked + img {
               <input type="radio" name="quiz" value="{{option}}" {% if quiz == "{{option}}" %}checked{% endif %} hidden />
               <div class="content-container">
                 <img class="quiz-img hidden" src="{{link}}" alt="Pão" style="height:130px; width: 230px;">
-                <p class="text-center mt-2"><b>{{option}}</b></p>
+                <p class="text-center mt-2"><b>{{option}}</b><i id='correctTick{{option}}' class="far fa-check-circle correctTick" style="display:none">
+                </i><i id='incorrectTick{{option}}' 
+                  class="far fa-times-circle incorrectTick" style="display:none"></i></p>
               </div>
               </label>
           </div>
@@ -335,7 +337,10 @@ $('#submitButton').click(function() {
                   contentContainer.css('border', '4px solid #4CAF50'); // Green for correct
                   contentContainer.css('background-color', '#a9e6ac'); 
                   var buzzer = document.getElementById('correctSound');
+                  var check_mark = document.getElementById('correctTick'+selectedOptionValue);
+                  check_mark.style.display = 'inline';
                   buzzer.play();
+                  console.log(selectedOptionValue);
                   
               } else {
                   console.log('Incorrect answer, try again.');
@@ -344,6 +349,8 @@ $('#submitButton').click(function() {
                   contentContainer.css('background-color', '#e6a9a9');
                   var buzzer = document.getElementById('wrongSound');
                   buzzer.play();
+                  var check_mark = document.getElementById('incorrectTick'+selectedOptionValue);
+                  check_mark.style.display = 'inline';
               }
               $('#submitButton').text('Continue');
           },

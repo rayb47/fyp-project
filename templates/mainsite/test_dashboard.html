@@ -219,15 +219,15 @@
     </div>
     
     <div class="col-md-4 widgets-container pl-md-6">
-      <h2 style="color: white">Weather Widget</h2>
+      <h2 style="color: black; font-weight: bold">Weather Widget</h2>
       <div class="card mb-3 weather-widget">
         <div class="card-body">
             
-            <h2 class="card-title city-title" style="color: black; font-weight: bold; margin-top: 10px; font-family: Arial, Helvetica, sans-serif;">{{city}}</h2>
+            <h2 class="card-title city-title" style="color: white; font-weight: bold; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; text-shadow: 3px 3px #000000;">{{city}}</h2>
             <div style="position: absolute; top: 10%; right: 10%;">
-              <img src="{{image}}" alt="Weather Icon" style="width: 120%;">
+              <img src="https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjk4My03MDMucG5n.png" alt="Weather Icon" style="width: 120%; height:50px">
             </div>
-            <h3 id="localTime" class="card-text" style="margin-top: 15%">{{local_time}}</h3>
+            <h3 id="localTime" class="card-text" style="margin-top: 15%">{{current_date}}</h3>
             <h4 id="liveTime"></h4>
             
             <h5 id="localTemp" class="card-text">{{temp_c}}</h5>
@@ -236,7 +236,7 @@
     
       <!-- Add other widgets like activity tracker and twitter feed -->
       
-      <h2 style="color: white; margin-top: 14%;">Activity Tracker</h2>
+      <h2 style="color: black; margin-top: 14%; font-weight: bold">Activity Tracker</h2>
       <div class="card mb-3" id="calendar-container">
       <!-- <div id="calendar-container"> -->
       
@@ -294,7 +294,8 @@
   </div>
 </div>
 
-
+{{ user_activity_dates|json_script:"activity-data" }}
+{{ combined_city_data|json_script:"weather-data" }}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -381,7 +382,7 @@ function updateCalendar(date) {
     document.getElementById('monthYear').textContent = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
 
     // Assume loginDates are fetched or defined here
-    const loginDates = ['2024-02-20', '2024-02-21', '2023-09-18', '2024-03-03', '2024-03-04', '2024-03-01'];
+    const loginDates = JSON.parse(document.getElementById('activity-data').textContent);;
     markLoginDates(loginDates, date);
 }
 
@@ -454,16 +455,37 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateWeatherWidget, 5000); // Update every 5000 milliseconds (5 seconds)
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetch('/weather_data')
-        .then(response => response.json())
-        .then(data => {
-            // 'data' contains the weather data from your Django view
-            console.log(data.data); // Access the 'data' key of the JSON response
-            // Process and display this data as needed
-        })
-        .catch(error => console.error('Error fetching weather data:', error));
-});
+// ---- WORKING CODE ---------
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Access the data from the json_script output
+//     const weatherData = JSON.parse(document.getElementById('weather-data').textContent);
+
+//     let currentIndex = 0;
+
+//     function updateWeatherWidget() {
+//         const data = weatherData[currentIndex];
+//         document.querySelector('.city-title').innerHTML = `${data.city}`; // changed from country to city
+//         document.querySelector('#localTime').innerHTML = `13th September, 2024`; // Assuming you'll add local time
+//         document.querySelector('#localTemp').innerHTML = `${data.temp_c}`;
+//         // Assuming the image element has a specific class for targeting
+//         // document.querySelector('.weather-icon').src = `https:${data.image}`;
+//         console.log(weatherData.length);
+//         currentIndex = (currentIndex + 1) % weatherData.length; // Loop back to the first city
+//     }
+
+//     setInterval(updateWeatherWidget, 5000); // Update every 5000 milliseconds (5 seconds)
+// });
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     fetch('/weather_data')
+//         .then(response => response.json())
+//         .then(data => {
+//             // 'data' contains the weather data from your Django view
+//             console.log(data.data); // Access the 'data' key of the JSON response
+//             // Process and display this data as needed
+//         })
+//         .catch(error => console.error('Error fetching weather data:', error));
+// });
 </script>
 </body>
 </html>

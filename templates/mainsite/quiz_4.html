@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz - Unit 3: Food And Drink</title>
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <style>
     .quiz-container {
       max-width: 700px;
@@ -113,8 +114,8 @@
 
     /* Styling for label when the adjacent radio button is checked */
     input[type="radio"]:checked + label {
-        border: 4px solid #c4c71e;
-        background-color: #feffd2;
+        border: 4px solid #c4c72a;
+        background-color: #ebec98;
         /* Right */
         /* border: 2px solid #1ae245;
         background-color: #dcffdd; */
@@ -206,7 +207,11 @@
             {% for option in options %}
             <li>
                 <input type="radio"  id="option{{forloop.counter}}" name="quiz" value="{{option}}">
-                <label class="mcq_option" for="option{{forloop.counter}}"><b>{{option}}</b></label>
+                <label class="mcq_option" for="option{{forloop.counter}}"><b>{{option}}
+                </b></label>
+                <i id='correctTick{{option}}' class="far fa-check-circle correctTick" style="display:none">
+                </i><i id='incorrectTick{{option}}' 
+                  class="far fa-times-circle incorrectTick" style="display:none"></i>
             </li>
             {% endfor %}
 
@@ -268,10 +273,12 @@ $(document).ready(function() {
               data: formData,
               success: function(response) {
                   var selectedLabel = $('input[type="radio"][name="quiz"]:checked').next('label');
-
+                  var selectedOptionValue = $('input[type="radio"][name="quiz"]:checked').val();
                   // Assuming response.is_correct is a boolean and response.message contains the feedback
                   if (response.is_correct) {
-                      
+                      // console.log(selectedOptionValue);
+                      var check_mark = document.getElementById('correctTick'+selectedOptionValue);
+                      check_mark.style.display = 'inline';
                       // Optionally, play a sound for correct answer
                       $('#correctSound')[0].play();
                       selectedLabel.css({
@@ -279,7 +286,8 @@ $(document).ready(function() {
                         'background-color': '#e7ffe7' // Light green background
                     });
                   } else {
-                      
+                      var check_mark = document.getElementById('incorrectTick'+selectedOptionValue);
+                      check_mark.style.display = 'inline';
                       // Optionally, play a sound for incorrect answer
                       $('#wrongSound')[0].play();
                       selectedLabel.css({

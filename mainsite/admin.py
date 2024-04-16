@@ -71,6 +71,12 @@ class UserAnswersAdmin(admin.ModelAdmin):
 
 admin.site.register(UserAnswers, UserAnswersAdmin)
 
+class UserActivityAdmin(admin.ModelAdmin):
+    list_display = ('user', 'date', 'duration')  # Fields to display in the admin list view
+    search_fields = ('user', 'date', 'duration')  # Fields to search in the admin list view
+
+admin.site.register(UserActivity, UserActivityAdmin)
+
 
 
 
