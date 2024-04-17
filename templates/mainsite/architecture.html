@@ -6,8 +6,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PortuguesePro Learning Dashboard</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<style>
+  .map2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 600px; /* Adjusted for visibility of smaller cube */
+      perspective: 1200px; /* Slightly reduced for better 3D effect */
+  }
+
+  .header { color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; }
+        .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
+        .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
+        .card { 
+            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 0px ; background-color: beige;
+        }
+        .card-header { 
+            border-top-right-radius: 10px;
+        }
+        .map { border-radius: 10px; }
+        .map { height: 250px; width: 100%; } /* Fixed height and full width for maps */
+        .carousel-item { height: 250px; background: #ccc; }
+        .carousel-item img { height: 250px; width: auto; margin: auto; }
+        .sub-heading { color: #343a40; font-size: 1.5rem; }
+        .intro-text { 
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            border-width: 1px;
+            border-color: black;
+            box-shadow: inset 0 0 10px 2px #000000; /* Horizontal offset, vertical offset, blur radius, spread radius, color */
+            transition: 0.8s; /* Optional: adds a transition effect when the shadow changes */
+            background-color: beige;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .img-fluid {
+            margin-top: 25px;
+            border: 2px solid black;
+            width: 100%;
+            height: 88%;
+        }
+  
+  #cube {
+      width: 300px; /* Decreased from 400px */
+      height: 300px; /* Decreased from 400px */
+      position: relative;
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+      transform: rotateX(var(--rotation-x)) rotateY(var(--rotation-y));
+  }
+  
+  .face {
+      position: absolute;
+      width: 300px; /* Decreased from 400px */
+      height: 300px; /* Decreased from 400px */
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      border: 1px solid red;
+      backface-visibility: hidden;
+      box-shadow: 0 0 20px 0 rgba(255, 0, 0, 0.5);
+  }
+  
+  .front  { background-image: url('https://admin.expatica.com/pt/wp-content/uploads/sites/8/2023/11/rock-in-rio-lisboa.jpg'); transform: rotateY(0deg) translateZ(150px); }
+  .back   { background-image: url('https://cms-files.carlomonteiro.pt/CARLOMONTEIRO_images/2020/02/27/1024_720/EN__20200227184934_1367381999.jpg'); transform: rotateY(180deg) translateZ(150px); }
+  .right  { background-image: url('https://admin.expatica.com/pt/wp-content/uploads/sites/8/2023/11/feast-day-saint-anthony-lisbon.jpg'); transform: rotateY(90deg) translateZ(150px); }
+  .left   { background-image: url('https://admin.expatica.com/pt/wp-content/uploads/sites/8/2023/11/carnival-portugal.jpg'); transform: rotateY(-90deg) translateZ(150px); }
+  .top    { background-image: url('https://www.transitionsabroad.com/listings/travel/narrative_travel_writing/images/mexico-semanasanta-cross.jpg'); transform: rotateX(90deg) translateZ(150px); }
+  .bottom { background-image: url('https://ovilaverdense.b-cdn.net/2023/04/Festa-das-Cruzes-5.jpg'); transform: rotateX(-90deg) translateZ(150px); }
+  
+  @keyframes rotateCube {
+      from { transform: rotateX(0deg) rotateY(0deg); }
+      to { transform: rotateX(360deg) rotateY(360deg); }
+  }
+
+  .bottomLine {
+    background-color:rgb(253, 175, 175);
+    margin-top: 92%;
+    color: white;
+    font-weight: bold;
+    -webkit-user-select: none;  /* Chrome, Safari, Opera */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* Internet Explorer/Edge */
+    user-select: none;  
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  a {
+    color: rgb(0, 4, 255);
+  }
+  </style>
+  
+  
+  
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
@@ -61,11 +156,34 @@
   </nav>
 
   <div class="container mt-4">
-    <h1 class="mb-4 heading">Portuguese Architecture</h1>
+    <h1 class="mb-4 heading">Portuguese Festivals</h1>
     <div class="card mb-3 culture-card">
-      <div class="card-body">
-        <p class="card-text">Portugal boasts several scores of medieval castles, as well as the ruins of several villas and forts from the period of Roman occupation. Romanesque and Gothic influences have given Portugal some of its greatest cathedrals, and in the late 16th century a national style—Arte Manuelina—was synthesized by adapting several forms into a luxuriantly ornamented whole. </p>
-        <p class="card-text">Outstanding examples of Portuguese architecture include the ornate Manueline-style Jerónimos Monastery in Lisbon; the Sé (cathedral) of Lisbon, in the facade of which the remains of Roman construction may still be seen; the Palace of Justice in Lisbon, a fine, soaring example of austere modern architecture; the castle and church of the Convent of Christ in Tomar; the late Portuguese Gothic abbey of Santa Maria da Vitória in Batalha; the granite Tower of the Clerics in Porto; and Braga’s Romanesque cathedral. Lisbon’s Baixa neighbourhood, in Pombaline style (named for Sebastião de Carvalho, marquês de Pombal, who rebuilt Lisbon after the 1755 earthquake), remains admirable today. As modern cities have expanded, there has been a revival of interest in traditional domestic and folk architecture, as is found in the hand-hewn stones of the Beiras, the low farms of the Alentejo, and the cottage chimneys in the Algarve.</p>
+      <div class="card-body" style="display: flex;">
+        <!-- <p class="card-text">Portugal boasts several scores of medieval castles, as well as the ruins of several villas and forts from the period of Roman occupation. Romanesque and Gothic influences have given Portugal some of its greatest cathedrals, and in the late 16th century a national style—Arte Manuelina—was synthesized by adapting several forms into a luxuriantly ornamented whole. </p> -->
+        <p style="width:100%; margin-top:20px; font-size: 19px;" class="card-text">Portugal is a nation that takes great pride in its festivals, which vividly reflect its 
+          rich heritage and past culture.
+          These nationwide festivals encompass a wide range of activities, from religious rites to secular revelries, all imbued with a distinct regional identity 
+          and a sense of community. Portuguese villages and cities come alive with celebrations all year long, featuring ornate parades, traditional music and dancing, 
+          and an abundance of regional cuisine. These celebrations unite communities and provide a sense of cultural pride and belonging while also honoring historical 
+          and religious customs. These festivities provide tourists with a rare glimpse into Portugal's essence, exhibiting a vibrant and vibrant manifestation of the 
+          country's history and the friendly hospitality of its populace. <br><br><span style="font-weight: 700; font-size: 14px; color: rgb(16, 16, 180);">Rotate the cube on the right to view images of 
+            some common Portuguese festivals.<br>Click on their names to learn more.</span></p>
+        <div class="map2" style="margin-left: 5%; margin-right: 5%; height: 380px;">
+          <div id="cube" style="background-color: green;">
+              <div class="face front"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a href="https://en.wikipedia.org/wiki/Rock_in_Rio" target="_blank">1. Rock in Rio Lisboa</a></center></div></div>
+              <div class="face back"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a href="https://en.wikipedia.org/wiki/Anthony_of_Padua" target="_blank">3. Sao Joao</a></center></div></div>
+              <div class="face right"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a href="https://en.wikipedia.org/wiki/Anthony_of_Padua" target="_blank">2. Feast Day of Saint Anthony</a></center></div></div>
+              <div class="face left"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a target="_blank">4. Carnival</a></center></div></div>
+              <div class="face top"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a target="_blank">5. Semana Santa</a></center></div></div>
+              <div class="face bottom"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a target="_blank">6. Festa Das Cruzes</a></center></div></div>
+          </div>
+      </div>
       </div>
       <!-- <div class="cubebox" style="display: flex; justify-content: center; align-items: center; height: 400px;">
         <div id="cube">
@@ -87,6 +205,115 @@
 
       <!-- </div> -->
     </div> 
+
+    <section>
+      <div class="card">
+          <div class="row g-0">
+
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-12">
+                  <div class="card-header" style="border-top-right-radius: 10px;">Madeira's Flower Festival</div>
+                  <div class="row">
+                      <div class="col-md-8">
+                          <div class="card-body">
+                              <p class="card-text">The festival marks the arrival of spring with a spectacular parade of floats adorned with countless varieties of flowers. This colorful celebration fills Funchal with melodious music and vibrant decorations, drawing visitors from around the globe.</p>
+                              <p class="card-text"><strong>Dates:</strong> April 23 - May 30</p>
+                          </div>
+                      </div>
+                      <div class="col-md-4 img-div">
+                          <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
+                          alt="Madeira's Flower Festival" class="img-fluid"
+                          > <!-- Placeholder image -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="card">
+          <div class="row g-0">
+              <!-- Map on the left -->
+              <div class="col-md-3">
+                  <div class="map" id="festivalMap2" style="height: 300px;"></div> <!-- Map container -->
+              </div>
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-9">
+                  <div class="card-header" style="border-top-right-radius: 10px;">Madeira's Flower Festival</div>
+                  <div class="row">
+                      <div class="col-md-8">
+                          <div class="card-body">
+                              <p class="card-text">The festival marks the arrival of spring with a spectacular parade of floats adorned with countless varieties of flowers. This colorful celebration fills Funchal with melodious music and vibrant decorations, drawing visitors from around the globe.</p>
+                              <p class="card-text"><strong>Dates:</strong> April 23 - May 30</p>
+                          </div>
+                      </div>
+                      <div class="col-md-4 img-div">
+                          <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
+                          alt="Madeira's Flower Festival" class="img-fluid"
+                          > <!-- Placeholder image -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="card">
+          <div class="row g-0">
+              <!-- Map on the left -->
+              <div class="col-md-3">
+                  <div class="map" id="festivalMap3" style="height: 300px;"></div> <!-- Map container -->
+              </div>
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-9">
+                  <div class="card-header" style="border-top-right-radius: 10px;">Madeira's Flower Festival</div>
+                  <div class="row">
+                      <div class="col-md-8">
+                          <div class="card-body">
+                              <p class="card-text">The festival marks the arrival of spring with a spectacular parade of floats adorned with countless varieties of flowers. This colorful celebration fills Funchal with melodious music and vibrant decorations, drawing visitors from around the globe.</p>
+                              <p class="card-text"><strong>Dates:</strong> April 23 - May 30</p>
+                          </div>
+                      </div>
+                      <div class="col-md-4 img-div">
+                          <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
+                          alt="Madeira's Flower Festival" class="img-fluid"
+                          > <!-- Placeholder image -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="card">
+          <div class="row g-0">
+              <!-- Map on the left -->
+              <div class="col-md-3">
+                  <div class="map" id="festivalMap4" style="height: 300px;"></div> <!-- Map container -->
+              </div>
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-9">
+                  <div class="card-header" style="border-top-right-radius: 10px;">Madeira's Flower Festival</div>
+                  <div class="row">
+                      <div class="col-md-8">
+                          <div class="card-body">
+                              <p class="card-text">The festival marks the arrival of spring with a spectacular parade of floats adorned with countless varieties of flowers. This colorful celebration fills Funchal with melodious music and vibrant decorations, drawing visitors from around the globe.</p>
+                              <p class="card-text"><strong>Dates:</strong> April 23 - May 30</p>
+                          </div>
+                      </div>
+                      <div class="col-md-4 img-div">
+                          <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
+                          alt="Madeira's Flower Festival" class="img-fluid"
+                          > <!-- Placeholder image -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+      
+      
+      <!-- Additional festival cards with similar layout -->
+  </section>
 
     <div class="card mb-3 culture-card">
       <div class="card-body">
@@ -149,5 +376,47 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const cube = document.getElementById('cube');
+      let isDragging = false;
+      let previousMousePosition = {
+          x: 0,
+          y: 0
+      };
+  
+      const rotate = (event) => {
+          if (isDragging) {
+              const deltaX = event.clientX - previousMousePosition.x;
+              const deltaY = event.clientY - previousMousePosition.y;
+  
+              const rotationX = parseInt(getComputedStyle(cube).getPropertyValue('--rotation-x')) || 0;
+              const rotationY = parseInt(getComputedStyle(cube).getPropertyValue('--rotation-y')) || 0;
+  
+              cube.style.setProperty('--rotation-x', rotationX - deltaY + 'deg');
+              cube.style.setProperty('--rotation-y', rotationY + deltaX + 'deg');
+  
+              previousMousePosition = {
+                  x: event.clientX,
+                  y: event.clientY
+              };
+          }
+      };
+  
+      cube.addEventListener('mousedown', (event) => {
+          isDragging = true;
+          previousMousePosition = {
+              x: event.clientX,
+              y: event.clientY
+          };
+      });
+  
+      document.addEventListener('mousemove', rotate);
+  
+      document.addEventListener('mouseup', () => {
+          isDragging = false;
+      });
+  });
+  </script>
 </body>
 </html>

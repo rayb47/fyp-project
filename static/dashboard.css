@@ -143,7 +143,7 @@
 }
 
 .weather-widget {
-  background: linear-gradient(to right, #6dd5ed, #14758d);
+  background: linear-gradient(to left, #6dd5ed, #19829c);
   /* background-color: #f2edcb; */
   color: black;
   border-radius: 20px;
