@@ -22,6 +22,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'portupro24@gmail.com'
 EMAIL_HOST_PASSWORD = 'xxkg wlwz hrck zdot'
+USE_HTTPS = False
 
 LOGIN_URL = 'login:signin'
 

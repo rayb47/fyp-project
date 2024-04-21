@@ -14,17 +14,17 @@
 <body>
 
 <img class="gif-background" src="{% static 'Image1.png' %}" alt="GIF" class="gif">
-<img class="gif-background2" src="{% static 'Bem-Vindo PPT.png' %}" alt="GIF" class="gif">
-<img class="gif-background3" src="{% static 'Welcome PPT.png' %}" alt="GIF" class="gif">
+<img class="gif-background2" src="{% static 'Bem-Vindo Text (2).png' %}" alt="GIF" class="gif">
+<img class="gif-background3" src="{% static 'Welcome Text (2).png' %}" alt="GIF" class="gif">
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card" id="login-card">
         <div class="card-body">
           <div class="text-center mb-4">
-            <img src="{% static 'Cock Logo1.png' %}" class="mb-4" alt="Portuguese Flag" style="width: 200px; height: 150px;"> <!-- Adjust size as needed -->
+            <img src="{% static 'Cock Logo.png' %}" class="mb-4" alt="Portuguese Flag" style="width: 200px; height: 150px;"> <!-- Adjust size as needed -->
             <h1><b><span class="text-green" style="color:green">Portu</span><span class="text-red" style="color:rgb(202, 41, 41)">Pro</span></b></h1>
-            <p>A Portuguese language learning website to help you sharpen and develop your Portuguese. Enter your login details below.</p>
+            <p>A Portuguese language learning website to help you sharpen and develop your Portuguese. <br><span style="font-weight: bold"> Enter your login details below.</span></p>
           </div>
           
           <form action="signin" method="post">
@@ -54,16 +54,16 @@
                 </div>
               </div>
 
-            <div class="checkbox mb-3">
+            <!-- <div class="checkbox mb-3">
               <label>
                 <input type="checkbox" name="remember-me" value="remember-me"> Remember me
               </label>
-            </div>
+            </div> -->
             
-            <center><button class="btn btn-lg btn-primary btn-block" type="submit" id="loginBtn">Login</button></center>
+            <center><button class="btn btn-lg btn-primary btn-block" type="submit" id="loginBtn" style="margin-top:10px">Login</button></center>
             <div class="mt-3">
               <!-- <a href="{% url 'login:password_reset' %}">Forgot Password?</a> -->
-              <a href="#" data-bs-toggle="modal" data-bs-target="#passwordResetModal">Forgot Password?</a>
+              <center><a href="#" data-bs-toggle="modal" data-bs-target="#passwordResetModal">Forgot Password?</a></center>
             </div>
           </form>
           

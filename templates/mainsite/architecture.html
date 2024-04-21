@@ -24,9 +24,6 @@
         .card { 
             margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 0px ; background-color: beige;
         }
-        .card-header { 
-            border-top-right-radius: 10px;
-        }
         .map { border-radius: 10px; }
         .map { height: 250px; width: 100%; } /* Fixed height and full width for maps */
         .carousel-item { height: 250px; background: #ccc; }
@@ -96,6 +93,13 @@
     border-bottom-right-radius: 10px;
   }
 
+  .card-body {
+    -webkit-user-select: none;  /* Chrome, Safari, Opera */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* Internet Explorer/Edge */
+    user-select: none;
+  }
+
   a {
     color: rgb(0, 4, 255);
   }
@@ -107,50 +111,49 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <a class="navbar-brand" href="#">
-      <img src="{% static 'Logo1.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+      
+      <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
       <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
+      
     </a>
-    
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto" id="navbarUL">
-        <li class="nav-item">
-          <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        <li class="nav-item active">
+          <a class="nav-link nb-item" href="/home">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="gearth.html">Vocabulary</a>
-        </li>
-        <li class="nav-item dropdown active">
-            <a class="nav-link dropdown-toggle active-tab" href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Culture
-            </a>
-            <div class="dropdown-menu" aria-labelledby="cultureDropdown">
-              <a class="dropdown-item" href="page1.html">Architecture</a>
-              <a class="dropdown-item" href="page2.html">Festivals</a>
-              <a class="dropdown-item" href="page3.html">Media</a>
-              <!-- More dropdown items -->
-            </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            More
+          <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/vocab">Vocabulary</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">Analytics</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
+  </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link active-tab dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Culture
           </a>
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
-            <a class="dropdown-item" href="page1.html">Diacritics</a>
-            <a class="dropdown-item" href="page2.html">OS Language</a>
-            <a class="dropdown-item" href="page3.html">Music & More</a>
+            <a class="dropdown-item" href="/architecture">Architecture</a>
+            <a class="dropdown-item" href="/festivals">Festivals</a>
+            <a class="dropdown-item" href="page3.html">Media</a>
             <!-- More dropdown items -->
           </div>
-        <li class="nav-item">
-          <a class="nav-link" href="gearth.html">Settings</a>
       </li>
-
+      <li class="nav-item">
+        <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
+    </li>
         <!-- More nav items -->
       </ul>
       <span class="navbar-text">
-        <a href="/signout" class="settings-link">Logout</a>
+        <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
+          <i id="discordLogo" class="fab fa-discord"></i>
+      </a>
+        <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
       </span>
     </div>
   </nav>
@@ -213,18 +216,53 @@
               
               <!-- Heading, text, and picture on the right -->
               <div class="col-md-12">
-                  <div class="card-header" style="border-top-right-radius: 10px;">Madeira's Flower Festival</div>
+                  <div class="card-header" style="border-top-right-radius: 10px; border-top-left-radius: 10px;">1. Rock in Rio</div>
                   <div class="row">
-                      <div class="col-md-8">
+                      <div class="col-md-12">
                           <div class="card-body">
-                              <p class="card-text">The festival marks the arrival of spring with a spectacular parade of floats adorned with countless varieties of flowers. This colorful celebration fills Funchal with melodious music and vibrant decorations, drawing visitors from around the globe.</p>
-                              <p class="card-text"><strong>Dates:</strong> April 23 - May 30</p>
+                              <p class="card-text">Rock in Rio is one of the world's largest and most famous music festivals originally founded in 
+                                Rio de Janeiro, Brazil in 1985. As time passed, it has also become a prominent event in Portugal where it has been held 
+                                every 2 years, since 2004. The festival is renowned for being held on a large scale, drawing top international artists across 
+                                various music genres, from rock and pop, to electronic and indie.
+                              </p>
+                              <p class="card-text"><strong>Location:</strong> It is held in Lisbon, usually at the Parque de Bela Vista, which is a large 
+                                park that can accomodate the expansive stages, audience areas and entertainment zones that are required to host the festival.
+                                
+                              <p class="card-text"><strong>Dates:</strong> Not fixed, but usually in the month of September.</p>
+                              
                           </div>
                       </div>
-                      <div class="col-md-4 img-div">
+                      <!-- <div class="col-md-4 img-div">
                           <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
                           alt="Madeira's Flower Festival" class="img-fluid"
-                          > <!-- Placeholder image -->
+                          >
+                      </div> -->
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="card">
+          <div class="row g-0">
+        
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-12">
+                  <div class="card-header" style="border-top-right-radius: 10px;">2. Feast Day of St. Anthony</div>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="card-body">
+                              <p class="card-text">Also known as 'Dia de Santo António', the Feast Day of St. Anthony is one of Portugal's most cherished
+                                festivals where St.Anthony is considered the Patron Saint of lovers and the protector of lost items. The festival combines religious observance
+                                with popular festivities that reflect the deep cultural heritage and community spirit among the people.
+                              </p>
+                              <p>
+                                One of the unique aspects of the Feast Day of Saint Anthony is the mass wedding ceremony, also known as 'Casamentos de Santa António' (Saint Anthony's Weddings).
+                                Every year, several selected couples are married simultaneously in a high-profile event that symbolizes love and community. Saint Anthony is revered as the
+                                match-maker saint, which makes these weddings particularly meaningful.
+                              </p>
+                              <p class="card-text"><strong>Location:</strong> Celebrated all over Portugal, but most ferevently in Lisbon, as that is Saint Anthony's place of birth.</p>
+                              <p class="card-text"><strong>Dates:</strong> June 13</p>
+                          </div>
                       </div>
                   </div>
               </div>
@@ -232,51 +270,26 @@
       </div>
       <div class="card">
           <div class="row g-0">
-              <!-- Map on the left -->
-              <div class="col-md-3">
-                  <div class="map" id="festivalMap2" style="height: 300px;"></div> <!-- Map container -->
-              </div>
               
               <!-- Heading, text, and picture on the right -->
-              <div class="col-md-9">
-                  <div class="card-header" style="border-top-right-radius: 10px;">Madeira's Flower Festival</div>
+              <div class="col-md-12">
+                  <div class="card-header" style="border-top-right-radius: 10px;">3. São João</div>
                   <div class="row">
-                      <div class="col-md-8">
+                      <div class="col-md-12">
                           <div class="card-body">
-                              <p class="card-text">The festival marks the arrival of spring with a spectacular parade of floats adorned with countless varieties of flowers. This colorful celebration fills Funchal with melodious music and vibrant decorations, drawing visitors from around the globe.</p>
-                              <p class="card-text"><strong>Dates:</strong> April 23 - May 30</p>
+                              <p class="card-text">The São João festival is one of Portugal's most lively and colorful celebrations. It honors Saint John the Baptist and marks the
+                                beginning of the Summer season. It is characterized by a mix of religious and traditional festivities, which make it a significant cultural event with deep
+                                roots in Portuguese tradition.
+                              </p>
+                              <p>
+                                Keeping with ancient tradition, bonfires are a central part of São João, around which people gather to celebrate, sing and jump over the flames as a symbol of
+                                protection and purification. One of the more amusing and unique traditions is the use of soft plastic hammers. Festival-goers playfully hit each other on the head
+                                with these hammers to create a friendly and joyful reaction amongst themselves.
+                              </p>
+                              <p class="card-text"><strong>Location:</strong> Mainly celebrated in Porto, and also other parts of Northern Portugal like Braga and Vila do Conde, although
+                              on a smaller scale.</p>
+                              <p class="card-text"><strong>Dates:</strong> June 23</p>
                           </div>
-                      </div>
-                      <div class="col-md-4 img-div">
-                          <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
-                          alt="Madeira's Flower Festival" class="img-fluid"
-                          > <!-- Placeholder image -->
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="card">
-          <div class="row g-0">
-              <!-- Map on the left -->
-              <div class="col-md-3">
-                  <div class="map" id="festivalMap3" style="height: 300px;"></div> <!-- Map container -->
-              </div>
-              
-              <!-- Heading, text, and picture on the right -->
-              <div class="col-md-9">
-                  <div class="card-header" style="border-top-right-radius: 10px;">Madeira's Flower Festival</div>
-                  <div class="row">
-                      <div class="col-md-8">
-                          <div class="card-body">
-                              <p class="card-text">The festival marks the arrival of spring with a spectacular parade of floats adorned with countless varieties of flowers. This colorful celebration fills Funchal with melodious music and vibrant decorations, drawing visitors from around the globe.</p>
-                              <p class="card-text"><strong>Dates:</strong> April 23 - May 30</p>
-                          </div>
-                      </div>
-                      <div class="col-md-4 img-div">
-                          <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
-                          alt="Madeira's Flower Festival" class="img-fluid"
-                          > <!-- Placeholder image -->
                       </div>
                   </div>
               </div>

@@ -272,9 +272,9 @@
   }
   /* Add more custom styles as needed */
 
-  #navbarNav {
+  /* #navbarNav {
     height: 70px;
-  }
+  } */
 
   #navbarUL {
     margin-left: 60px;
@@ -369,6 +369,8 @@
   box-shadow:  inset 0px 0px 5px 0px black;
   
 }
+
+
 
 .mcq_option {
   border-radius: 5px;

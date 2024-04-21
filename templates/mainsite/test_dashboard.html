@@ -63,6 +63,11 @@
 #discordHref {
   text-decoration: none
 }
+
+#closeModal:hover {
+  background-color: rgb(224, 107, 107);
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -79,7 +84,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto" id="navbarUL">
         <li class="nav-item active">
-          <a class="nav-link active-tab nb-item" href="men_tester.html">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link active-tab nb-item" href="/home">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/vocab">Vocabulary</a>
@@ -87,6 +92,9 @@
       <li class="nav-item">
         <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">Analytics</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
+  </li>
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Culture
@@ -98,16 +106,6 @@
             <!-- More dropdown items -->
           </div>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle nb-item"  style="color: rgb(232, 255, 255);" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          More
-        </a>
-        <div class="dropdown-menu" aria-labelledby="cultureDropdown">
-          <a class="dropdown-item" href="page1.html">Diacritics</a>
-          <a class="dropdown-item" href="page2.html">OS Language</a>
-          <a class="dropdown-item" href="page3.html">Music & More</a>
-          <!-- More dropdown items -->
-        </div>
       <li class="nav-item">
         <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
     </li>
@@ -155,14 +153,14 @@
         <!-- Modal -->
         <div class="modal fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="quizModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: #e5db93;">
             <div class="modal-header">
-                <h5 class="modal-title" id="quizModalLabel">Quiz List</h5>
+                <h5 class="modal-title" id="quizModalLabel"><b>Quiz List</b></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="background-color: #f2edcb;">
                 <ul class="list-group">
                 <!-- Quiz 1 -->
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -207,7 +205,7 @@
                 </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" id='closeModal' data-dismiss="modal" ><b>Close</b></button>
                 <!-- You can add additional buttons if needed -->
             </div>
             </div>
@@ -225,12 +223,12 @@
             
             <h2 class="card-title city-title" style="color: white; font-weight: bold; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; text-shadow: 3px 3px #000000;">{{city}}</h2>
             <div style="position: absolute; top: 10%; right: 10%;">
-              <img src="https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjk4My03MDMucG5n.png" alt="Weather Icon" style="width: 120%; height:50px">
+              <img src="{{image}}" alt="Weather Icon" style="width: 120%; background-color: rgb(0, 0, 0); border-radius: 15px; box-shadow: inset 0 0 10px 0px rgb(28, 185, 224);">
             </div>
             <h3 id="localTime" class="card-text" style="margin-top: 15%">{{current_date}}</h3>
             <h4 id="liveTime"></h4>
             
-            <h5 id="localTemp" class="card-text">{{temp_c}}</h5>
+            <h5 id="localTemp" class="card-text" style=" color: white; text-shadow: 3px 3px #000000;">{{temp_c}}</h5>
         </div>
       </div>
     

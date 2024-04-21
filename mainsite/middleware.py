@@ -23,7 +23,7 @@ class UserActivityMiddleware(MiddlewareMixin):
                     
                     if not activity_today.exists():
                         # Create a new activity record if one doesn't exist for today
-                        UserActivity.objects.create(user=request.user, date=now, duration=duration)
+                        UserActivity.objects.create(user=request.user, date=now)
 
             # Update the last activity time
             request.session[session_key] = now.isoformat()

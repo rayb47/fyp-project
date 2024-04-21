@@ -10,13 +10,17 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from .tokens import account_activation_token
+from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
+from django.contrib.auth.password_validation import validate_password
 from django.utils.encoding import force_str
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.tokens import default_token_generator
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetConfirmView
+from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 
 
 # Create your views here.
@@ -32,7 +36,7 @@ def signup(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        confirm_password = request.POST.get('confirmPassword')
+        confirm_password = request.POST.get('passwordConfirm')
 
         study_frequency = request.POST.get('frequencyUnit')
         study_frequency_amount = request.POST.get('studyFrequency')
@@ -57,22 +61,28 @@ def signup(request):
             'language_no': request.POST.get('languageNo'),
         }
 
-        # print("username:", username, "email:", email, "password:", password)
+        # print("use
+        # rname:", username, "email:", email, "password:", password)
         # print("study_frequency:", study_frequency, "study_frequency_amount:", study_frequency_amount)
         # print(beginner_lvl, intermediate_lvl, advanced_lvl, language_yes, language_no)
 
         # Check if the username already exists
         if CustomUser.objects.filter(username=form_data['username']).exists():
-            messages.error(request, "Username already exists")
-            # Render the template with form_data to repopulate the form fields
-            return render(request, 'login/signup.html', {'form_data': form_data})
+            # messages.error(request, "Username already exists")
+            # # Render the template with form_data to repopulate the form fields
+            # return render(request, 'login/signup.html', {'form_data': form_data})
+            return JsonResponse({'status': 'error', 'message': 'Username already exists'}, status=400)
         
+        if password != confirm_password:
+            return JsonResponse({'status': 'error', 'message': 'Passwords do not match'}, status=400)
         
-        # subject = 'Hello'
-        # message = 'Hello there. This is an email message.'
-        # email_from = settings.EMAIL_HOST_USER
-        # recipient_list = ['raynellb47@gmail.com',]
-        # send_mail( subject, message, email_from, recipient_list )
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            return JsonResponse({'status': 'error', 'message': e.messages}, status=400)
+
+
+
 
 
         try:
@@ -105,22 +115,52 @@ def signup(request):
         try:
             myuser.save()
             print("User Saved YESSSS")
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your account on MySite'
+            # message = render_to_string('login/acc_active_email.html', {
+            #     'user': myuser,
+            #     'domain': current_site.domain,
+            #     'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
+            #     'token': account_activation_token.make_token(myuser),
+            # })
+
+            # print(message)
+            
+            # email = EmailMessage(mail_subject, message, settings.EMAIL_HOST_USER, [email])
+            # email.content_subtype = "html"
+            # email.send()
+            subject = 'Activate your account on MySite'
+            from_email = settings.EMAIL_HOST_USER
+            protocol = 'https' if settings.USE_HTTPS else 'http'
+            to = [email]
+            text_content = 'Please confirm your email address to complete the registration.'
+            html_content = render_to_string('login/acc_active_email.html', {
+                'user': myuser,
+                'domain': f'{protocol}://{current_site.domain}',
+                'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
+                'token': account_activation_token.make_token(myuser),
+            })
+
+            email = EmailMultiAlternatives(subject, text_content, from_email, to)
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+            return JsonResponse({'status': 'success', 'message': 'Please confirm your email address to complete the registration'})
         except Exception as e:
             print(e)
-            print("Inside the except")
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
             return
         
         # Generate and send activation email
-        current_site = get_current_site(request)
-        mail_subject = 'Activate your account on MySite'
-        message = render_to_string('login/acc_active_email.html', {
-            'user': myuser,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-            'token': account_activation_token.make_token(myuser),
-        })
-        send_mail(mail_subject, message, settings.EMAIL_HOST_USER, [email])
-        return HttpResponse('Please confirm your email address to complete the registration')
+        # current_site = get_current_site(request)
+        # mail_subject = 'Activate your account on MySite'
+        # message = render_to_string('login/acc_active_email.html', {
+        #     'user': myuser,
+        #     'domain': current_site.domain,
+        #     'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
+        #     'token': account_activation_token.make_token(myuser),
+        # })
+        # send_mail(mail_subject, message, settings.EMAIL_HOST_USER, [email])
+        # return HttpResponse('Please confirm your email address to complete the registration')
 
 
         messages.success(request, "Account successfully created!")
@@ -175,8 +215,9 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         # Log the user in and redirect to home page
-        login(request, user)
-        return redirect('mainsite:home')
+        # login(request, user)
+        # return redirect('mainsite:home')
+        return redirect('login:signin')
     else:
         return HttpResponse('Activation link is invalid!')
     

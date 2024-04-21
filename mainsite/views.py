@@ -137,22 +137,68 @@ def quiz2(request):
 def quiz3(request):
     return render(request, 'mainsite/quiz_3.html')
 
+def media(request):
+    return render(request, 'mainsite/media.html')
+
+def get_incorrect_questions(request, unit_id):
+    questions_data = {
+        '1': [
+            {'question': 'What is the capital of Portugal?', 'type': 'Multiple Choice', 'answer': 'Lisbon', 'correctAnswer': 'Lisbon'},
+            {'question': 'Translate "dog" to Portuguese.', 'type': 'Translation', 'answer': 'Cãooo', 'correctAnswer': 'Cão'}
+        ],
+        # Add cases for other units
+    }
+    answer_data = []
+    for item in UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit_id), is_correct=False):
+        answer_data.append(
+            {'question': item.question.question_text,
+             'type': item.question.question_type,
+             'answer': item.answer_text,
+             'correctAnswer': item.question.correct_answer}
+        )
+
+    # questions = questions_data.get(unit_id, [])
+    return JsonResponse({'questions': answer_data})
+
 def quiz4(request):
     answer_status = request.session.get('answer_status', None)
     print("Answer status:", answer_status)
     return render(request, 'mainsite/quiz_4.html', {'answer_status': answer_status})
 
+def get_unit_details(request, unit_id):
+    # Example data, replace with actual query to your database or data source
+    unit_details = {
+        'title': f'Unit {unit_id} Analytics',
+        'details': [
+            {'icon': 'check-circle', 'text': 'Correct Answers', 'value': 20, 'color': 'text-success'},
+            {'icon': 'times-circle', 'text': 'Incorrect Answers', 'value': 5, 'color': 'text-danger'},
+            # more details...
+        ]
+    }
+    return JsonResponse(unit_details)
+
 def analytics(request):
-    word_count_studied = 1
+    word_count_studied = 0
     correct_count = UserAnswers.objects.filter(user=request.user, is_correct=True).count()
     incorrect_count = UserAnswers.objects.filter(user=request.user, is_correct=False).count()
     lessons_done = UserAttempts.objects.filter(user=request.user, lesson__isnull=False)
     for lesson in lessons_done:
-        word_count_studied *= int(lesson.pages_covered)
+        word_count_studied = 2 * int(lesson.pages_covered-1)
+
+
+    details_data = [
+        { 'icon': 'check-circle', 'text': 'Correct Answers', 'value': 69, 'color': 'text-success' },
+        { 'icon': 'times-circle', 'text': 'Incorrect Answers', 'value': 69, 'color': 'text-danger' },
+        { 'icon': 'question-circle', 'text': 'Questions Attempted', 'value': 69, 'color': 'text-info' },
+        { 'icon': 'trophy', 'text': 'Quizzes Completed', 'value': 4, 'color': 'text-warning' },
+        { 'icon': 'book-open', 'text': 'Words/Phrases Learnt', 'value': 15, 'color': 'text-secondary' }
+    ]
+
     data = {
         'total_correct_answers':correct_count,
         'total_incorrect_answers':incorrect_count,
-        'total_words_studied':word_count_studied
+        'total_words_studied':word_count_studied,
+        'test_data': details_data
     }
     print("total_words_studied:", word_count_studied)
     print("correct_count:", correct_count)
@@ -509,7 +555,7 @@ def quiz(request, unit_id, quiz_id):
         # question_obj = user_answer.question
     print("Unanswered questions are:", unanswered_questions)
 
-    question_obj = Question.objects.filter(question_type='MCQ_Text')[0]
+    question_obj = Question.objects.filter(question_type='Speech')[0]
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
@@ -698,16 +744,28 @@ def text_to_speech(request):
         text = request.POST.get('text', '')
         language = 'pt'  # Set the language to Portuguese
 
-        tts = gTTS(text, lang=language)
+        tts = gTTS(text, lang=language, slow=True)
 
         # Save the generated speech to an audio file
         tts.save("output.mp3")
+
+         # Load the speech audio
+        sound = AudioSegment.from_file("output.mp3")
+
+        # Change speed of the audio
+        speed = 1.2  # Speed factor > 1 to increase speed
+        altered_frame_rate = int(sound.frame_rate * speed)
+        faster_sound = sound._spawn(sound.raw_data, overrides={"frame_rate": altered_frame_rate})
+        faster_sound = faster_sound.set_frame_rate(sound.frame_rate)
+
+        # Save the faster audio
+        faster_sound.export("output_fast.mp3", format="mp3")
 
         # Initialize the mixer
         pygame.mixer.init()
 
         # Load and play the audio file
-        pygame.mixer.music.load("output.mp3")
+        pygame.mixer.music.load("output_fast.mp3")
         pygame.mixer.music.play()
 
         # Wait until the audio has finished playing
@@ -725,8 +783,8 @@ def text_to_speech(request):
 
         try:
             # Remove the audio file if it exists
-            if os.path.isfile("output.mp3"):
-                os.remove("output.mp3")
+            if os.path.isfile("output_fast.mp3"):
+                os.remove("output_fast.mp3")
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 

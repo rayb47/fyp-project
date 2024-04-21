@@ -1,0 +1,105 @@
+
+  #navbarUL {
+    margin-left: 60px;
+  }
+      .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-brand img {
+    margin-right: 8px; /* Adjust the space between the image and text as needed */
+  }
+  
+  .navbar-brand h1 {
+    margin-bottom: 0; /* Removes the bottom margin from h1 */
+  }
+
+  .navbar .dropdown-menu {
+  background-color: black; /* Sets the dropdown background to black */
+}
+
+/* This styles each dropdown item */
+.navbar .dropdown-menu .dropdown-item {
+  color: white; /* Sets the dropdown item text color to white */
+}
+
+/* This styles the dropdown item on hover */
+.navbar .dropdown-menu .dropdown-item:hover {
+  background-color: yellow; /* Sets the dropdown item background to yellow on hover */
+  color: black; /* Sets the dropdown item text color to black on hover */
+}
+
+.navbar.bg-black {
+    background-color: black !important; /* Using !important to override any existing Bootstrap styles */
+  }
+  
+  /* Change the text color for the active nav item to yellow */
+  .navbar .nav-link.active-tab, .navbar .nav-link.active {
+    color: yellow !important; /* Using !important to override any existing Bootstrap styles */
+    background-color: transparent !important; /* Ensure the background is transparent */
+  }
+  
+  /* Optional: Change hover and focus styles for nav links */
+  .navbar .nav-link:hover, .navbar .nav-link:focus {
+    color: yellow; /* Change text color to yellow on hover/focus */
+    background-color: transparent; /* Ensure the background is transparent on hover/focus */
+  }
+
+  .lesson-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures max spacing between top and bottom content */
+}
+
+.unit-img {
+    width: 100%; /* Ensures the image takes up the full width of the card */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border: 2px solid white;
+    box-shadow: 0 0 10px 0px black;
+}
+
+#quizBtn {
+  border: 1px solid black;
+  margin-left: 2%;
+  box-shadow: inset 0 0 10px 0px black;
+  font-size: 18px;
+}
+
+#lessonBtn {
+  border: 1px solid black;
+  margin-right: 2%;
+  box-shadow: inset 0 0 10px 0px black;
+  font-size: 18px;
+}
+
+@media (min-width: 768px) { /* Adjusts for medium screens and up */
+  .tiles-container {
+    padding-right: 5rem; /* Increase the right padding */
+  }
+  
+  .widgets-container {
+    padding-left: 5rem; /* Increase the left padding */
+  }
+}
+
+.widgets-container {
+  padding-left: 5rem; /* Keep your existing padding */
+  flex-basis: 350px; /* Example max-width, adjust as needed */
+}
+
+#discordLogo {
+  color: #cab2fb;
+}
+
+#discordLogo:hover{
+  color: #7e61ab;
+}
+
+#discordHref {
+  text-decoration: none
+}
+
+.navbar-dark.bg-black .navbar-collapse {
+    background-color: red !important; /* Force background color */
+}
