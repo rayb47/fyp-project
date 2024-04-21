@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,20 +86,19 @@
     margin-top: 92%;
     color: white;
     font-weight: bold;
-    -webkit-user-select: none;  /* Chrome, Safari, Opera */
-    -moz-user-select: none;     /* Firefox */
-    -ms-user-select: none;      /* Internet Explorer/Edge */
-    user-select: none;  
+    /* -webkit-user-select: none;  
+    -moz-user-select: none;     
+    -ms-user-select: none;      
+    user-select: none;   */
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
   }
 
-  .card-body {
-    -webkit-user-select: none;  /* Chrome, Safari, Opera */
-    -moz-user-select: none;     /* Firefox */
-    -ms-user-select: none;      /* Internet Explorer/Edge */
+  /* .card-body {
+    -webkit-user-select: none;  
+    -ms-user-select: none;      
     user-select: none;
-  }
+  } */
 
   a {
     color: rgb(0, 4, 255);
@@ -122,25 +122,33 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto" id="navbarUL">
         <li class="nav-item active">
-          <a class="nav-link nb-item" href="/home">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link nb-item" href="/home">
+            {% translate 'Home' %} 
+          <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/vocab">Vocabulary</a>
+          <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/vocab">
+            {% translate 'Vocabulary' %} 
+          </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">Analytics</a>
+        <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">
+          {% translate 'Analytics' %} 
+        </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
+      <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">
+        {% translate 'Diacritics' %} 
+      </a>
   </li>
       <li class="nav-item dropdown">
           <a class="nav-link active-tab dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Culture
+            {% translate 'Culture' %} 
           </a>
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
-            <a class="dropdown-item" href="/architecture">Architecture</a>
-            <a class="dropdown-item" href="/festivals">Festivals</a>
-            <a class="dropdown-item" href="page3.html">Media</a>
+            <a class="dropdown-item" href="/architecture">{% translate 'Architecture' %} </a>
+            <a class="dropdown-item" href="/festivals">{% translate 'Festivals' %} </a>
+            <a class="dropdown-item" href="page3.html">{% translate 'Media' %} </a>
             <!-- More dropdown items -->
           </div>
       </li>
@@ -163,14 +171,18 @@
     <div class="card mb-3 culture-card">
       <div class="card-body" style="display: flex;">
         <!-- <p class="card-text">Portugal boasts several scores of medieval castles, as well as the ruins of several villas and forts from the period of Roman occupation. Romanesque and Gothic influences have given Portugal some of its greatest cathedrals, and in the late 16th century a national style—Arte Manuelina—was synthesized by adapting several forms into a luxuriantly ornamented whole. </p> -->
-        <p style="width:100%; margin-top:20px; font-size: 19px;" class="card-text">Portugal is a nation that takes great pride in its festivals, which vividly reflect its 
-          rich heritage and past culture.
-          These nationwide festivals encompass a wide range of activities, from religious rites to secular revelries, all imbued with a distinct regional identity 
+        <p style="width:100%; margin-top:20px; font-size: 19px;" class="card-text">{% translate 'Portugal is a nation that takes great pride in its festivals, which vividly reflect its rich heritage and past culture.' %}
+          {% blocktranslate %}
+          These nationwide festivals encompass a wide range of activities, from religious rites to secular revelries, all imbued with a distinct regional identity
           and a sense of community. Portuguese villages and cities come alive with celebrations all year long, featuring ornate parades, traditional music and dancing, 
-          and an abundance of regional cuisine. These celebrations unite communities and provide a sense of cultural pride and belonging while also honoring historical 
+          and an abundance of regional cuisine.
+          These celebrations unite communities and provide a sense of cultural pride and belonging while also honoring historical 
           and religious customs. These festivities provide tourists with a rare glimpse into Portugal's essence, exhibiting a vibrant and vibrant manifestation of the 
-          country's history and the friendly hospitality of its populace. <br><br><span style="font-weight: 700; font-size: 14px; color: rgb(16, 16, 180);">Rotate the cube on the right to view images of 
-            some common Portuguese festivals.<br>Click on their names to learn more.</span></p>
+          country's history and the friendly hospitality of its populace. 
+          {% endblocktranslate %} 
+          <br><br><span style="font-weight: 700; font-size: 14px; color: rgb(16, 16, 180);">
+            {% translate 'Rotate the cube on the right to view images of some common Portuguese festivals.' %}<br>
+            {% translate 'Click on their names to learn more.' %}</span></p>
         <div class="map2" style="margin-left: 5%; margin-right: 5%; height: 380px;">
           <div id="cube" style="background-color: green;">
               <div class="face front"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
@@ -220,10 +232,11 @@
                   <div class="row">
                       <div class="col-md-12">
                           <div class="card-body">
-                              <p class="card-text">Rock in Rio is one of the world's largest and most famous music festivals originally founded in 
+                              <p class="card-text"> 
+                                {% blocktranslate %}'Rock in Rio is one of the world's largest and most famous music festivals originally founded in 
                                 Rio de Janeiro, Brazil in 1985. As time passed, it has also become a prominent event in Portugal where it has been held 
                                 every 2 years, since 2004. The festival is renowned for being held on a large scale, drawing top international artists across 
-                                various music genres, from rock and pop, to electronic and indie.
+                                various music genres, from rock and pop, to electronic and indie.{% endblocktranslate %}
                               </p>
                               <p class="card-text"><strong>Location:</strong> It is held in Lisbon, usually at the Parque de Bela Vista, which is a large 
                                 park that can accomodate the expansive stages, audience areas and entertainment zones that are required to host the festival.

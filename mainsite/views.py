@@ -21,10 +21,12 @@ from django.core import serializers
 from mainsite.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
+from django.db.models import Count, Case, When, IntegerField
 from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from datetime import date
+from django.utils import translation
 import csv
 # Include message for streak
 # Include English Text to Portuguese using the TTS
@@ -185,7 +187,29 @@ def analytics(request):
     for lesson in lessons_done:
         word_count_studied = 2 * int(lesson.pages_covered-1)
 
+    main_data = {}
+    for unit in Unit.objects.all():
+        correct = UserAnswers.objects.filter(user=request.user, is_correct=True, question__quiz__unit=int(unit.id)).count()
+        incorrect = UserAnswers.objects.filter(user=request.user, is_correct=False, question__quiz__unit=int(unit.id)).count()
+        attempted = UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit.id)).count()
+        quizzes_done = UserAttempts.objects.filter(user=request.user, quiz__isnull=False, questions_answered=8, quiz__unit=int(unit.id)).count()
+        lessons = UserAttempts.objects.filter(user=request.user, lesson__isnull=False, lesson__unit=int(unit.id))
+        if lessons.count() > 0:
+            word_count = 2*(lessons[0].pages_covered-1)
+        else:
+            word_count = 0
 
+        detail_list = [
+            {'icon': 'check-circle', 'text': 'Correct Answers', 'value': correct, 'color': 'text-success'},
+            {'icon': 'times-circle', 'text': 'Incorrect Answers', 'value': incorrect, 'color': 'text-danger'},
+            {'icon': 'question-circle', 'text': 'Questions Attempted', 'value': attempted, 'color': 'text-info'},
+            {'icon': 'trophy', 'text': 'Quizzes Completed', 'value': quizzes_done, 'color': 'text-warning'},
+            {'icon': 'book-open', 'text': 'Words/Phrases Learnt', 'value': word_count, 'color': 'text-secondary'}
+        ]
+        main_data[str(unit.id)] = {
+            'title': f'Unit {unit.id} Analytics',
+            'details': detail_list
+        }
     details_data = [
         { 'icon': 'check-circle', 'text': 'Correct Answers', 'value': 69, 'color': 'text-success' },
         { 'icon': 'times-circle', 'text': 'Incorrect Answers', 'value': 69, 'color': 'text-danger' },
@@ -194,11 +218,33 @@ def analytics(request):
         { 'icon': 'book-open', 'text': 'Words/Phrases Learnt', 'value': 15, 'color': 'text-secondary' }
     ]
 
+    print("Main Data:", main_data)
+    correct_answers = UserAnswers.objects.filter(is_correct=True).annotate(
+    unit_id=Case(
+        When(attempt__lesson__isnull=False, then='attempt__lesson__unit'),
+        When(attempt__quiz__isnull=False, then='attempt__quiz__unit'),
+        output_field=IntegerField(),
+    )
+    ).values('unit_id').annotate(correct_count=Count('id')).order_by('-correct_count')
+    incorrect_answers = UserAnswers.objects.filter(is_correct=False).annotate(
+    unit_id=Case(
+        When(attempt__lesson__isnull=False, then='attempt__lesson__unit'),
+        When(attempt__quiz__isnull=False, then='attempt__quiz__unit'),
+        output_field=IntegerField(),
+    )
+    ).values('unit_id').annotate(incorrect_count=Count('id')).order_by('-incorrect_count')
+    print(correct_answers.first()['unit_id'])
+    best_unit = Unit.objects.get(id=correct_answers.first()['unit_id']).name
+    worst_unit = Unit.objects.get(id=incorrect_answers.first()['unit_id']).name
+
     data = {
         'total_correct_answers':correct_count,
         'total_incorrect_answers':incorrect_count,
         'total_words_studied':word_count_studied,
-        'test_data': details_data
+        'best_unit': best_unit,
+        'worst_unit': worst_unit,
+        'test_data': details_data,
+        'total_data': main_data
     }
     print("total_words_studied:", word_count_studied)
     print("correct_count:", correct_count)
@@ -238,6 +284,13 @@ def settings(request):
 
 @login_required
 def architecture(request):
+    if request.user.is_authenticated:
+        if request.user.portuguese_default:
+            print("I NEED PORTUGUESE")
+            translation.activate('pt')  # Activate Portuguese
+            request.session['django_language'] = 'pt'  # Correctly set the language key in the session
+        else:
+            translation.deactivate_all()  # or activate a default language
     return render(request, 'mainsite/architecture.html')
 
 @login_required

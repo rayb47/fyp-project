@@ -24,8 +24,13 @@
 }
 
 .nav-tabs .nav-link {
-    color: #495057; /* Default color, adjust as needed */
-}
+            border: 2px solid black;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+            color: #007bff;
+            margin-right: 2px;
+            border-bottom: 1px solid black;
+        }
 
 .nav-tabs .nav-link.active {
     color: #fff; /* Active tab color, adjust as needed */
@@ -41,22 +46,19 @@
     border-bottom: 2px solid black;
 }
 
-#unit-wise-tab {
-    background-color: #aaa582
-}
 
 #overall-tab, #unit-wise-tab {
-    border: 2px solid black;
+    border: 1px solid black;
     box-shadow: inset 0px 0px 6px 0px black;
 }
 
 #unit-wise-tab:hover, #overall-tab:hover {
-    background-color: red;
+    border: 1px solid black;
+    background-color: #88c0fc;
+    color: white;
+    box-shadow: inset 0px 0px 10px 0px black;
 }
 
-#unit-wise-tab:focus {
-    background-color:blue
-}
 
 #analyticsTabContent {
     margin-top:2%
@@ -66,6 +68,16 @@
     border-radius: 15px;
     border: 2px solid black;
     box-shadow: 0px 0px 6px 0px;
+}
+
+.card-body {
+    background-color:#fcf2b6;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.list-group-item {
+    background-color:#fcf2b6;
 }
 
 .card-header {
@@ -206,8 +218,8 @@
                                     <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Best Performed Unit Lesson
                                     </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Unit 1: Introduction</h5>
+                                    <div class="card-body" style="min-height:100px">
+                                        <h5 class="card-title">{{best_unit}}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -218,8 +230,8 @@
                                     <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Worst Performed Unit Lesson
                                     </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">5 Days</h5>
+                                    <div class="card-body" style="min-height:100px">
+                                        <h5 class="card-title">{{worst_unit}}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +242,7 @@
                                     <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Active Days This Month
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body" style="min-height:100px;">
                                         <h5 class="card-title">20 Days</h5>
                                     </div>
                                 </div>
@@ -245,9 +257,9 @@
                                         Correct and Incorrect Answers
                                     </div>
                                     <ul class="list-group list-group-flush" style="border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
-                                        <li class="list-group-item">Today: 15 Answers</li>
-                                        <li class="list-group-item">This Week: 70 Answers</li>
-                                        <li class="list-group-item">This Month: 285 Answers</li>
+                                        <li class="list-group-item"><b>Today:</b> 15 Answers</li>
+                                        <li class="list-group-item"><b>This Week:</b> 70 Answers</li>
+                                        <li class="list-group-item"><b>This Month:</b> 285 Answers</li>
                                     </ul>
                                 </div>
                             </div>
@@ -357,7 +369,8 @@
     </div>
 </div>
 
-  {{ test_data|json_script:"test-data" }}
+{{ test_data|json_script:"test-data" }}
+{{ total_data|json_script:"total-data" }}
 <script>
 
 function viewQuestions(unitId) {
@@ -393,38 +406,39 @@ function viewQuestions(unitId) {
         const unitTitle = document.getElementById('unitTitle');
         const unitDetails = document.getElementById('unitDetails');
         const testData = JSON.parse(document.getElementById('test-data').textContent);
+        const totalData = JSON.parse(document.getElementById('total-data').textContent);
         
-
-        const unitData = {
-            '1': {
-                'title': 'Unit 1 Analytics',
-                'details': testData
-            },
-            '2': { 'title': 'Unit 2 Analytics',
-                'details': [
-                    { icon: 'check-circle', text: 'Correct Answers', value: 15, color: 'text-success' },
-                    { icon: 'times-circle', text: 'Incorrect Answers', value: 15, color: 'text-danger' },
-                    { icon: 'question-circle', text: 'Questions Attempted', value: 35, color: 'text-info' },
-                    { icon: 'trophy', text: 'Quizzes Completed', value: 24, color: 'text-warning' },
-                    { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
-                ] },
-            '3': { 'title': 'Unit 3 Analytics',
-                'details': [
-                    { icon: 'check-circle', text: 'Correct Answers', value: 20, color: 'text-success' },
-                    { icon: 'times-circle', text: 'Incorrect Answers', value: 5, color: 'text-danger' },
-                    { icon: 'question-circle', text: 'Questions Attempted', value: 25, color: 'text-info' },
-                    { icon: 'trophy', text: 'Quizzes Completed', value: 4, color: 'text-warning' },
-                    { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
-                ] },
-            '4': { 'title': 'Unit 4 Analytics',
-                'details': [
-                    { icon: 'check-circle', text: 'Correct Answers', value: 20, color: 'text-success' },
-                    { icon: 'times-circle', text: 'Incorrect Answers', value: 5, color: 'text-danger' },
-                    { icon: 'question-circle', text: 'Questions Attempted', value: 25, color: 'text-info' },
-                    { icon: 'trophy', text: 'Quizzes Completed', value: 4, color: 'text-warning' },
-                    { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
-                ] }
-        };
+        const unitData = totalData
+        // const unitData = {
+        //     '1': {
+        //         'title': 'Unit 1 Analytics',
+        //         'details': testData
+        //     },
+        //     '2': { 'title': 'Unit 2 Analytics',
+        //         'details': [
+        //             { icon: 'check-circle', text: 'Correct Answers', value: 15, color: 'text-success' },
+        //             { icon: 'times-circle', text: 'Incorrect Answers', value: 15, color: 'text-danger' },
+        //             { icon: 'question-circle', text: 'Questions Attempted', value: 35, color: 'text-info' },
+        //             { icon: 'trophy', text: 'Quizzes Completed', value: 24, color: 'text-warning' },
+        //             { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
+        //         ] },
+        //     '3': { 'title': 'Unit 3 Analytics',
+        //         'details': [
+        //             { icon: 'check-circle', text: 'Correct Answers', value: 20, color: 'text-success' },
+        //             { icon: 'times-circle', text: 'Incorrect Answers', value: 5, color: 'text-danger' },
+        //             { icon: 'question-circle', text: 'Questions Attempted', value: 25, color: 'text-info' },
+        //             { icon: 'trophy', text: 'Quizzes Completed', value: 4, color: 'text-warning' },
+        //             { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
+        //         ] },
+        //     '4': { 'title': 'Unit 4 Analytics',
+        //         'details': [
+        //             { icon: 'check-circle', text: 'Correct Answers', value: 20, color: 'text-success' },
+        //             { icon: 'times-circle', text: 'Incorrect Answers', value: 5, color: 'text-danger' },
+        //             { icon: 'question-circle', text: 'Questions Attempted', value: 25, color: 'text-info' },
+        //             { icon: 'trophy', text: 'Quizzes Completed', value: 4, color: 'text-warning' },
+        //             { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
+        //         ] }
+        // };
     
         unitSelection.addEventListener('change', function() {
             const selectedUnit = unitData[this.value];

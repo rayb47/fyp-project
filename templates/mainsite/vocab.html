@@ -36,8 +36,9 @@
 }
 
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-            color: #1ae43b;
-            background-color: #fff;
+           
+           background-color: #007bff;
+           color: white;
             border-color: #000000 #000000 #000000;
         }
         .nav-tabs .nav-link {
@@ -45,7 +46,6 @@
             border-top-left-radius: 0.25rem;
             border-top-right-radius: 0.25rem;
             color: #007bff;
-            background: #a5a8ac;
             margin-right: 2px;
             border-bottom: 1px solid black;
         }
@@ -59,8 +59,16 @@
             border-top: none;
         }
 
+        #user-saved-tab, #overall-list-tab, #general-search-tab {
+            border: 1px solid black;
+            box-shadow: inset 0px 0px 6px 0px black;
+        }
+
         #user-saved-tab:hover, #overall-list-tab:hover, #general-search-tab:hover {
             border: 1px solid black;
+            background-color: #88c0fc;
+            color: white;
+            box-shadow: inset 0px 0px 10px 0px black;
         }
 
         #plusBtnGeneral {
@@ -118,6 +126,11 @@
     #delete-all-button {
         background-color:rgb(223, 150, 150)
     }
+
+    #vocabTab {
+    border-bottom: 2px solid black;
+}
+
 </style>
 </head>
 <body>
@@ -176,7 +189,7 @@
     <div class="card mb-3 vocab-card">
         <div class="card-body">
             <!-- Tab navs -->
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <ul class="nav nav-tabs" id="vocabTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="user-saved-tab" data-toggle="tab" href="#user-saved" role="tab" aria-controls="user-saved" aria-selected="true">User Saved List</a>
                 </li>
@@ -380,7 +393,7 @@
                                     <td>-</td>
                                     <td>-</td>
                                     <td>
-                                        <center><button class="btn btn-outline-success plus-button" id="plusBtnGeneral"><i class="fas fa-plus"></i>    Add to List</button></center>
+                                        <center><button class="btn btn-outline-success plus-button" id="plusBtnGeneral" disabled><i class="fas fa-plus"></i>    Add to List</button></center>
                                     </td>
                                 </tr>
                                 <!-- More rows can be added here -->
@@ -442,8 +455,8 @@
                 Are you sure you want to delete all items?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteButton">Yes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
             </div>
         </div>
     </div>

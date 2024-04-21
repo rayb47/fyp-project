@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-21 18:06+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\login\admin.py:13
+msgid "Personal info"
+msgstr ""
+
+#: .\login\admin.py:14
+msgid "Permissions"
+msgstr ""
+
+#: .\login\admin.py:17
+msgid "Important dates"
+msgstr ""
+
+#: .\login\admin.py:18
+msgid "Custom fields"
+msgstr ""
+
+#: .\templates\login\custom_password_reset_confirm.html:17
+msgid "Reset Your Password"
+msgstr ""
+
+#: .\templates\login\custom_password_reset_confirm.html:41
+msgid "Reset my password"
+msgstr ""
+
+#: .\templates\mainsite\architecture.html:126
+msgid "Home"
+msgstr "Lar"
+
+#: .\templates\mainsite\architecture.html:131
+msgid "Vocabulary"
+msgstr "Vocabulário"
+
+#: .\templates\mainsite\architecture.html:136
+msgid "Analytics"
+msgstr "Análise"
+
+#: .\templates\mainsite\architecture.html:141
+msgid "Diacritics"
+msgstr "Diacríticos"
+
+#: .\templates\mainsite\architecture.html:146
+msgid "Culture"
+msgstr "Cultura"
+
+#: .\templates\mainsite\architecture.html:149
+msgid "Architecture"
+msgstr "Arquitetura"
+
+#: .\templates\mainsite\architecture.html:150
+msgid "Festivals"
+msgstr "Festivais"
+
+#: .\templates\mainsite\architecture.html:151
+msgid "Media"
+msgstr "Meios de comunicação"
+
+#: .\templates\mainsite\architecture.html:174
+msgid ""
+"Portugal is a nation that takes great pride in its festivals, which vividly "
+"reflect its rich heritage and past culture."
+msgstr ""
+"Portugal é uma nação que se orgulha muito dos seus festivais, que reflectem "
+"vividamente o seu rico património e cultura passada."
+
+#: .\templates\mainsite\architecture.html:175
+msgid ""
+"\n"
+"          These nationwide festivals encompass a wide range of activities, "
+"from religious rites to secular revelries, all imbued with a distinct "
+"regional identity\n"
+"          and a sense of community. Portuguese villages and cities come "
+"alive with celebrations all year long, featuring ornate parades, traditional "
+"music and dancing, \n"
+"          and an abundance of regional cuisine.\n"
+"          These celebrations unite communities and provide a sense of "
+"cultural pride and belonging while also honoring historical \n"
+"          and religious customs. These festivities provide tourists with a "
+"rare glimpse into Portugal's essence, exhibiting a vibrant and vibrant "
+"manifestation of the \n"
+"          country's history and the friendly hospitality of its populace. \n"
+"          "
+msgstr ""
+"\n"
+"Estas festas nacionais abrangem uma vasta gama de actividades, desde ritos "
+"religiosos a folias seculares, todas imbuídas de uma identidade regional "
+"distinta e de um sentido de comunidade. As aldeias e cidades portuguesas "
+"ganham vida com celebrações durante todo o ano, com desfiles ornamentados, "
+"música e danças tradicionais e uma abundância de cozinha regional. Estas "
+"celebrações unem as comunidades e proporcionam um sentimento de orgulho "
+"cultural e de pertença, ao mesmo tempo que honram os costumes históricos e "
+"religiosos. Estas festividades proporcionam aos turistas um raro vislumbre "
+"da essência de Portugal, exibindo uma manifestação vibrante e vibrante da "
+"história do país e da hospitalidade amigável da sua população."
+
+#: .\templates\mainsite\architecture.html:184
+msgid ""
+"Rotate the cube on the right to view images of some common Portuguese "
+"festivals."
+msgstr ""
+"Rode o cubo à direita para ver imagens de algumas festas portuguesas comuns."
+
+#: .\templates\mainsite\architecture.html:185
+msgid "Click on their names to learn more."
+msgstr "Clique nos nomes deles para saber mais."
+
+#: .\templates\mainsite\architecture.html:236
+msgid ""
+"'Rock in Rio is one of the world's largest and most famous music festivals "
+"originally founded in \n"
+"                                Rio de Janeiro, Brazil in 1985. As time "
+"passed, it has also become a prominent event in Portugal where it has been "
+"held \n"
+"                                every 2 years, since 2004. The festival is "
+"renowned for being held on a large scale, drawing top international artists "
+"across \n"
+"                                various music genres, from rock and pop, to "
+"electronic and indie."
+msgstr ""
+"O Rock in Rio é um dos maiores e mais famosos festivais de música do mundo, "
+"fundado originalmente no Rio de Janeiro, Brasil, em 1985. Com o passar do "
+"tempo, tornou-se também um evento de destaque em Portugal, onde é realizado "
+"a cada 2 anos, desde 2004. O festival é conhecido por ser realizado em "
+"grande escala, atraindo os principais artistas internacionais de vários "
+"gêneros musicais, desde rock e pop até eletrônico e indie."
