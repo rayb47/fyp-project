@@ -369,7 +369,6 @@
     </div>
 </div>
 
-{{ test_data|json_script:"test-data" }}
 {{ total_data|json_script:"total-data" }}
 <script>
 
@@ -405,40 +404,9 @@ function viewQuestions(unitId) {
         const unitSelection = document.getElementById('unitSelection');
         const unitTitle = document.getElementById('unitTitle');
         const unitDetails = document.getElementById('unitDetails');
-        const testData = JSON.parse(document.getElementById('test-data').textContent);
         const totalData = JSON.parse(document.getElementById('total-data').textContent);
         
         const unitData = totalData
-        // const unitData = {
-        //     '1': {
-        //         'title': 'Unit 1 Analytics',
-        //         'details': testData
-        //     },
-        //     '2': { 'title': 'Unit 2 Analytics',
-        //         'details': [
-        //             { icon: 'check-circle', text: 'Correct Answers', value: 15, color: 'text-success' },
-        //             { icon: 'times-circle', text: 'Incorrect Answers', value: 15, color: 'text-danger' },
-        //             { icon: 'question-circle', text: 'Questions Attempted', value: 35, color: 'text-info' },
-        //             { icon: 'trophy', text: 'Quizzes Completed', value: 24, color: 'text-warning' },
-        //             { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
-        //         ] },
-        //     '3': { 'title': 'Unit 3 Analytics',
-        //         'details': [
-        //             { icon: 'check-circle', text: 'Correct Answers', value: 20, color: 'text-success' },
-        //             { icon: 'times-circle', text: 'Incorrect Answers', value: 5, color: 'text-danger' },
-        //             { icon: 'question-circle', text: 'Questions Attempted', value: 25, color: 'text-info' },
-        //             { icon: 'trophy', text: 'Quizzes Completed', value: 4, color: 'text-warning' },
-        //             { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
-        //         ] },
-        //     '4': { 'title': 'Unit 4 Analytics',
-        //         'details': [
-        //             { icon: 'check-circle', text: 'Correct Answers', value: 20, color: 'text-success' },
-        //             { icon: 'times-circle', text: 'Incorrect Answers', value: 5, color: 'text-danger' },
-        //             { icon: 'question-circle', text: 'Questions Attempted', value: 25, color: 'text-info' },
-        //             { icon: 'trophy', text: 'Quizzes Completed', value: 4, color: 'text-warning' },
-        //             { icon: 'book-open', text: 'Words/Phrases Learnt', value: 15, color: 'text-secondary' }
-        //         ] }
-        // };
     
         unitSelection.addEventListener('change', function() {
             const selectedUnit = unitData[this.value];

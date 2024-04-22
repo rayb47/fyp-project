@@ -364,7 +364,7 @@
   border-top: 1px solid black;
 }
 
-#checkAnswer, #submitButton, #checkOrder {
+#checkAnswer, #submitButton, #checkOrder, #skipButton {
   border: 2px solid black;
   box-shadow:  inset 0px 0px 5px 0px black;
   

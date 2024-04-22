@@ -281,7 +281,8 @@
             
             data: {
               'word_id': wordId,
-              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()// Any data you need to pass to Django
+              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(), // Any data you need to pass to Django
+              'word_type': 'lesson'
             },
             success: function(response) {
                 // Do something with the response

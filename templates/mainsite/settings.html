@@ -127,7 +127,11 @@ textarea {
                     <input type="number" class="form-control" id="dailyGoal" value="10">
                 </div>
                 <div class="col-md-6 form-group">
-                    <label for="siteLanguage">Site Language</label>
+                    <label for="siteLanguage">Site Language
+                      <a href="#" data-toggle="tooltip" title="This only affects the Culture Pages.">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                    </label>
                     <select class="form-control" id="siteLanguage">
                         <option value="English">English</option>
                         <option value="Portuguese">Portuguese</option>
@@ -166,5 +170,10 @@ textarea {
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 </body>
 </html>

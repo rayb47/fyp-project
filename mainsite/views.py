@@ -25,6 +25,7 @@ from django.db.models import Count, Case, When, IntegerField
 from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.db.models.functions import TruncDate
 from datetime import date
 from django.utils import translation
 import csv
@@ -68,21 +69,30 @@ def home(request):
     user_activity_dates = [
     DateFormat(date).format('Y-m-d') for date in UserActivity.objects.filter(
         user=request.user,
-        date__lt=date.today()  # Using date.today() directly since date is imported
+        date__lt=date.today() 
     ).values_list('date', flat=True).distinct()
     ]
+    print(user_activity_dates)
     print("IN HOME REQUEST")
     combined_city_data = []
     # Units
     units = Unit.objects.all()    
 
+    dates_with_more_than_five_answers = UserAnswers.objects.filter(user=request.user) \
+        .annotate(answer_day=TruncDate('answer_date')) \
+        .values('answer_day') \
+        .annotate(answer_count=Count('id')) \
+        .filter(answer_count__gt=5) \
+        .values_list('answer_day', flat=True) \
+        .order_by('answer_day')
+    formatted_goal_dates = [date.strftime('%Y-%m-%d') for date in dates_with_more_than_five_answers]
+    print(formatted_goal_dates)
+
     r = requests.get("http://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q=Lisbon")
     r = r.json()
-    print(r['location']['localtime'])
     current_hour = int(r['location']['localtime'].split(' ')[1].split(':')[0])
     current_date = r['location']['localtime'].split(' ')[0]
-    print("Hour:", current_hour)
-    print("Current date:", current_date)
+
 
     # for city_name in ['Porto', 'Madeira']:
     #     res = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city_name))
@@ -120,6 +130,7 @@ def home(request):
         'units': units,
         'combined_city_data': combined_city_data,
         'user_activity_dates': user_activity_dates,
+        'goal_dates': formatted_goal_dates
     }
     
     for unit in units:
@@ -210,32 +221,25 @@ def analytics(request):
             'title': f'Unit {unit.id} Analytics',
             'details': detail_list
         }
-    details_data = [
-        { 'icon': 'check-circle', 'text': 'Correct Answers', 'value': 69, 'color': 'text-success' },
-        { 'icon': 'times-circle', 'text': 'Incorrect Answers', 'value': 69, 'color': 'text-danger' },
-        { 'icon': 'question-circle', 'text': 'Questions Attempted', 'value': 69, 'color': 'text-info' },
-        { 'icon': 'trophy', 'text': 'Quizzes Completed', 'value': 4, 'color': 'text-warning' },
-        { 'icon': 'book-open', 'text': 'Words/Phrases Learnt', 'value': 15, 'color': 'text-secondary' }
-    ]
 
     print("Main Data:", main_data)
-    correct_answers = UserAnswers.objects.filter(is_correct=True).annotate(
+    correct_answers = UserAnswers.objects.filter(is_correct=True, user=request.user).annotate(
     unit_id=Case(
         When(attempt__lesson__isnull=False, then='attempt__lesson__unit'),
         When(attempt__quiz__isnull=False, then='attempt__quiz__unit'),
         output_field=IntegerField(),
     )
     ).values('unit_id').annotate(correct_count=Count('id')).order_by('-correct_count')
-    incorrect_answers = UserAnswers.objects.filter(is_correct=False).annotate(
+    incorrect_answers = UserAnswers.objects.filter(is_correct=False, user=request.user).annotate(
     unit_id=Case(
         When(attempt__lesson__isnull=False, then='attempt__lesson__unit'),
         When(attempt__quiz__isnull=False, then='attempt__quiz__unit'),
         output_field=IntegerField(),
     )
     ).values('unit_id').annotate(incorrect_count=Count('id')).order_by('-incorrect_count')
-    print(correct_answers.first()['unit_id'])
-    best_unit = Unit.objects.get(id=correct_answers.first()['unit_id']).name
-    worst_unit = Unit.objects.get(id=incorrect_answers.first()['unit_id']).name
+    
+    best_unit = Unit.objects.get(id=correct_answers.first()['unit_id']).name if correct_answers.first() else 'None'
+    worst_unit = Unit.objects.get(id=incorrect_answers.first()['unit_id']).name if incorrect_answers.first() else 'None'
 
     data = {
         'total_correct_answers':correct_count,
@@ -243,12 +247,9 @@ def analytics(request):
         'total_words_studied':word_count_studied,
         'best_unit': best_unit,
         'worst_unit': worst_unit,
-        'test_data': details_data,
         'total_data': main_data
     }
-    print("total_words_studied:", word_count_studied)
-    print("correct_count:", correct_count)
-    print("incorrect_count:", incorrect_count)
+
     return render(request, 'mainsite/analytics.html', data)
 
 def download_table(request):
@@ -325,7 +326,7 @@ def vocab_search(request):
     translation_response = requests.post(url, data=payload, headers=headers)
 
 
-    return JsonResponse({'words': [{'english': 'hello', 'portuguese': 'oi'}, {'english': query, 'portuguese': translation_response.json()['data']['translatedText']}]}, safe=False)
+    return JsonResponse({'words': [{'english': query, 'portuguese': translation_response.json()['data']['translatedText']}]}, safe=False)
 
 @login_required
 def vocab(request):
@@ -333,7 +334,7 @@ def vocab(request):
     search_query = request.GET.get('query', None)
     search = request.GET.get('search', False)
     user_id = request.user.id
-    user_saved_words = UserSavedWords.objects.filter(user=user_id)
+    user_saved_words = UserSavedWords.objects.filter(user=user_id).order_by('-id')
     if search == 'True':
         words = Word.objects.filter(portuguese_word__icontains=search_query)
         print("Words inside filter:",words)
@@ -413,7 +414,6 @@ def lesson(request, lesson_id):
     except EmptyPage:
         # If the 'page' parameter is out of range (e.g., 9999), show the last page of results
         words = paginator.page(paginator.num_pages)
-    print("WORDS:",words.__dict__)
 
     if not UserAttempts.objects.filter(lesson=lesson, user=request.user).exists():
         UserAttempts.objects.create(lesson=lesson, user=request.user)
@@ -421,14 +421,6 @@ def lesson(request, lesson_id):
         user_attempt = UserAttempts.objects.get(lesson=lesson, user=request.user)
         user_attempt.pages_covered = int(page)
         user_attempt.save()
-
-    usage_dict = {}
-    test = {
-        'word': {
-            'english_usage': [],
-            'portuguese_usage': []
-        }
-    }
     
     example_usages_1 = words[0].example_usages.all()
     word_1_usages = []
@@ -439,17 +431,6 @@ def lesson(request, lesson_id):
         example_usages_2 = []
     word_2_usages = []
     word_2_usages.append(example_usages_2)
-    
-    # for word in words:
-    #     example_usages = word.example_usages.all()
-    #     print("EXU:",example_usages)
-    #     print(word)
-    #     usages = ExampleUsage.objects.get(word=word)
-        
-    #     print(usages)
-
-    
-
 
     return render(request, 'mainsite/lesson.html', {'lesson': lesson, 'words': words, 'word_1_usages':word_1_usages, 'word_2_usages':word_2_usages})
 
@@ -457,10 +438,8 @@ def lesson(request, lesson_id):
 @login_required
 @csrf_exempt
 def save_word(request):
-    data = {
-        'key': 'value',
-    }
-    word_type = request.POST.get('word_type', None)
+
+    word_type = request.POST.get('word_type', 'custom')
     custom_english = request.POST.get('english', None)
     custom_portuguese = request.POST.get('portuguese', None)
     is_correct = True
@@ -468,9 +447,9 @@ def save_word(request):
     add_or_remove = request.POST.get('add_or_remove', 'add')
     
     if add_or_remove == 'add':
-        if word_type:
+        if word_type == 'custom':
             try:
-                UserSavedWords.objects.get(custom_english=custom_english)
+                UserSavedWords.objects.get(user=request.user, custom_english=custom_english)
             except:
                 UserSavedWords.objects.create(
                     user=request.user,
@@ -478,20 +457,25 @@ def save_word(request):
                     custom_portuguese=custom_portuguese
                 )
         else:
+            print("TRYING TO ADD A WORD")
             try:
+                print("Inside the try block")
                 UserSavedWords.objects.get(word_id=word_id)
-                print("SAVED WORD NOT ADDED")
+                return JsonResponse({'is_correct': False, "message": "Word already in the list!"}, status=400)
             except:
+                print("Inside the except block")
                 UserSavedWords.objects.create(
                     user=request.user,
                     word=Word.objects.get(id=int(word_id))
                 )
     else:
         a = 1
+        UserSavedWords.objects.get(id=word_id).delete()
+            
         print("INSIDE DELETING A SAVED WORD!")
 
-
-    return JsonResponse({'is_correct': is_correct, "message": "Word successfully saved!"}, status=200)
+    print("WORD SAVED HELL YEAH")
+    return JsonResponse({'is_correct': is_correct, "message": "Word successfull saved!"}, status=200)
 
 @login_required
 def quiz(request, unit_id, quiz_id):
@@ -608,7 +592,7 @@ def quiz(request, unit_id, quiz_id):
         # question_obj = user_answer.question
     print("Unanswered questions are:", unanswered_questions)
 
-    question_obj = Question.objects.filter(question_type='Speech')[0]
+    question_obj = Question.objects.filter(question_type='Arrange')[0]
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
@@ -767,16 +751,12 @@ def submit_answer(request):
     
 @login_required
 def get_quiz_data(request):
-    print("Inside get_quiz_data")
     quizzes = []
     unit_id = request.GET.get('unit_id')
-    print("Searching quizzes for unit",unit_id)
     quiz_data = Quiz.objects.filter(unit_id=int(unit_id))
     quiz_number = 0
     for quiz in quiz_data:
-        print("FEGEGE",UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).count())
         total_questions = quiz.questions.all().count() 
-        print("Total questions:",total_questions)
         questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).values('question').distinct().count()
         quiz_number += 1
         quizzes.append({
@@ -824,9 +804,6 @@ def text_to_speech(request):
         # Wait until the audio has finished playing
         while pygame.mixer.music.get_busy():
             time.sleep(2)
-
-        # Clean up the audio file
-        # os.remove("output.mp3")
             
         # Stop the mixer
         pygame.mixer.music.stop()

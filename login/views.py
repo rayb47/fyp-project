@@ -61,32 +61,21 @@ def signup(request):
             'language_no': request.POST.get('languageNo'),
         }
 
-        # print("use
-        # rname:", username, "email:", email, "password:", password)
-        # print("study_frequency:", study_frequency, "study_frequency_amount:", study_frequency_amount)
-        # print(beginner_lvl, intermediate_lvl, advanced_lvl, language_yes, language_no)
-
         # Check if the username already exists
         if CustomUser.objects.filter(username=form_data['username']).exists():
-            # messages.error(request, "Username already exists")
-            # # Render the template with form_data to repopulate the form fields
-            # return render(request, 'login/signup.html', {'form_data': form_data})
             return JsonResponse({'status': 'error', 'message': 'Username already exists'}, status=400)
         
+        # Verifies passwords match
         if password != confirm_password:
             return JsonResponse({'status': 'error', 'message': 'Passwords do not match'}, status=400)
         
+        # Validates password
         try:
             validate_password(password)
         except ValidationError as e:
             return JsonResponse({'status': 'error', 'message': e.messages}, status=400)
 
-
-
-
-
         try:
-            #myuser = CustomUser.objects.create_user(username=username, email=email, password=password)
             myuser = CustomUser(username=username, email=email)
             myuser.set_password(password)
             myuser.is_active = False
@@ -114,22 +103,9 @@ def signup(request):
             myuser.proficiency_level = 3
         try:
             myuser.save()
-            print("User Saved YESSSS")
-            current_site = get_current_site(request)
-            mail_subject = 'Activate your account on MySite'
-            # message = render_to_string('login/acc_active_email.html', {
-            #     'user': myuser,
-            #     'domain': current_site.domain,
-            #     'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-            #     'token': account_activation_token.make_token(myuser),
-            # })
-
-            # print(message)
-            
-            # email = EmailMessage(mail_subject, message, settings.EMAIL_HOST_USER, [email])
-            # email.content_subtype = "html"
-            # email.send()
-            subject = 'Activate your account on MySite'
+            # Defining attributes for email to be sent out
+            current_site = get_current_site(request)    
+            subject = 'Activate your account on PortuPro'
             from_email = settings.EMAIL_HOST_USER
             protocol = 'https' if settings.USE_HTTPS else 'http'
             to = [email]
@@ -148,54 +124,24 @@ def signup(request):
         except Exception as e:
             print(e)
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-            return
         
-        # Generate and send activation email
-        # current_site = get_current_site(request)
-        # mail_subject = 'Activate your account on MySite'
-        # message = render_to_string('login/acc_active_email.html', {
-        #     'user': myuser,
-        #     'domain': current_site.domain,
-        #     'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-        #     'token': account_activation_token.make_token(myuser),
-        # })
-        # send_mail(mail_subject, message, settings.EMAIL_HOST_USER, [email])
-        # return HttpResponse('Please confirm your email address to complete the registration')
-
-
-        messages.success(request, "Account successfully created!")
-
-
-
-        return redirect('login:signin')
-
-
     return render(request, "login/signup.html")
 
 def signin(request):
 
     if request.method == 'POST':
+        # Picks up the entered username and password
         username = request.POST.get('username')
         password = request.POST.get('password')
-        remember_me = False
-        print(username, password)
-
+        # Authenticates the entered user credentials
         user = authenticate(username=username, password=password)
 
+        # If login is successful, redirect user to landing page. Else, display an error message and refresh signin page.
         if user is not None:
             login(request, user)
-            if remember_me == True:
-                print("Remember me is TRUE")
-                request.session.set_expiry(1209600)  # 2 weeks
-            else:
-                 request.session.set_expiry(0)
-            print("good")
-            request.session['uname'] = username
-            #return render(request, "mainsite/dashboard.html", {'uname': username})
             return redirect('mainsite:home')
         else:
             messages.error(request, "Invalid credentials.")
-            print("bad")
             return redirect('login:signin')
 
 
@@ -214,9 +160,6 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        # Log the user in and redirect to home page
-        # login(request, user)
-        # return redirect('mainsite:home')
         return redirect('login:signin')
     else:
         return HttpResponse('Activation link is invalid!')

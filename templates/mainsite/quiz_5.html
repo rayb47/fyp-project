@@ -10,6 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Include jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> 
     <style>
         #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
         #sortable li { 
@@ -206,16 +207,21 @@
         <form>
         {% csrf_token %}
         <h1 class="text-center mb-4">Arrange in sequence</h1>
-        <ul id="sortable" class="horizontal-list" style="margin-left:20px; margin-top: 50px;">
-          {% for word in jumbled_answer %}
-            <li class="ui-state-default"><b>{{word}}</b></li>
-          {% endfor %}
+        <ul id="sortable" class="horizontal-list" style="margin-left: 20px; margin-top: 50px;">
+            {% for word in jumbled_answer %}
+                <li class="ui-state-default"><b>{{ word }}</b></li>
+            {% endfor %}
         </ul>
-        <div class="text-center" style="margin-top: 60px;">
+        <div class="text-center" style="margin-top: 30px;"> <!-- Adjust top margin as needed -->
+            <i id='correctTick' class="far fa-check-circle correctTick" style="display:none"></i>
+            <i id='incorrectTick' class="far fa-times-circle incorrectTick" style="display:none"></i>
+        </div>
+        <div class="text-center" style="margin-top: 30px;">
             <button id="checkOrder" class="btn btn-success btn-lg">Check</button>
         </div>
         </form>
-      </div>
+    </div>
+    
     </div>
   </div>
   
@@ -258,12 +264,16 @@ $(document).ready(function() {
                       "background-color": "#d4edda" // A light green background
                   });
                   $('#correctSound')[0].play();
+                  var check_mark = document.getElementById('correctTick');
+                  check_mark.style.display = 'inline';
                 } else {
                   $("#sortable li").css({
                       "border": "2px solid red",
                       "background-color": "#f8d7da" // A light red background
                   });
                   $('#wrongSound')[0].play();
+                  var check_mark = document.getElementById('incorrectTick');
+                  check_mark.style.display = 'inline';
                 }
                 $('#checkOrder').text('Continue');
             },

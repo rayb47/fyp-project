@@ -37,6 +37,12 @@
   font-size: 18px;
 }
 
+.goal {
+  color: rgb(43, 175, 43);
+  font-weight: bold;
+  text-shadow: 1px 1px #020202;
+}
+
 @media (min-width: 768px) { /* Adjusts for medium screens and up */
   .tiles-container {
     padding-right: 5rem; /* Increase the right padding */
@@ -67,6 +73,11 @@
 #closeModal:hover {
   background-color: rgb(224, 107, 107);
   font-weight: bold;
+}
+
+.tooltip-inner {
+    max-width: 300px; /* Increase max-width as needed */
+    width: auto; /* Set width to auto to allow flexible content width */
 }
 </style>
 </head>
@@ -234,7 +245,12 @@
     
       <!-- Add other widgets like activity tracker and twitter feed -->
       
-      <h2 style="color: black; margin-top: 14%; font-weight: bold">Activity Tracker</h2>
+      <h2 style="color: black; margin-top: 14%; font-weight: bold">Activity Tracker
+        <a href="#" data-toggle="tooltip" data-html="true" title="Yellow Background - Current Date<br>Green Background - Activity Goal Met<br>Green Text - Question Goal Met" 
+          style="font-size: 20px; color: white;">
+          <i class="fas fa-info-circle"></i>
+      </a>
+      </h2>
       <div class="card mb-3" id="calendar-container">
       <!-- <div id="calendar-container"> -->
       
@@ -292,9 +308,8 @@
   </div>
 </div>
 
-{{user.portuguese_default}}
-
 {{ user_activity_dates|json_script:"activity-data" }}
+{{ goal_dates|json_script:"goal-data" }}
 {{ combined_city_data|json_script:"weather-data" }}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -303,30 +318,19 @@
   
   
   $(document).ready(function(){
-    $('.quiz-button').click(function() {
-        // var unitId = $(this).data('unit'); // Retrieve the data-unit attribute
-        // console.log("Clicked on unit:"+unitId);
-        // // Now update the href attribute for each Access Quiz button in the modal
-        // $('#quizModal').find('.list-group-item').each(function(index) {
-        //     $(this).find('a').attr('href', '/quiz/' + unitId + '/' + (index + 1));
-        //     // or if you have an array with paths
-        //     // $(this).find('a').attr('href', yourArrayWithPaths[index]);
-        // });
+    $('[data-toggle="tooltip"]').tooltip();   
 
+    $('.quiz-button').click(function() {
     var unitId = $(this).data('unit');
-         // Get the unit ID from the button's data attribute
-        
-        // Make an AJAX call to your Django view
         $.ajax({
-            url: '/get_quiz_data',  // URL to your Django view that returns quiz data
+            url: '/get_quiz_data', 
             type: 'GET',
             data: {'unit_id': unitId},
             success: function(response) {
-                // Assuming 'response' is an object with a 'quizzes' array
-                // Clear the list
+                // Clears the existing contents of the modal
                 var quizList = $('.modal-body .list-group').empty();
                 
-                // Iterate through quizzes and append to the list
+                // Iterates through the data on the quizzes and append to the list
                 response.quizzes.forEach(function(quiz) {
                     var quizItem = `<li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
@@ -382,8 +386,9 @@ function updateCalendar(date) {
     document.getElementById('monthYear').textContent = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
 
     // Assume loginDates are fetched or defined here
-    const loginDates = JSON.parse(document.getElementById('activity-data').textContent);;
-    markLoginDates(loginDates, date);
+    const loginDates = JSON.parse(document.getElementById('activity-data').textContent);
+    const goalDates = JSON.parse(document.getElementById('goal-data').textContent);
+    markLoginDates(loginDates, goalDates, date);
 }
 
 function generateCalendar(date) {
@@ -421,7 +426,7 @@ function changeMonth(change) {
     updateCalendar(currentDate);
 }
 
-function markLoginDates(loginDates, date) {
+function markLoginDates(loginDates, goalDates, date) {
     const month = date.getMonth();
     const year = date.getFullYear();
     document.querySelectorAll('#loginCalendar td').forEach(td => {
@@ -429,6 +434,9 @@ function markLoginDates(loginDates, date) {
         const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         if (loginDates.includes(dateString)) {
             td.classList.add('logged-in');
+        }
+        if (goalDates.includes(dateString)) {
+            td.classList.add('goal');
         }
     });
 }
