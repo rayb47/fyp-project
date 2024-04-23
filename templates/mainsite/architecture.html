@@ -23,7 +23,7 @@
         .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
         .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
         .card { 
-            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 0px ; background-color: beige;
+            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 2px ; background-color: beige;;
         }
         .map { border-radius: 10px; }
         .map { height: 250px; width: 100%; } /* Fixed height and full width for maps */
@@ -31,7 +31,6 @@
         .carousel-item img { height: 250px; width: auto; margin: auto; }
         .sub-heading { color: #343a40; font-size: 1.5rem; }
         .intro-text { 
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
             border-radius: 20px;
             border-width: 1px;
             border-color: black;
@@ -167,10 +166,9 @@
   </nav>
 
   <div class="container mt-4">
-    <h1 class="mb-4 heading">Portuguese Festivals</h1>
-    <div class="card mb-3 culture-card">
-      <div class="card-body" style="display: flex;">
-        <!-- <p class="card-text">Portugal boasts several scores of medieval castles, as well as the ruins of several villas and forts from the period of Roman occupation. Romanesque and Gothic influences have given Portugal some of its greatest cathedrals, and in the late 16th century a national style—Arte Manuelina—was synthesized by adapting several forms into a luxuriantly ornamented whole. </p> -->
+    <h1 class="mb-4 heading">Festivals</h1>
+    <div class="card mb-3 culture-card" style="border-radius: 20px; box-shadow: inset 0 0 10px 2px #000000; border: 1px solid black;">
+      <div class="card-body" style="display: flex;   border-radius:20px">
         <p style="width:100%; margin-top:20px; font-size: 19px;" class="card-text">{% translate 'Portugal is a nation that takes great pride in its festivals, which vividly reflect its rich heritage and past culture.' %}
           {% blocktranslate %}
           These nationwide festivals encompass a wide range of activities, from religious rites to secular revelries, all imbued with a distinct regional identity
@@ -200,26 +198,8 @@
           </div>
       </div>
       </div>
-      <!-- <div class="cubebox" style="display: flex; justify-content: center; align-items: center; height: 400px;">
-        <div id="cube">
-          <div class="face front"></div>
-          <div class="face back"></div>
-          <div class="face right"></div>
-          <div class="face left"></div>
-          <div class="face top"></div>
-          <div class="face bottom"></div>
-        </div>  
-        
-        
-        Google Map Copied Code -->
-          <!-- <iframe width="400" height="400" style="border:0; border-radius: 10px; margin-bottom: 15px;" loading="lazy" allowfullscreen
-          src="https://www.google.com/maps/embed/v1/streetview?location=38.6787,-9.1713&key=AIzaSyDtutlR-5LD8Hzjs2uR1I5Sbku7_aml5pQ"></iframe>
-         -->
-          <!-- Google Map Copied Code -->
-          <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Cristo_Rei_%2836211699613%29.jpg/220px-Cristo_Rei_%2836211699613%29.jpg" style="border:0; border-radius: 10px; margin-bottom: 15px; margin-right: 55px; float: right; height: 400;"> -->
-
-      <!-- </div> -->
-    </div> 
+    </div>
+    <br>
 
     <section>
       <div class="card">
