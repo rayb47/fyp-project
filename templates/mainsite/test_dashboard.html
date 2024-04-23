@@ -1,0 +1,499 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<style>
+  .lesson-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures max spacing between top and bottom content */
+}
+
+.unit-img {
+    width: 100%; /* Ensures the image takes up the full width of the card */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border: 2px solid white;
+    box-shadow: 0 0 10px 0px black;
+}
+
+#quizBtn {
+  border: 1px solid black;
+  margin-left: 2%;
+  box-shadow: inset 0 0 10px 0px black;
+  font-size: 18px;
+}
+
+#lessonBtn {
+  border: 1px solid black;
+  margin-right: 2%;
+  box-shadow: inset 0 0 10px 0px black;
+  font-size: 18px;
+}
+
+.goal {
+  color: rgb(43, 175, 43);
+  font-weight: bold;
+  text-shadow: 1px 1px #020202;
+}
+
+@media (min-width: 768px) { /* Adjusts for medium screens and up */
+  .tiles-container {
+    padding-right: 5rem; /* Increase the right padding */
+  }
+  
+  .widgets-container {
+    padding-left: 5rem; /* Increase the left padding */
+  }
+}
+
+.widgets-container {
+  padding-left: 5rem; /* Keep your existing padding */
+  flex-basis: 350px; /* Example max-width, adjust as needed */
+}
+
+#discordLogo {
+  color: #cab2fb;
+}
+
+#discordLogo:hover{
+  color: #7e61ab;
+}
+
+#discordHref {
+  text-decoration: none
+}
+
+#closeModal:hover {
+  background-color: rgb(224, 107, 107);
+  font-weight: bold;
+}
+
+.tooltip-inner {
+    max-width: 300px; /* Increase max-width as needed */
+    width: auto; /* Set width to auto to allow flexible content width */
+}
+</style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      
+      <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+      <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
+      
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto" id="navbarUL">
+        <li class="nav-item active">
+          <a class="nav-link active-tab nb-item" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/vocab">Vocabulary</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">Analytics</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
+  </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Culture
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="/architecture">Architecture</a>
+            <a class="dropdown-item" href="/festivals">Festivals</a>
+            <a class="dropdown-item" href="page3.html">Media</a>
+            <!-- More dropdown items -->
+          </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
+    </li>
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
+          <i id="discordLogo" class="fab fa-discord"></i>
+      </a>
+        <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
+      </span>
+    </div>
+  </nav>
+
+<div class="container mt-4">
+  <div class="text-white">
+    {% if user.is_authenticated %}
+    <h1>{{greeting}} {{user.username}}</h1><br>
+    {% endif %}
+  </div>
+  
+  <div class="row">
+    <div class="col-md-8 tiles-container pr-md-3">
+      <div class="row">
+        
+        {% for unit in units %}
+        <div class="col-md-6 mb-3">
+          <div class="card lesson-card">
+              <img src="{{ unit.description }}" class="img-responsive-img-top unit-img" alt="..." style="height:200px">
+              <div class="card-body d-flex flex-column justify-content-between"> <!-- Flexbox utilities to control vertical layout -->
+                  <center><h5 class="card-title" style="font-size: 18px;">{{ unit.id }} - {{ unit.name }}</h5></center>
+                  <!-- Flex container for buttons -->
+                  <div class="mt-auto"> <!-- This class pushes the container to the bottom -->
+                      <div class="btn-group" role="group" style="width: 100%;"> <!-- Button group for side-by-side alignment -->
+                          <a href="/lesson/{{ unit.id }}" class="btn btn-primary" id="lessonBtn">Lessons</a> <!-- flex-fill makes buttons expand to fill the container -->
+                          <a href="#" class="btn btn-primary quiz-button" data-toggle="modal" data-target="#quizModal" id="quizBtn" data-unit="{{ unit.id }}">Quizzes</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+        {% endfor %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="quizModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="background-color: #e5db93;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quizModalLabel"><b>Quiz List</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background-color: #f2edcb;">
+                <ul class="list-group">
+                <!-- Quiz 1 -->
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                    Quiz 1: <strong>3 out of 10 questions answered</strong>
+                    <div class="progress" style="height: 20px; margin-top: 10px; width: 80%;">
+                        <div class="progress-bar" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">30%</div>
+                    </div>
+                    </div>
+                    <a href="#" class="btn btn-primary">Access Quiz</a>
+                </li>
+                <!-- Quiz 2 -->
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                    Quiz 2: <strong>5 out of 10 questions answered</strong>
+                    <div class="progress" style="height: 20px; margin-top: 10px; width: 80%;">
+                        <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                    </div>
+                    </div>
+                    <a href="#" class="btn btn-primary">Access Quiz</a>
+                </li>
+                <!-- Quiz 3 -->
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                    Quiz 3: <strong>7 out of 10 questions answered</strong>
+                    <div class="progress" style="height: 20px; margin-top: 10px; width: 80%;">
+                        <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+                    </div>
+                    </div>
+                    <a href="#" class="btn btn-primary">Access Quiz</a>
+                </li>
+                <!-- Quiz 4 -->
+                <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                    Quiz 4: <strong>10 out of 10 questions answered</strong>
+                    <div class="progress" style="height: 20px; margin-top: 10px; width: 80%;">
+                        <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                    </div>
+                    </div>
+                    <a href="#" class="btn btn-primary">Access Quiz</a>
+                </li> -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id='closeModal' data-dismiss="modal" ><b>Close</b></button>
+                <!-- You can add additional buttons if needed -->
+            </div>
+            </div>
+        </div>
+        </div>
+        
+        <!-- Repeat for other units -->
+      </div>
+    </div>
+    
+    <div class="col-md-4 widgets-container pl-md-6">
+      <h2 style="color: black; font-weight: bold">Weather Widget</h2>
+      <div class="card mb-3 weather-widget">
+        <div class="card-body">
+            
+            <h2 class="card-title city-title" style="color: white; font-weight: bold; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; text-shadow: 3px 3px #000000;">{{city}}</h2>
+            <div style="position: absolute; top: 10%; right: 10%;">
+              <img src="{{image}}" alt="Weather Icon" style="width: 120%; background-color: rgb(0, 0, 0); border-radius: 15px; box-shadow: inset 0 0 10px 0px rgb(28, 185, 224);">
+            </div>
+            <h3 id="localTime" class="card-text" style="margin-top: 15%">{{current_date}}</h3>
+            <h4 id="liveTime"></h4>
+            
+            <h5 id="localTemp" class="card-text" style=" color: white; text-shadow: 3px 3px #000000;">{{temp_c}}</h5>
+        </div>
+      </div>
+    
+      <!-- Add other widgets like activity tracker and twitter feed -->
+      
+      <h2 style="color: black; margin-top: 14%; font-weight: bold">Activity Tracker
+        <a href="#" data-toggle="tooltip" data-html="true" title="Yellow Background - Current Date<br>Green Background - Activity Goal Met<br>Green Text - Question Goal Met" 
+          style="font-size: 20px; color: white;">
+          <i class="fas fa-info-circle"></i>
+      </a>
+      </h2>
+      <div class="card mb-3" id="calendar-container">
+      <!-- <div id="calendar-container"> -->
+      
+        <table id="loginCalendar" class="calendar">
+          <thead>
+            <tr>
+              <th colspan="7" style="background-color: #ece092;" >
+                  <button id="prevMonth">&#8592;</button>
+                  <span id="monthYear"></span>
+                  <button id="nextMonth">&#8594;</button>
+              </th>
+            </tr>
+            <tr style="background-color: #ddd186;" >
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+            </tr>
+        </thead>
+            <!-- Table Head for Weekdays will remain the same -->
+            <tbody>
+                <!-- Calendar days will be generated by JavaScript -->
+            </tbody>
+        </table>
+      <!-- </div> -->
+    </div>
+      <!-- <div class="twitter-container">
+        <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/theportugalnews?ref_src=twsrc%5Etfw">Tweets by theportugalnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- Discord Modal -->
+<div class="modal fade" id="discordModal" tabindex="-1" role="dialog" aria-labelledby="discordModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="discordModalLabel">Join Our Discord</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              Join our discord to interact with the community
+              <a href="https://discord.gg/placeholder" target="_blank">https://discord.gg/placeholder</a>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+{{ user_activity_dates|json_script:"activity-data" }}
+{{ goal_dates|json_script:"goal-data" }}
+{{ combined_city_data|json_script:"weather-data" }}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  
+  
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+
+    $('.quiz-button').click(function() {
+    var unitId = $(this).data('unit');
+        $.ajax({
+            url: '/get_quiz_data', 
+            type: 'GET',
+            data: {'unit_id': unitId},
+            success: function(response) {
+                // Clears the existing contents of the modal
+                var quizList = $('.modal-body .list-group').empty();
+                
+                // Iterates through the data on the quizzes and append to the list
+                response.quizzes.forEach(function(quiz) {
+                    var quizItem = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <b>Quiz ${quiz.number}</b>: <strong>${quiz.questions_answered}</strong> out of <strong>${quiz.total_questions}</strong> questions answered
+                            <div class="progress" style="height: 20px; margin-top: 10px; width: 80%;">
+                                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: ${quiz.progress_percent}%;" aria-valuenow="${quiz.progress_percent}" aria-valuemin="0" aria-valuemax="100"><div style="margin-left: 10px">${quiz.progress_percent}%</div></div>
+                            </div>
+                        </div>
+                        <a href="/quiz/${unitId}/${quiz.number}" class="btn btn-primary">Access Quiz</a>
+                    </li>`;
+                    quizList.append(quizItem);
+                });
+                
+                // Show the modal after updating its content
+                $('#quizModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching quiz data:", error);
+            }
+        });
+    });
+});
+  
+  function updateTime() {
+    const now = new Date();
+    // Specify the timeZone as Europe/Lisbon for Portugal
+    const timeInPortugal = now.toLocaleTimeString('en-US', { timeZone: 'Europe/Lisbon', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+
+    document.getElementById('liveTime').textContent = timeInPortugal;
+}
+
+// Update the time every second
+setInterval(updateTime, 1000);
+
+// Initialize
+updateTime();
+let currentDate = new Date();
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateCalendar(currentDate);
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
+        changeMonth(-1);
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+        changeMonth(1);
+    });
+});
+
+function updateCalendar(date) {
+    generateCalendar(date);
+    document.getElementById('monthYear').textContent = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+
+    // Assume loginDates are fetched or defined here
+    const loginDates = JSON.parse(document.getElementById('activity-data').textContent);
+    const goalDates = JSON.parse(document.getElementById('goal-data').textContent);
+    markLoginDates(loginDates, goalDates, date);
+}
+
+function generateCalendar(date) {
+    const monthDays = document.querySelector("#loginCalendar tbody");
+    monthDays.innerHTML = "";
+
+    let day = new Date(date.getFullYear(), date.getMonth(), 1);
+    const today = new Date();
+    
+    // Adjusted to start the week on the correct day
+    while (day.getDay() !== 0) {
+        day.setDate(day.getDate() - 1);
+    }
+
+    // Generate days for the calendar
+    for (let i = 0; i < (6*7); i++) { // 6 weeks coverage
+        if (i % 7 === 0) {
+            var week = document.createElement("tr");
+            monthDays.appendChild(week);
+        }
+        let cell = document.createElement("td");
+        if (day.getMonth() === date.getMonth()) {
+            cell.textContent = day.getDate();
+            if (day.toDateString() === today.toDateString()) {
+                cell.classList.add("today");
+            }
+        }
+        week.appendChild(cell);
+        day.setDate(day.getDate() + 1);
+    }
+}
+
+function changeMonth(change) {
+    currentDate.setMonth(currentDate.getMonth() + change);
+    updateCalendar(currentDate);
+}
+
+function markLoginDates(loginDates, goalDates, date) {
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    document.querySelectorAll('#loginCalendar td').forEach(td => {
+        const day = parseInt(td.textContent, 10);
+        const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        if (loginDates.includes(dateString)) {
+            td.classList.add('logged-in');
+        }
+        if (goalDates.includes(dateString)) {
+            td.classList.add('goal');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const weatherData = [
+        { country: 'Porto', local_time: '13th September, 2024', temp_c: '13.0°C' },
+        { country: 'Madeira', local_time: '13th April, 2024', temp_c: '16°C'}
+        // Add more cities as needed
+    ];
+
+    let currentIndex = 0;
+
+    function updateWeatherWidget() {
+        const data = weatherData[currentIndex];
+        document.querySelector('.city-title').innerHTML = `${data.country}`;
+        document.querySelector('#localTime').innerHTML = `${data.local_time}`;
+        document.querySelector('#localTemp').innerHTML = `${data.temp_c}`;
+        // document.querySelector('img').src = data.image;
+
+        currentIndex = (currentIndex + 1) % weatherData.length; // Loop back to the first city
+    }
+
+    setInterval(updateWeatherWidget, 5000); // Update every 5000 milliseconds (5 seconds)
+});
+
+// ---- WORKING CODE ---------
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Access the data from the json_script output
+//     const weatherData = JSON.parse(document.getElementById('weather-data').textContent);
+
+//     let currentIndex = 0;
+
+//     function updateWeatherWidget() {
+//         const data = weatherData[currentIndex];
+//         document.querySelector('.city-title').innerHTML = `${data.city}`; // changed from country to city
+//         document.querySelector('#localTime').innerHTML = `13th September, 2024`; // Assuming you'll add local time
+//         document.querySelector('#localTemp').innerHTML = `${data.temp_c}`;
+//         // Assuming the image element has a specific class for targeting
+//         // document.querySelector('.weather-icon').src = `https:${data.image}`;
+//         console.log(weatherData.length);
+//         currentIndex = (currentIndex + 1) % weatherData.length; // Loop back to the first city
+//     }
+
+//     setInterval(updateWeatherWidget, 5000); // Update every 5000 milliseconds (5 seconds)
+// });
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     fetch('/weather_data')
+//         .then(response => response.json())
+//         .then(data => {
+//             // 'data' contains the weather data from your Django view
+//             console.log(data.data); // Access the 'data' key of the JSON response
+//             // Process and display this data as needed
+//         })
+//         .catch(error => console.error('Error fetching weather data:', error));
+// });
+</script>
+</body>
+</html>

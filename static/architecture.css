@@ -1,0 +1,133 @@
+
+  
+  .settings-link {
+    color: #fff;
+  }
+
+  .culture-card {
+    
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: black;
+    box-shadow: inset 0 0 10px 2px #000000; /* Horizontal offset, vertical offset, blur radius, spread radius, color */
+    transition: 0.8s; /* Optional: adds a transition effect when the shadow changes */
+    background-color: beige;
+    
+}
+  
+/* html {
+    height: 100%;
+}
+
+  body{
+    min-height: 100%; 
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-attachment: fixed;
+    background: linear-gradient(to bottom, #33A251, #BB4B3C); /* Replace with your desired gradient colors */
+
+    .heading {
+        
+        color: white; /* White text color */
+        text-align: left; /* Center the text */
+        font-size: 48px; /* Large font size, adjust as needed */
+        font-weight: bold; /* Bold font weight */
+        padding: 10px 0; /* Some padding above and below the text */
+        margin: 0; /* Remove default margin */
+        font-family: 'Your font family', sans-serif; /* Specify your font-family, fallback to sans-serif */
+        background-color: transparent; /* Assuming a transparent background */
+        -webkit-text-stroke: 1px rgb(0, 0, 0); /* This will give the text a white outline */
+        text-shadow:
+          -1px -1px 0 #000000,  
+          1px -1px 0 #000000,
+          -1px 1px 0 #000000,
+          1px 1px 0 #000000;
+    }
+
+    /* This styles the dropdown background */
+.navbar .dropdown-menu {
+    background-color: black; /* Sets the dropdown background to black */
+}
+
+/* This styles each dropdown item */
+.navbar .dropdown-menu .dropdown-item {
+    color: white; /* Sets the dropdown item text color to white */
+}
+
+/* This styles the dropdown item on hover */
+.navbar .dropdown-menu .dropdown-item:hover {
+    background-color: yellow; /* Sets the dropdown item background to yellow on hover */
+    color: black; /* Sets the dropdown item text color to black on hover */
+}
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background: linear-gradient(to right, #33A251, #BB4B3C); /* Start and end colors of the gradient */
+    background-attachment: fixed; /* Fix the background to the viewport */
+    background-repeat: no-repeat; /* Do not repeat the background */
+    background-size: cover; /* Cover the entire page */
+  }
+  
+  /* Ensure that all parent elements of your content also stretch to the full height */
+  .container {
+    min-height: 100%;
+    /* Other styles for your container */
+  }
+  
+  /* Remove any background styles that might be applied to other elements that could interrupt the gradient */
+  /* .container, .navbar, .card, .map {
+    background-color: transparent;
+  } */
+
+  .map {
+    display: flex; /* Enables Flexbox for this container */
+    justify-content: center; /* Horizontally centers the child elements (the iframe in this case) */
+    align-items: center; /* Vertically centers the child elements if you have a specific height */
+    text-align: center; /* Centers inline elements or text */
+}
+
+.map iframe {
+  margin: auto; /* Additional measure to center the iframe */
+}
+
+  .navbar.bg-black {
+    background-color: black !important; /* Using !important to override any existing Bootstrap styles */
+  }
+  
+  /* Change the text color for the active nav item to yellow */
+  .navbar .nav-link.active-tab, .navbar .nav-link.active {
+    color: yellow !important; /* Using !important to override any existing Bootstrap styles */
+    background-color: transparent !important; /* Ensure the background is transparent */
+  }
+  
+  /* Optional: Change hover and focus styles for nav links */
+  .navbar .nav-link:hover, .navbar .nav-link:focus {
+    color: yellow; /* Change text color to yellow on hover/focus */
+    background-color: transparent; /* Ensure the background is transparent on hover/focus */
+  }
+  /* Add more custom styles as needed */
+
+  
+/* New styles for the brand name */
+.text-green {
+    color: green;
+  }
+  
+  .text-red {
+    color: red;
+  }
+  
+  /* Ensure that the navbar brand has no text decoration to remove the underline from the anchor tag */
+  .navbar-brand {
+    text-decoration: none;
+  }
+
+
+  

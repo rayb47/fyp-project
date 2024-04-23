@@ -1,0 +1,446 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Include Bootstrap JS and its dependencies -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="{% static 'architecture.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<style>
+
+.analytics-card {
+    padding: 2.5%;
+}
+
+.nav-tabs .nav-link {
+            border: 2px solid black;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+            color: #007bff;
+            margin-right: 2px;
+            border-bottom: 1px solid black;
+        }
+
+.nav-tabs .nav-link.active {
+    color: #fff; /* Active tab color, adjust as needed */
+    background-color: #007bff; /* Bootstrap primary color, adjust as needed */
+    border-color: #dee2e6 #dee2e6 #fff; /* Adjust border color as needed */
+}
+
+.card-title {
+    color: black;
+}
+
+#analyticsTabs {
+    border-bottom: 2px solid black;
+}
+
+
+#overall-tab, #unit-wise-tab {
+    border: 1px solid black;
+    box-shadow: inset 0px 0px 6px 0px black;
+}
+
+#unit-wise-tab:hover, #overall-tab:hover {
+    border: 1px solid black;
+    background-color: #88c0fc;
+    color: white;
+    box-shadow: inset 0px 0px 10px 0px black;
+}
+
+
+#analyticsTabContent {
+    margin-top:2%
+}
+
+.card {
+    border-radius: 15px;
+    border: 2px solid black;
+    box-shadow: 0px 0px 6px 0px;
+}
+
+.card-body {
+    background-color:#fcf2b6;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.list-group-item {
+    background-color:#fcf2b6;
+}
+
+.card-header {
+    border-bottom: 2px solid black;
+    font-weight: bold;
+    background-color: #aaaaa6;
+}
+
+.btn-info {
+    margin-left: 10px; /* Space between the count and the button */
+}
+.scrollable-table-wrapper {
+    max-height: 400px; /* Adjust based on desired height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Sticky table header */
+.table thead th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10; /* Ensure it's above other rows for stacking */
+}
+
+
+</style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <a class="navbar-brand" href="#">
+          
+          <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+          <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
+          
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto" id="navbarUL">
+            <li class="nav-item active">
+              <a class="nav-link nb-item" href="/home">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/vocab">Vocabulary</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active-tab nb-item" style="color: rgb(232, 255, 255);" href="/analytics">Analytics</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
+      </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Culture
+              </a>
+              <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+                <a class="dropdown-item" href="/architecture">Architecture</a>
+                <a class="dropdown-item" href="/festivals">Festivals</a>
+                <a class="dropdown-item" href="page3.html">Media</a>
+                <!-- More dropdown items -->
+              </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
+        </li>
+            <!-- More nav items -->
+          </ul>
+          <span class="navbar-text">
+            <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
+              <i id="discordLogo" class="fab fa-discord"></i>
+          </a>
+            <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
+          </span>
+        </div>
+      </nav>
+
+  <div class="container mt-4">
+    <h1 class="mb-4 heading">Analytics</h1>
+    <div class="card mb-3 analytics-card">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" id="analyticsTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="overall-tab" data-toggle="tab" href="#overall" role="tab" aria-controls="overall" aria-selected="true">Overall</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="unit-wise-tab" data-toggle="tab" href="#unit-wise" role="tab" aria-controls="unit-wise" aria-selected="false">Unit-Wise</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content" id="analyticsTabContent">
+            <div class="tab-pane fade show active" id="overall" role="tabpanel" aria-labelledby="overall-tab">
+                <div class="tab-pane fade show active" id="overall" role="tabpanel" aria-labelledby="overall-tab">
+                    <div class="container">
+                        <div class="row">
+                            <!-- Total Correct Answers -->
+                            <div class="col-md-4">
+                                <div class="card text-center">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
+                                        Total Correct Answers
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{total_correct_answers}} answers</h5>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Total Incorrect Answers -->
+                            <div class="col-md-4">
+                                <div class="card text-center">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
+                                        Total Incorrect Answers
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{total_incorrect_answers}} answers</h5>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Best Performed Unit Lesson -->
+                            <div class="col-md-4">
+                                <div class="card text-center">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
+                                        Total Words Studied
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{total_words_studied}} words/phrases</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="row mt-4">
+                            <!-- Worst Performed Unit Lesson -->
+                            <div class="col-md-4">
+                                <div class="card text-center">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
+                                        Best Performed Unit Lesson
+                                    </div>
+                                    <div class="card-body" style="min-height:100px">
+                                        <h5 class="card-title">{{best_unit}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Active Days This Week -->
+                            <div class="col-md-4">
+                                <div class="card text-center">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
+                                        Worst Performed Unit Lesson
+                                    </div>
+                                    <div class="card-body" style="min-height:100px">
+                                        <h5 class="card-title">{{worst_unit}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Active Days This Month -->
+                            <div class="col-md-4">
+                                <div class="card text-center">
+                                    <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
+                                        Active Days This Month
+                                    </div>
+                                    <div class="card-body" style="min-height:100px;">
+                                        <h5 class="card-title">20 Days</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="row mt-4">
+                            <!-- Correct Answers Today/This Week/This Month -->
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header text-center" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
+                                        Correct and Incorrect Answers
+                                    </div>
+                                    <ul class="list-group list-group-flush" style="border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
+                                        <li class="list-group-item"><b>Today:</b> 15 Answers</li>
+                                        <li class="list-group-item"><b>This Week:</b> 70 Answers</li>
+                                        <li class="list-group-item"><b>This Month:</b> 285 Answers</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+            <!-- <div class="tab-pane fade" id="unit-wise" role="tabpanel" aria-labelledby="unit-wise-tab">
+                <div class="container">
+                     Unit 1 
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="my-0 fw-normal">Unit 1 Analytics</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Correct Answers: <strong>20</strong></li>
+                                <li class="mb-2"><i class="fas fa-times-circle text-danger"></i> Incorrect Answers: <strong>5</strong></li>
+                                <li class="mb-2"><i class="fas fa-question-circle text-info"></i> Questions Attempted: <strong>25</strong></li>
+                                <li class="mb-2"><i class="fas fa-trophy text-warning"></i> Quizzes Completed: <strong>4</strong></li>
+                                <li class="mb-2"><i class="fas fa-book-open text-secondary"></i> Words/Phrases Learnt: <strong>15</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                     Unit 2 (Repeat structure for other units with adjusted dummy data)
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="my-0 fw-normal">Unit 2 Analytics</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Correct Answers: <strong>18</strong></li>
+                                <li class="mb-2"><i class="fas fa-times-circle text-danger"></i> Incorrect Answers: <strong>7</strong></li>
+                                <li class="mb-2"><i class="fas fa-question-circle text-info"></i> Questions Attempted: <strong>25</strong></li>
+                                <li class="mb-2"><i class="fas fa-trophy text-warning"></i> Quizzes Completed: <strong>3</strong></li>
+                                <li class="mb-2"><i class="fas fa-book-open text-secondary"></i> Words/Phrases Learnt: <strong>15</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="tab-pane fade" id="unit-wise" role="tabpanel" aria-labelledby="unit-wise-tab">
+                <div class="container">
+                    <!-- Dropdown to select units -->
+                    <div class="mb-3">
+                        <label for="unitSelection" class="form-label">Select Unit:</label>
+                        <select class="form-control" id="unitSelection">
+                            <option value="1" selected>Unit 1</option>
+                            <option value="2">Unit 2</option>
+                            <option value="3">Unit 3</option>
+                            <option value="4">Unit 4</option>
+                        </select>
+                    </div>
+            
+                    <!-- Dynamic card for unit details -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-primary text-white" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                            <h4 class="my-0 fw-normal" id="unitTitle">Unit 1 Analytics</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mt-3 mb-4" id="unitDetails">
+                                <!-- Details updated by JavaScript -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div> 
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="questionsModal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="questionsModalLabel">Questions Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="scrollable-table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Question</th>
+                            <th scope="col">Question Type</th>
+                            <th scope="col">Answer</th>
+                            <th scope="col">Correct Answer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="questionsTableBody">
+                        <!-- Table rows will be added dynamically here -->
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ total_data|json_script:"total-data" }}
+<script>
+
+function viewQuestions(unitId) {
+    console.log(unitId);
+    $.ajax({
+        url: `/get-questions/${unitId}/`, // Adjust the URL as per your URL configuration
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            const tableBody = document.getElementById('questionsTableBody');
+            tableBody.innerHTML = '';  // Clear existing entries
+            
+            data.questions.forEach(q => {
+                const row = `<tr>
+                                <td>${q.question}</td>
+                                <td>${q.type}</td>
+                                <td>${q.answer}</td>
+                                <td>${q.correctAnswer}</td>
+                             </tr>`;
+                tableBody.innerHTML += row;
+            });
+
+            $('#questionsModal').modal('show');  // Show the modal with the new data
+        },
+        error: function(error) {
+            console.error('Error fetching data: ', error);
+            alert('Error fetching questions.');
+        }
+    });
+}
+    document.addEventListener('DOMContentLoaded', function() {
+        const unitSelection = document.getElementById('unitSelection');
+        const unitTitle = document.getElementById('unitTitle');
+        const unitDetails = document.getElementById('unitDetails');
+        const totalData = JSON.parse(document.getElementById('total-data').textContent);
+        
+        const unitData = totalData
+    
+        unitSelection.addEventListener('change', function() {
+            const selectedUnit = unitData[this.value];
+            updateCard(selectedUnit, this.value);
+        });
+    
+        function updateCard(unit, unit_id) {
+            unitTitle.textContent = unit.title;
+            unitDetails.innerHTML = ''; // Clear previous details
+            unit.details.forEach((detail, index) => {
+                console.log(unit_id);
+                let listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong></li>`;
+
+    // Append a button if the detail is for 'Incorrect Answers'
+    if (detail.text === 'Incorrect Answers') {
+        listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong> <button class="btn btn-sm btn-info" onclick="viewQuestions(${unit_id})">View questions</button></li>`;
+    }
+
+    unitDetails.innerHTML += listItem;
+            });
+        }
+    
+        // Initial load for unit 1
+        updateCard(unitData['1'], 1);
+    });
+    </script>
+    
+    
+    
+    <!-- Add more cards for other locations as needed -->
+    
+  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

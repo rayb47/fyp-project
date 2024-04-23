@@ -1,0 +1,812 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Correct FontAwesome link -->
+<link rel="stylesheet" href="{% static 'architecture.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<style>
+    .sound-button {
+        background: none;
+        border: none;
+        font-size: 20px;
+    }
+
+    .sound-button:hover {
+        transform: scale(1.1);
+    }
+
+    .sound-button:focus {
+    outline: none;
+    box-shadow: none; /* Also remove any box-shadow if applied by Bootstrap */
+    background: none;
+}
+
+.align-middle {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+           
+           background-color: #007bff;
+           color: white;
+            border-color: #000000 #000000 #000000;
+        }
+        .nav-tabs .nav-link {
+            border: 2px solid black;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+            color: #007bff;
+            margin-right: 2px;
+            border-bottom: 1px solid black;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid black;
+        }
+        .tab-content > .tab-pane {
+            padding: 20px;
+            background: none;
+            border: 0px solid black;
+            border-top: none;
+        }
+
+        #user-saved-tab, #overall-list-tab, #general-search-tab {
+            border: 1px solid black;
+            box-shadow: inset 0px 0px 6px 0px black;
+        }
+
+        #user-saved-tab:hover, #overall-list-tab:hover, #general-search-tab:hover {
+            border: 1px solid black;
+            background-color: #88c0fc;
+            color: white;
+            box-shadow: inset 0px 0px 10px 0px black;
+        }
+
+        #plusBtnGeneral, #plusBtnOverall {
+            background-color: rgb(67, 187, 56);
+            border: 2px solid black;
+            color: white;
+        }
+
+        #plusBtnGeneral:hover, #plusBtnOverall:hover {
+            background-color: rgb(45, 102, 40);
+            box-shadow: inset 0 0 4px 0px black;
+        }
+
+        #deleteWord {
+            font-weight: bold;
+            border: 2px solid black;
+        }
+
+        #deleteWord:hover {
+            background-color: rgb(150, 44, 44);
+            box-shadow: inset 0 0 4px 0px black;
+            font-weight: bold;
+        }
+        .scrollable-table-container {
+        max-height: 450px;  /* Set maximum height of the table container */
+        overflow-y: auto;   /* Enable vertical scrolling */
+        overflow-x: hidden; /* Hide horizontal scroll */
+    }
+
+    .user-saved-words-table thead th {
+        position: sticky;
+        top: 0; /* Set the top of the header to align with the top of the table */
+        background-color: #343a40; /* Ensure the background is not transparent */
+        color: white; /* Set text color */
+        z-index: 1020; /* Makes sure the header is above other content */
+    }
+
+    .scrollable-table-container_2 {
+        max-height: 400px;  /* Set maximum height of the table container */
+        overflow-y: auto;   /* Enable vertical scrolling */
+        overflow-x: hidden; /* Hide horizontal scroll */
+    }
+
+    #download-button, #delete-all-button {
+        border-radius: 5px;
+        border: 2px solid black;
+        box-shadow: inset 0px 0px 6px 0px black;
+        height: 40px;
+    }
+
+    #download-button {
+        background-color: rgb(167, 230, 161);
+    }
+
+    #delete-all-button {
+        background-color:rgb(223, 150, 150)
+    }
+
+    #vocabTab {
+    border-bottom: 2px solid black;
+}
+
+</style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <a class="navbar-brand" href="#">
+          
+          <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+          <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
+          
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto" id="navbarUL">
+            <li class="nav-item active">
+              <a class="nav-link nb-item" href="/home">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active-tab nb-item" style="color: rgb(232, 255, 255);" href="/vocab">Vocabulary</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">Analytics</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
+      </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Culture
+              </a>
+              <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+                <a class="dropdown-item" href="/architecture">Architecture</a>
+                <a class="dropdown-item" href="/festivals">Festivals</a>
+                <a class="dropdown-item" href="page3.html">Media</a>
+                <!-- More dropdown items -->
+              </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
+        </li>
+            <!-- More nav items -->
+          </ul>
+          <span class="navbar-text">
+            <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
+              <i id="discordLogo" class="fab fa-discord"></i>
+          </a>
+            <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
+          </span>
+        </div>
+      </nav>
+
+  <div class="container mt-3">
+    <h1 class="mb-4 heading">Vocabulary</h1>
+
+    <div class="card mb-3 vocab-card">
+        <div class="card-body">
+            <!-- Tab navs -->
+            <ul class="nav nav-tabs" id="vocabTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="user-saved-tab" data-toggle="tab" href="#user-saved" role="tab" aria-controls="user-saved" aria-selected="true">User Saved List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="overall-list-tab" data-toggle="tab" href="#overall-list" role="tab" aria-controls="overall-list" aria-selected="false">Overall List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="general-search-tab" data-toggle="tab" href="#general-search" role="tab" aria-controls="general-search" aria-selected="false">General Search</a>
+                </li>
+                
+            </ul>
+    
+            <!-- Tab content -->
+            <div class="tab-content" id="myTabContent">
+                <!-- User Saved List Tab Pane -->
+                <div class="tab-pane fade show active" id="user-saved" role="tabpanel" aria-labelledby="user-saved-tab">
+                    <div style="display: flex; align-items: center; margin-top: 10px;">
+                        <h2 style="margin-right: 20px;">User Saved</h2>
+                        <button id="download-button">
+                            <i class="fas fa-download"> Download</i>
+                        </button>
+                        <button id="delete-all-button" style="margin-left: 10px;">
+                            <i class="fas fa-trash"> Delete All</i>
+                        </button>
+                    </div>
+                    <form>
+                        {% csrf_token %}
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="scrollable-table-container">
+                                <table class="table table-dark table-striped user-saved-words-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Portuguese</th>
+                                            <th scope="col">English</th>
+                                            <th scope="col">English Usage</th>
+                                            <th scope="col">Portuguese Usage</th>
+                                            <th scope="col"><center>Actions</center></th> <!-- New column for actions -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for word in saved_words %}
+                                        <tr id="savedWordRow_{{word.id}}">
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                <span class="align-middle">
+                                                {% if word.custom_portuguese %}
+                                                    {{word.custom_portuguese}}
+                                                    <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.custom_portuguese}}')">🔊</button>
+                                                {% else %}
+                                                    {{word.word.portuguese_word}}
+                                                    <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
+                                                {% endif %}
+                                                
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="align-middle">
+                                                    {% if word.custom_english %}
+                                                        {{word.custom_english}}
+                                                    {% else %}
+                                                        {{word.word.english_translation}}
+                                                    {% endif %}
+                                                </span>
+                                            </td>
+                                            {% with word.word.example_usages.all.first as usage %}
+                                                <td>
+                                                    <span class="align-middle">
+                                                        {% if usage.english_usage %}
+                                                            {{usage.english_usage}}
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="align-middle">
+                                                        {% if usage.portuguese_usage %}
+                                                            {{usage.portuguese_usage}}
+                                                            <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    </span>
+                                                </td>
+                                            {% endwith %}
+                                            <td><center><button class="btn btn-danger btn-sm delete-button" id="deleteWord" data-id="{{word.id}}"><i class="fas fa-trash-alt"></i>      Delete</button></center></td> <!-- Delete icon button -->
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+    
+                <!-- Overall List Tab Pane -->
+                <div class="tab-pane fade" id="overall-list" role="tabpanel" aria-labelledby="overall-list-tab">
+                    <h2 style="margin-top: 10px;">Overall List</h2>
+                    <form>
+                        {% csrf_token %}
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <form id="searchForm">
+                                    <div class="input-group mb-3" style="width: 50%;">
+                                        <input type="text" class="form-control" placeholder="Search for words (in English or Portuguese)" id="searchQueryOverall">
+                                        <!-- <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                        </div> -->
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <div class="scrollable-table-container_2">
+                                <table class="table table-dark table-striped saved-words-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Portuguese</th>
+                                            <th scope="col">English</th>
+                                            <th scope="col">English Usage</th>
+                                            <th scope="col">Portuguese Usage</th>
+                                            <th scope="col"><center>Actions</center></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for word in words %}
+                                        <tr id="savedWordRow_{{word.id}}">
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                <span class="align-middle">
+                                                {{word.portuguese_word}}
+                                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="align-middle">
+                                                    {{word.english_translation}}
+                                                </span>
+                                            </td>
+                                            {% with word.example_usages.all.first as usage %}
+                                                <td>
+                                                    <span class="align-middle">
+                                                        {% if usage.english_usage %}
+                                                            {{usage.english_usage}}
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="align-middle">
+                                                        {% if usage.portuguese_usage %}
+                                                            {{usage.portuguese_usage}}
+                                                            <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    </span>
+                                                </td>
+                                            {% endwith %}
+                                            <td>
+                                                <center><button class="btn btn-outline-success plus-button plusBtnOverall" id="plusBtnOverall" data-id="{{word.id}}"><i class="fas fa-plus"></i>    Add to List</button></center>
+                                            </td>                                        
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Overall List Tab Pane -->
+                <div class="tab-pane fade" id="general-search" role="tabpanel" aria-labelledby="general-search-tab">
+                    <h2 style="margin-top: 10px;">General Search</h2><div class="row mt-3">
+                        <div class="col-12">
+                            <form id="generalSearchForm">
+                                <div class="input-group mb-3" style="width: 100%;">
+                                    <input type="text" class="form-control" placeholder="Search for words or phrases..." id="searchQueryGeneral" aria-label="Search for words" aria-describedby="button-search">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="submit" id="searchButton">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Portuguese</th>
+                                    <th scope="col">English</th>
+                                    <th scope="col"><center>Actions</center></th>
+                                </tr>
+                            </thead>
+                            <tbody id="searchResults">
+                                <tr>
+                                    <th scope="row">-</th>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <center><button class="btn btn-outline-success plus-button" id="plusBtnGeneral" disabled><i class="fas fa-plus"></i>    Add to List</button></center>
+                                    </td>
+                                </tr>
+                                <!-- More rows can be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+ 
+
+    
+    
+  </div>
+
+  <!-- <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 200px; z-index: 1050;">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
+      <div class="toast-header">
+        <strong class="mr-auto text-success">Notification</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        Word deleted successfully.
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Bootstrap Modal -->
+<!-- <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="downloadModalLabel">Download Complete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Your file has begun downloading.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete all items?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Yes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 0; right: 0; min-height: 200px; z-index: 1050; padding: 20px;">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
+      <div class="toast-header">
+        <strong class="mr-auto text-primary">Notification</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true" id="closeToast">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        Word added to the list!
+      </div>
+    </div>
+</div>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+$(document).ready(function() {
+    $('#delete-all-button').click(function() {
+        // Show the modal
+        $('#deleteConfirmationModal').modal('show');
+    });
+    
+    $('#user-saved-tab').click(function(e) {
+        e.preventDefault(); // Prevent the default tab switch
+        window.location.reload(); // Reload the page
+    });
+
+    // Bind click event to the modal's confirm button
+    $('#confirmDeleteButton').click(function() {
+        $.ajax({
+            type: 'POST',
+            url: '/delete_all_saved_words',  // Update URL to match your Django URL configuration
+            data: {
+                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() // Include CSRF token
+            },
+            success: function(response) {
+                if(response.success) {
+                    // alert('All items have been deleted.');
+                    window.location.reload();  // Reload the page
+                } else {
+                    alert('Failed to delete items: ' + response.error);
+                }
+                $('#deleteConfirmationModal').modal('hide'); // Hide the modal after processing
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + error);
+                $('#deleteConfirmationModal').modal('hide'); // Hide the modal on error as well
+            }
+        });
+    });
+
+    // $('.plusBtnOverall').click(function() {
+    //     event.preventDefault()
+    //     var wordId = $(this).data('id');  // Get the word ID stored in the data-id attribute
+    //     console.log(wordId);
+    //     $.ajax({
+    //         url: '/save_word/',  // URL to your Django view
+    //         type: 'POST',
+    //         data: {
+    //             'word_id': wordId,  // Data you want to send to the server
+    //             'csrfmiddlewaretoken': '{{ csrf_token }}',  // CSRF token for Django
+    //             'word_type': 'overall'
+    //         },
+    //         success: function(response) {
+    //             // Handle success
+    //             console.log('Added to list successfully:', response);
+    //         },
+    //         error: function(xhr, status, error) {
+    //             // Handle error
+    //             console.error('Failed to add to list:', error);
+    //         }
+    //     });
+    // });
+    $('body').on('click', '.plusBtnOverall', function(event) {
+        event.preventDefault();
+        var wordId = $(this).data('id');
+        console.log('Word ID:', wordId);
+        
+        $.ajax({
+            url: '/save_word/',  // URL to your Django view
+            type: 'POST',
+            data: {
+                'word_id': wordId,  // Data you want to send to the server
+                'csrfmiddlewaretoken': '{{ csrf_token }}',  // CSRF token for Django
+                'word_type': 'overall'
+            },
+            success: function(response) {
+                // Handle success
+                $('.toast-body').html(response.message);
+                $('.toast').toast('show');  // Shows the toast
+                setTimeout(function() {
+                    $('.toast').toast('hide'); // This will hide the toast
+                }, 2000);
+                console.log('Added to list successfully:', response);
+            },
+            error: function(xhr, status, error) {
+                var responseJson = JSON.parse(xhr.responseText);
+                var message = responseJson.message;
+                $('.toast-body').html(message);
+                $('.toast').toast('show');  // Shows the toast
+                setTimeout(function() {
+                    $('.toast').toast('hide'); // This will hide the toast
+                }, 2000)
+                console.error('Failed to add to list:', message);
+            }
+        });
+    });
+
+});
+
+document.getElementById('download-button').addEventListener('click', function() {
+    var tableData = [];
+    // Get table rows
+    document.querySelectorAll('.user-saved-words-table tbody tr').forEach(function(row) {
+        var rowData = [];
+        row.querySelectorAll('th, td').forEach(function(cell, index) {
+        // Do not include the Actions column
+        if (index < row.querySelectorAll('th, td').length - 1) {
+            // Clone the cell to manipulate it without altering the DOM
+            let clonedCell = cell.cloneNode(true);
+            // Remove any buttons from the cloned cell
+            let buttons = clonedCell.querySelectorAll('button');
+            buttons.forEach(button => button.remove());
+            // Get the text without the button text
+            let text = clonedCell.textContent.trim();
+            rowData.push(text);
+        }
+        });
+        tableData.push(rowData.join(','));
+    });
+
+    // Send the data to the Django backend
+    $.ajax({
+    url: '/download_table', // The URL to your Django download view
+    method: 'POST',
+    data: {
+        'table_data': tableData,
+        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val() // Pass CSRF token
+    },
+    xhrFields: {
+        // Include this to treat the response as a blob
+        responseType: 'blob'
+    },
+    success: function(blob) {
+        // No need to create a Blob, since the response is already a Blob
+        // Create a download link and trigger it
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'saved-words.csv'; // specify the download filename
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    },
+    error: function(xhr, status, error) {
+        console.error('There was an error in downloading the table: ', error);
+    }
+});
+});
+
+$(document).ready(function() {
+    $('.delete-button').click(function() {
+        var button = $(this);
+        var savedWordId = button.data('id');
+        event.preventDefault()
+        $.ajax({
+            url: '/save_word/',  // URL to the Django view
+            type: 'POST',  // or 'POST' if you are sending data to the server
+            
+            data: {
+              'word_id': savedWordId,
+              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(), // Any data you need to pass to Django
+              'add_or_remove': 'remove',
+            },
+            success: function(response) {
+                console.log("Success");
+                // $('.toast').toast('show');
+                var row = $('#savedWordRow_' + savedWordId);
+                row.fadeOut('slow', function() { 
+                    $(this).remove();
+                    window.location.reload();
+                    // After removal, update the indexes of all subsequent rows.
+                    $('.saved-words-table tbody tr').each(function(index) {
+                        $(this).find('th:first').text(index + 1); // Assuming the first th in each row contains the index number.
+                    });
+                });
+            },
+            error: function(xhr, errmsg, err) {
+                // Handle errors
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+    // $('.toast').toast();
+});
+
+function convertTextToSpeech(textToSpeak) {
+      event.preventDefault()
+    $.ajax({
+        url: '/text-to-speech/',  // URL to Django view
+        type: 'POST',
+        data: { 'text': textToSpeak },
+        success: function(response) {
+            console.log(response.message);
+            // Optional: Play the response if it includes audio data
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $('#searchQueryOverall').on('input', function() {
+        var query = $(this).val();
+
+        $.ajax({
+            url: '/search_word',  // Your endpoint for searching words
+            type: 'GET',
+            data: {'query': query},
+            success: function(response) {
+                // Clear the existing table rows
+                $('.saved-words-table tbody').empty();
+
+                if (response.words.length === 0) {
+                    // If no words are returned, display a row of '-' under each column
+                    var emptyRow = `<tr>
+                                        <th scope="row">-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><center>-</center></td>
+                                    </tr>`;
+                    $('.saved-words-table tbody').append(emptyRow);
+                } else {
+                    // Iterate over the response to build new table rows
+                    response.words.forEach(function(word, index) {
+                        var newRow = `<tr id="savedWordRow_${word.id}">
+                                          <th scope="row">${index + 1}</th>
+                                          <td>
+                                              <span class="align-middle">
+                                                  ${word.portuguese_word}
+                                                  <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${word.portuguese_word}')">🔊</button>
+                                              </span>
+                                          </td>
+                                          <td>
+                                              <span class="align-middle">
+                                                  ${word.english_translation}
+                                              </span>
+                                          </td>
+                                          <td>
+                                              <span class="align-middle">
+                                                  ${word.example_usage ? word.example_usage.english_usage : '-'}
+                                              </span>
+                                          </td>
+                                          <td>
+                                              <span class="align-middle">
+                                                  ${word.example_usage ? word.example_usage.portuguese_usage : '-'}
+                                                  ${word.example_usage ? `<button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${word.example_usage.portuguese_usage}')">🔊</button>` : ''}
+                                              </span>
+                                          </td>
+                                          <td>
+                                            <center><button class="btn btn-outline-success plus-button plusBtnOverall" id="plusBtnOverall" data-id='${word.id}'><i class="fas fa-plus"></i>    Add to List</button></center>
+                                          </td>
+                                      </tr>`;
+                        $('.saved-words-table tbody').append(newRow);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error during search:", error);
+            }
+        });
+    });
+
+    $('#generalSearchForm').submit(function(event) {
+        event.preventDefault();
+        var searchQuery = $('#searchQueryGeneral').val();
+
+        $.ajax({
+            url: '/vocab_search',  // Ensure this matches your Django URL
+            type: 'GET',
+            data: { 'query': searchQuery },
+            success: function(data) {
+                var tbody = $('#searchResults');
+                console.log(data);
+                tbody.empty();  // Clear existing data
+                data.words.forEach(function(item, index) {
+                    var row = `<tr>
+                        <th scope="row">${index + 1}</th>
+                        <td>
+                            <span class="align-middle">
+                                ${item.portuguese}
+                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${item.portuguese}')">🔊</button>
+                        </td>
+                        <td>${item.english}</td>
+                        <td>
+                            <center><button class="btn btn-outline-success plus-button" data-portuguese="${item.portuguese}" data-english="${item.english}" id="plusBtnGeneral"><i class="fas fa-plus"></i>    Add to List</button></center>
+                        </td>
+                    </tr>`;
+                    tbody.append(row);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    });
+
+    $('#searchResults').on('click', '.plus-button', function() {
+    var portuguese = $(this).data('portuguese');
+    var english = $(this).data('english');
+
+    $.ajax({
+        url: '/save_word/',  // Update this URL to the endpoint in your Django app that handles this request
+        type: 'POST',
+        data: {
+            'portuguese': portuguese,
+            'english': english,
+            'word_type': 'general'
+        },
+        success: function(response) {
+            $('.toast').toast('show');
+            console.log('Added to list successfully:', response);
+            // Optionally update the UI to reflect the addition
+        },
+        error: function(xhr, status, error) {
+            console.error('Error adding to list:', error);
+        }
+    });
+});
+});
+
+
+</script>
+</body>
+</html>

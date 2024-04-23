@@ -1,0 +1,295 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz - Unit 3: Food And Drink</title>
+<link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> 
+    <style>
+        #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+        #sortable li { 
+          margin: 3px 3px 3px 0; 
+          padding: 8px; 
+          float: left;  
+          font-size: 1.5em; 
+          text-align: center;
+          border: 1.5px solid black;
+          /* box-shadow: #000000 2px 2px; */
+          box-shadow: inset 0px 0px 5px 0px black;
+        }
+
+        #sortable li:hover {
+
+          background-color: rgb(201, 198, 198);
+        }
+    
+
+    .quiz-container {
+      max-width: 660px;
+      margin: 30px auto;
+      background-color: #f9f9f9;
+      padding-top: 20px;
+      padding-left: 0px;
+      padding-right: 0px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .progress-bar {
+      background-color: #4CAF50;
+    }
+    hr {
+        border: none;
+        height: 1px;
+        width: 100%;
+        margin-left: 0px;  /* counteract the left padding of the container */
+        margin-right: 0px; /* counteract the right padding of the container */
+        background-color: #000000; /* or any color that fits the design */
+        margin-top: 20px; /* or any value that fits the design */
+        margin-bottom: 20px; /* or any value that fits the design */
+    }
+
+    .phrase-section h1 {
+    color: #333;
+}
+
+.phrase {
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    height: 100px; /* Or any fixed height you prefer */
+}
+
+
+.sound-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0; /* Remove padding if you want the button closer to the text */
+    display: inline-flex; /* Align the icon vertically */
+    align-items: center;
+    justify-content: center;
+}
+
+.recording {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.record-button {
+    background-color: #f8f8f8;
+    border: 2px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.recording-slider input[type="range"] {
+    width: 100%;
+}
+
+
+.mcq-container {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: auto;
+    padding-bottom: 20px;
+}
+
+.question {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.options {
+    list-style: none;
+    padding: 0;
+}
+
+.options li {
+    margin-bottom: 10px;
+}
+
+    /* Hide the radio button itself */
+    input[type="radio"] {
+        display: none;
+    }
+
+    /* Basic styling for labels */
+    label {
+        display: block;
+        padding: 10px;
+        margin: 5px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Styling for label when the adjacent radio button is checked */
+    input[type="radio"]:checked + label {
+        border: 4px solid #c4c71e;
+        background-color: #feffd2;
+        /* Right */
+        /* border: 2px solid #1ae245;
+        background-color: #dcffdd; */
+        /* border: 2px solid #dd2323;
+        background-color: #ffdddb; */
+    }
+
+    /* Optionally, style for hovering over the label */
+    label:hover {
+        background-color: #ddd;
+    }
+
+    .horizontal-list {
+  list-style: none; /* Removes the default list item styling */
+  padding: 0; /* Removes the default padding */
+  margin: 0; /* Adjust the margin as needed */
+  display: flex; /* Enables flexbox layout mode */
+  justify-content: center; /* Center the items horizontally */
+  gap: 10px; /* Adds space between items */
+}
+
+.horizontal-list .ui-state-default {
+  cursor: pointer; /* Indicates that items are movable */
+  user-select: none; /* Prevents text selection */
+  padding: 10px 15px; /* Add some padding around the text */
+  background-color: #f2f2f2; /* Light grey background */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 4px; /* Rounded corners */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow effect */
+}
+
+.correct-answer {
+  border: 2px solid green;
+  background-color: #d4edda; /* A light green background */
+}
+
+.incorrect-answer {
+  border: 2px solid red;
+  background-color: #f8d7da; /* A light red background */
+}
+  </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+  {% include 'mainsite/navbar.html' %}
+
+  <div class="container">
+    <div class="quiz-container">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="unit_heading">
+          <b>Unit 4 - General Outdoors and Weather </b>
+        </div>
+        <div class="progress" style="width: 30%;"> 
+          <div class="progress-bar progress-bar-striped" style="width:70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+
+        </div>
+        {% if not repeated_question %}
+        <div class='numbering'><b>{{question_id}} of 11</b></div>
+      {% else %}
+        <b>Repeated Question</b>
+      {% endif %}  
+        <a href="/home" class="btn btn-light big-close" id="big_close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
+      </div>
+      <hr> 
+      <div class="mcq-container">
+        <form>
+        {% csrf_token %}
+        <h1 class="text-center mb-4">Arrange in sequence</h1>
+        <ul id="sortable" class="horizontal-list" style="margin-left: 20px; margin-top: 50px;">
+            {% for word in jumbled_answer %}
+                <li class="ui-state-default"><b>{{ word }}</b></li>
+            {% endfor %}
+        </ul>
+        <div class="text-center" style="margin-top: 30px;"> <!-- Adjust top margin as needed -->
+            <i id='correctTick' class="far fa-check-circle correctTick" style="display:none"></i>
+            <i id='incorrectTick' class="far fa-times-circle incorrectTick" style="display:none"></i>
+        </div>
+        <div class="text-center" style="margin-top: 30px;">
+            <button id="checkOrder" class="btn btn-success btn-lg">Check</button>
+        </div>
+        </form>
+    </div>
+    
+    </div>
+  </div>
+  
+<!-- Replace the 'slim' version with the full version of jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
+<audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
+<script>
+
+$(document).ready(function() {
+    $("#sortable").sortable();
+    $("#sortable").disableSelection();
+
+    $("#checkOrder").click(function() {
+        event.preventDefault()
+        var button = $(this);
+        var correctOrder = ["What", "is", "your", "name", "?"];
+        var userOrder = $("#sortable li").map(function() {
+            return $(this).text().trim();
+        }).get();
+
+        console.log(userOrder);
+        
+        // Perform AJAX call to submit the user order to the server
+        if (button.text().trim() === 'Check') {
+        $.ajax({
+            url: '/submit_answer',  // URL to the Django view
+            type: 'POST',  // HTTP method, Django typically uses POST for form submissions
+            data: {
+                'quiz': JSON.stringify(userOrder),  // Send the userOrder as a JSON string
+                'form_type': "{{question_id}}",
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // CSRF token for Django
+            },
+            success: function(response) {
+                // Process server response here
+                if(response.is_correct) {
+                  $("#sortable li").css({
+                      "border": "2px solid green",
+                      "background-color": "#d4edda" // A light green background
+                  });
+                  $('#correctSound')[0].play();
+                  var check_mark = document.getElementById('correctTick');
+                  check_mark.style.display = 'inline';
+                } else {
+                  $("#sortable li").css({
+                      "border": "2px solid red",
+                      "background-color": "#f8d7da" // A light red background
+                  });
+                  $('#wrongSound')[0].play();
+                  var check_mark = document.getElementById('incorrectTick');
+                  check_mark.style.display = 'inline';
+                }
+                $('#checkOrder').text('Continue');
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors here
+                console.error("Error submitting order:", error);
+            }
+        });
+      } else {
+        window.location.reload();
+      }
+      
+    });
+});
+
+</script>
+
+</body>
+</html>

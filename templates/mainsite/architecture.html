@@ -1,0 +1,474 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'architecture.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<style>
+  .map2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 600px; /* Adjusted for visibility of smaller cube */
+      perspective: 1200px; /* Slightly reduced for better 3D effect */
+  }
+
+  .header { color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; }
+        .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
+        .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
+        .card { 
+            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 2px ; background-color: beige;;
+        }
+        .map { border-radius: 10px; }
+        .map { height: 250px; width: 100%; } /* Fixed height and full width for maps */
+        .carousel-item { height: 250px; background: #ccc; }
+        .carousel-item img { height: 250px; width: auto; margin: auto; }
+        .sub-heading { color: #343a40; font-size: 1.5rem; }
+        .intro-text { 
+            border-radius: 20px;
+            border-width: 1px;
+            border-color: black;
+            box-shadow: inset 0 0 10px 2px #000000; /* Horizontal offset, vertical offset, blur radius, spread radius, color */
+            transition: 0.8s; /* Optional: adds a transition effect when the shadow changes */
+            background-color: beige;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .img-fluid {
+            margin-top: 25px;
+            border: 2px solid black;
+            width: 100%;
+            height: 88%;
+        }
+  
+  #cube {
+      width: 300px; /* Decreased from 400px */
+      height: 300px; /* Decreased from 400px */
+      position: relative;
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+      transform: rotateX(var(--rotation-x)) rotateY(var(--rotation-y));
+  }
+  
+  .face {
+      position: absolute;
+      width: 300px; /* Decreased from 400px */
+      height: 300px; /* Decreased from 400px */
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      border: 1px solid red;
+      backface-visibility: hidden;
+      box-shadow: 0 0 20px 0 rgba(255, 0, 0, 0.5);
+  }
+  
+  .front  { background-image: url('https://admin.expatica.com/pt/wp-content/uploads/sites/8/2023/11/rock-in-rio-lisboa.jpg'); transform: rotateY(0deg) translateZ(150px); }
+  .back   { background-image: url('https://cms-files.carlomonteiro.pt/CARLOMONTEIRO_images/2020/02/27/1024_720/EN__20200227184934_1367381999.jpg'); transform: rotateY(180deg) translateZ(150px); }
+  .right  { background-image: url('https://admin.expatica.com/pt/wp-content/uploads/sites/8/2023/11/feast-day-saint-anthony-lisbon.jpg'); transform: rotateY(90deg) translateZ(150px); }
+  .left   { background-image: url('https://admin.expatica.com/pt/wp-content/uploads/sites/8/2023/11/carnival-portugal.jpg'); transform: rotateY(-90deg) translateZ(150px); }
+  .top    { background-image: url('https://www.transitionsabroad.com/listings/travel/narrative_travel_writing/images/mexico-semanasanta-cross.jpg'); transform: rotateX(90deg) translateZ(150px); }
+  .bottom { background-image: url('https://ovilaverdense.b-cdn.net/2023/04/Festa-das-Cruzes-5.jpg'); transform: rotateX(-90deg) translateZ(150px); }
+  
+  @keyframes rotateCube {
+      from { transform: rotateX(0deg) rotateY(0deg); }
+      to { transform: rotateX(360deg) rotateY(360deg); }
+  }
+
+  .bottomLine {
+    background-color:rgb(253, 175, 175);
+    margin-top: 92%;
+    color: white;
+    font-weight: bold;
+    /* -webkit-user-select: none;  
+    -moz-user-select: none;     
+    -ms-user-select: none;      
+    user-select: none;   */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  /* .card-body {
+    -webkit-user-select: none;  
+    -ms-user-select: none;      
+    user-select: none;
+  } */
+
+  a {
+    color: rgb(0, 4, 255);
+  }
+  </style>
+  
+  
+  
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      
+      <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+      <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
+      
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto" id="navbarUL">
+        <li class="nav-item active">
+          <a class="nav-link nb-item" href="/home">
+            {% translate 'Home' %} 
+          <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/vocab">
+            {% translate 'Vocabulary' %} 
+          </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">
+          {% translate 'Analytics' %} 
+        </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">
+        {% translate 'Diacritics' %} 
+      </a>
+  </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link active-tab dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% translate 'Culture' %} 
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="/architecture">{% translate 'Architecture' %} </a>
+            <a class="dropdown-item" href="/festivals">{% translate 'Festivals' %} </a>
+            <a class="dropdown-item" href="page3.html">{% translate 'Media' %} </a>
+            <!-- More dropdown items -->
+          </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
+    </li>
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
+          <i id="discordLogo" class="fab fa-discord"></i>
+      </a>
+        <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
+      </span>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="mb-4 heading">Festivals</h1>
+    <div class="card mb-3 culture-card" style="border-radius: 20px; box-shadow: inset 0 0 10px 2px #000000; border: 1px solid black;">
+      <div class="card-body" style="display: flex;   border-radius:20px">
+        <p style="width:100%; margin-top:20px; font-size: 19px;" class="card-text">{% translate 'Portugal is a nation that takes great pride in its festivals, which vividly reflect its rich heritage and past culture.' %}
+          {% blocktranslate %}
+          These nationwide festivals encompass a wide range of activities, from religious rites to secular revelries, all imbued with a distinct regional identity
+          and a sense of community. Portuguese villages and cities come alive with celebrations all year long, featuring ornate parades, traditional music and dancing, 
+          and an abundance of regional cuisine.
+          These celebrations unite communities and provide a sense of cultural pride and belonging while also honoring historical 
+          and religious customs. These festivities provide tourists with a rare glimpse into Portugal's essence, exhibiting a vibrant and vibrant manifestation of the 
+          country's history and the friendly hospitality of its populace. 
+          {% endblocktranslate %} 
+          <br><br><span style="font-weight: 700; font-size: 14px; color: rgb(16, 16, 180);">
+            {% translate 'Rotate the cube on the right to view images of some common Portuguese festivals.' %}<br>
+            {% translate 'Click on their names to learn more.' %}</span></p>
+        <div class="map2" style="margin-left: 5%; margin-right: 5%; height: 380px;">
+          <div id="cube" style="background-color: green;">
+              <div class="face front"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a href="https://en.wikipedia.org/wiki/Rock_in_Rio" target="_blank">1. Rock in Rio Lisboa</a></center></div></div>
+              <div class="face back"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a href="https://en.wikipedia.org/wiki/Anthony_of_Padua" target="_blank">3. Sao Joao</a></center></div></div>
+              <div class="face right"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a href="https://en.wikipedia.org/wiki/Anthony_of_Padua" target="_blank">2. Feast Day of Saint Anthony</a></center></div></div>
+              <div class="face left"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a target="_blank">4. Carnival</a></center></div></div>
+              <div class="face top"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a target="_blank">5. Semana Santa</a></center></div></div>
+              <div class="face bottom"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
+                <center><a target="_blank">6. Festa Das Cruzes</a></center></div></div>
+          </div>
+      </div>
+      </div>
+    </div>
+    <br>
+
+    <section>
+      <div class="card">
+          <div class="row g-0">
+
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-12">
+                  <div class="card-header" style="border-top-right-radius: 10px; border-top-left-radius: 10px;">1. Rock in Rio</div>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="card-body">
+                              <p class="card-text"> 
+                                {% blocktranslate %}'Rock in Rio is one of the world's largest and most famous music festivals originally founded in 
+                                Rio de Janeiro, Brazil in 1985. As time passed, it has also become a prominent event in Portugal where it has been held 
+                                every 2 years, since 2004. The festival is renowned for being held on a large scale, drawing top international artists across 
+                                various music genres, from rock and pop, to electronic and indie.{% endblocktranslate %}
+                              </p>
+                              <p class="card-text"><strong>Location:</strong> It is held in Lisbon, usually at the Parque de Bela Vista, which is a large 
+                                park that can accomodate the expansive stages, audience areas and entertainment zones that are required to host the festival.
+                                
+                              <p class="card-text"><strong>Dates:</strong> Not fixed, but usually in the month of September.</p>
+                              
+                          </div>
+                      </div>
+                      <!-- <div class="col-md-4 img-div">
+                          <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
+                          alt="Madeira's Flower Festival" class="img-fluid"
+                          >
+                      </div> -->
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="card">
+          <div class="row g-0">
+        
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-12">
+                  <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">2. Feast Day of St. Anthony</div>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="card-body">
+                              <p class="card-text">Also known as 'Dia de Santo António', the Feast Day of St. Anthony is one of Portugal's most cherished
+                                festivals where St.Anthony is considered the Patron Saint of lovers and the protector of lost items. The festival combines religious observance
+                                with popular festivities that reflect the deep cultural heritage and community spirit among the people.
+                              </p>
+                              <p>
+                                One of the unique aspects of the Feast Day of Saint Anthony is the mass wedding ceremony, also known as 'Casamentos de Santa António' (Saint Anthony's Weddings).
+                                Every year, several selected couples are married simultaneously in a high-profile event that symbolizes love and community. Saint Anthony is revered as the
+                                match-maker saint, which makes these weddings particularly meaningful.
+                              </p>
+                              <p class="card-text"><strong>Location:</strong> Celebrated all over Portugal, but most ferevently in Lisbon, as that is Saint Anthony's place of birth.</p>
+                              <p class="card-text"><strong>Dates:</strong> June 13</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="card">
+          <div class="row g-0">
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-12">
+                  <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">3. São João</div>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="card-body">
+                              <p class="card-text">The São João festival is one of Portugal's most lively and colorful celebrations. It honors Saint John the Baptist and marks the
+                                beginning of the Summer season. It is characterized by a mix of religious and traditional festivities, which make it a significant cultural event with deep
+                                roots in Portuguese tradition.
+                              </p>
+                              <p>
+                                Keeping with ancient tradition, bonfires are a central part of São João, around which people gather to celebrate, sing and jump over the flames as a symbol of
+                                protection and purification. One of the more amusing and unique traditions is the use of soft plastic hammers. Festival-goers playfully hit each other on the head
+                                with these hammers to create a friendly and joyful reaction amongst themselves.
+                              </p>
+                              <p class="card-text"><strong>Location:</strong> Mainly celebrated in Porto, and also other parts of Northern Portugal like Braga and Vila do Conde, although
+                              on a smaller scale.</p>
+                              <p class="card-text"><strong>Dates:</strong> June 23</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="card">
+          <div class="row g-0">
+              
+              <!-- Heading, text, and picture on the right -->
+              <div class="col-md-12">
+                  <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">4. Carnival</div>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="card-body">
+                              <p class="card-text">
+                                The Carinval in Portugal, known locally as 'Carnaval', is a pre-Lenten festival celebrated with great enthusiasm and a variety of rich traditions.
+                                It takes place right before Ash Wednesday and features a blend of religious, pagan and modern elements.</p>
+                                <p>The Carnaval is widely known for its elaborate
+                                parades featuring colorful floats, vibrant costumes and the lively samba bands. The participants in these parades often dress in an extravagant manner,
+                                reflecting both traditional themes and social or political commentary.
+                              </p>
+                              <p class="card-text"><strong>Location:</strong> The festivities take place all over Portugal, but the most famous celebrations can be found in 
+                              the regions of Torres Vedras, Ovar, Loulé and Madeira.</p>
+                              <p class="card-text"><strong>Dates:</strong> The days leading up to Ash Wednesday (decided by the Christian Calendar)</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="card">
+        <div class="row g-0">
+            
+            <!-- Heading, text, and picture on the right -->
+            <div class="col-md-12">
+                <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">5. Semana Santa</div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <p class="card-text">
+                              Semana Santa (Holy Week) is a deeply significant and solemn festival that commemorates the passion of Christ. It has been celebrated
+                            for centuries, and is deep rooted in the Roman Catholic tradition. In Portugal and many other Catholic countries across the globe, these 
+                          celebrations are a spiritual experience that involves processions, rituals and ceremonies.</p>
+                              <p>The celebration of Holy Week includes 4 parts, namely, Palm Sunday, Holy Thursday, Good Friday and Easter Sunday.
+                            </p>
+                            <p class="card-text"><strong>Location:</strong> All across Portugal.</p>
+                            <p class="card-text"><strong>Dates:</strong> It spans the last week of Lent. Starting on Palm Sunday and ending on Easter Sunday.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+      <div class="row g-0">
+          
+          <!-- Heading, text, and picture on the right -->
+          <div class="col-md-12">
+              <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">6. Festas das Cruzes</div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="card-body">
+                          <p class="card-text">
+                            Festas Das Cruzes (Festival of Crosses) is a traditional Portuguese festival that has deep religious roots and commemorates the
+                          discovery of a crucifix by the local people, which is believed to have miraculous origins. It is not only a religious event but also
+                        a time of joyful celebration, reflecting the community's culture and heritage/p>
+                            <p>This festival is a vivid example of how Portugal preserves and celebrates its rich history and religious heritage through annual
+                              community events by blending devotion with cultural festivity.
+                          </p>
+                          <p class="card-text"><strong>Location:</strong> Primarily celebrated in Barcelos, located in Northern Portugal.</p>
+                          <p class="card-text"><strong>Dates:</strong> The beginning of Spring.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+      
+      
+      <!-- Additional festival cards with similar layout -->
+  </section>
+
+    <div class="card mb-3 culture-card">
+      <div class="card-body">
+        <h2 class="card-title"><b>1. Sanctuary of Christ the King</b></h2>
+        <p class="card-text">The Sanctuary of Christ the King (Portuguese: Santuário de Cristo Rei) 
+          is a Catholic monument and shrine dedicated to the Sacred Heart of Jesus Christ overlooking the city of 
+          Lisbon situated in Almada, in Portugal. It was inspired by the Christ the Redeemer statue of Rio de Janeiro, 
+          in Brazil, after the Cardinal Patriarch of Lisbon visited that monument. 
+          The project was inaugurated on 17 May 1959. The giant statue was erected to express gratitude because the 
+          Portuguese were spared the direct destructive effects of World War II.</p>
+        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
+            in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC?utm_source=generator" width="80%" height="280" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          </div>
+      <div class="map">
+        <center>
+          <div>
+          <!-- Google Map Copied Code -->
+          <iframe width="400" height="400" style="border:0; border-radius: 10px; margin-bottom: 15px;" loading="lazy" allowfullscreen
+            src="https://www.google.com/maps/embed/v1/streetview?location=38.6787,-9.1713&key=AIzaSyDtutlR-5LD8Hzjs2uR1I5Sbku7_aml5pQ"></iframe>
+        <center>
+  <!-- Google Map Copied Code -->
+<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Cristo_Rei_%2836211699613%29.jpg/220px-Cristo_Rei_%2836211699613%29.jpg" style="border:0; border-radius: 10px; margin-bottom: 15px; margin-right: 55px; float: right; height: 400;"> -->
+</center>
+</div>
+      </div>
+    </div>
+    
+    <div class="card mb-3 culture-card">
+      <div class="card-body">
+        <h2 class="card-title"><b>2. Belém Tower</b></h2>
+        <p class="card-text">Belém Tower (Portuguese: Torre de Belém, pronounced [ˈtoʁɨ ðɨ βɨˈlɐ̃j]; 
+          literally: Bethlehem Tower), officially the 
+          Tower of Saint Vincent (Portuguese: Torre de São Vicente) is a 16th-century 
+          fortification located in Lisbon that served as a point of embarkation and 
+          disembarkation for Portuguese explorers and as a ceremonial gateway to Lisbon.
+          It was built during the height of the Portuguese Renaissance, and is 
+          a prominent example of the Portuguese Manueline style, but it 
+          also incorporates hints of other architectural styles. The structure
+           was built from lioz limestone and is composed of a bastion and a 30-metre 
+           (100 ft), four-storey tower.</p>
+    </div>
+      <div class="map">
+      <center>
+      <iframe width="400" height="400" style="border:0; border-radius: 10px; margin-bottom: 15px;" loading="lazy" allowfullscreen src="https://www.google.com/maps/embed?pb=!4v1704830452871!6m8!1m7!1sCAoSLEFGMVFpcFBuVjVMZklSNnd4R2lyN04zaFNnMThZX19NYy1FczRfRWJWSk11!2m2!1d38.69209842333764!2d-9.215197753444102!3f252.66944197108666!4f-17.197631610183265!5f0.7820865974627469" ></iframe>
+    </center>
+    </div>
+    
+    </div>
+    
+    <!-- Add more cards for other locations as needed -->
+    
+  </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const cube = document.getElementById('cube');
+      let isDragging = false;
+      let previousMousePosition = {
+          x: 0,
+          y: 0
+      };
+  
+      const rotate = (event) => {
+          if (isDragging) {
+              const deltaX = event.clientX - previousMousePosition.x;
+              const deltaY = event.clientY - previousMousePosition.y;
+  
+              const rotationX = parseInt(getComputedStyle(cube).getPropertyValue('--rotation-x')) || 0;
+              const rotationY = parseInt(getComputedStyle(cube).getPropertyValue('--rotation-y')) || 0;
+  
+              cube.style.setProperty('--rotation-x', rotationX - deltaY + 'deg');
+              cube.style.setProperty('--rotation-y', rotationY + deltaX + 'deg');
+  
+              previousMousePosition = {
+                  x: event.clientX,
+                  y: event.clientY
+              };
+          }
+      };
+  
+      cube.addEventListener('mousedown', (event) => {
+          isDragging = true;
+          previousMousePosition = {
+              x: event.clientX,
+              y: event.clientY
+          };
+      });
+  
+      document.addEventListener('mousemove', rotate);
+  
+      document.addEventListener('mouseup', () => {
+          isDragging = false;
+      });
+  });
+  </script>
+</body>
+</html>

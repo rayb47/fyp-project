@@ -1,0 +1,459 @@
+.lesson-card {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    /* border-radius: 0 0 20px 20px; */
+    border-radius: 20px;
+    border-width: 3px;
+    border-color: black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Horizontal offset, vertical offset, blur radius, spread radius, color */
+    transition: 0.3s; /* Optional: adds a transition effect when the shadow changes */
+    background-color: rgb(0, 0, 0);
+    height: 100%;
+  }
+
+  .lesson-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .card-img-top {
+    height:200px
+  }
+
+  .unit-img {
+    border-radius: 20px 20px 0px 0px;
+  }
+  
+  .settings-link {
+    color: #fff;
+  }
+
+  .nav-link {
+    font-size:22px;
+    margin-left:35px;
+
+  }
+  
+ 
+  
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-brand img {
+    margin-right: 8px; /* Adjust the space between the image and text as needed */
+  }
+  
+  .navbar-brand h1 {
+    margin-bottom: 0; /* Removes the bottom margin from h1 */
+  }
+  
+
+
+
+
+  /* body, html {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #33A251, #BB4B3C); 
+  } */
+
+      /* This styles the dropdown background */
+.navbar .dropdown-menu {
+  background-color: black; /* Sets the dropdown background to black */
+}
+
+/* This styles each dropdown item */
+.navbar .dropdown-menu .dropdown-item {
+  color: white; /* Sets the dropdown item text color to white */
+}
+
+/* This styles the dropdown item on hover */
+.navbar .dropdown-menu .dropdown-item:hover {
+  background-color: yellow; /* Sets the dropdown item background to yellow on hover */
+  color: black; /* Sets the dropdown item text color to black on hover */
+}
+  
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: linear-gradient(to right, #33A251, #BB4B3C); /* Start and end colors of the gradient */
+    background-attachment: fixed; /* Fix the background to the viewport */
+    background-repeat: no-repeat; /* Do not repeat the background */
+    background-size: cover; /* Cover the entire page */
+  }
+
+  .twitter-container {
+    /* max-height: 100vh; Viewport Height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 50px;
+    height: 580px;
+
+}
+
+.card-title {
+  color: white;
+}
+
+/* .card-body {
+  background-color: black;,
+  border-radius: 0 0 20px 20px;
+} */
+  
+.calendar th, .calendar td {
+  padding: 0px;
+  text-align: center;
+}
+
+.calendar td.today {
+  background-color: #f8f851;
+  border: 1.5px solid black;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  
+}
+
+.calendar td.logged-in {
+  background-color: #88ff88;
+  border: 1px solid black;
+}
+
+.calendar {
+  background-color: #f2edcb;
+  margin-bottom: 0px;
+  padding-left: 0; /* Reset left padding */
+  padding-right: 0; /* Reset right padding */
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 15px; 
+  width: 120%;
+  
+}
+
+@media (min-width: 768px) {
+  .calendar {
+    padding-left: 1rem; /* Adjust left padding on larger screens if needed */
+    padding-right: 1rem; /* Adjust right padding on larger screens if needed */
+  }
+}
+
+.weather-widget {
+  background: linear-gradient(to left, #6dd5ed, #19829c);
+  /* background-color: #f2edcb; */
+  color: black;
+  border-radius: 20px;
+  border-width: 3px;
+  border-color: black;
+  /* height: 15%; */
+  width: 120%;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  height: 250px;
+}
+
+/* .weather-widget:hover{
+  box-shadow: inset 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+} */
+
+#calendar-container {
+  border-radius: 15px; 
+  border: 3px solid black;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 120%;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+
+
+.calendar {
+  border-collapse: collapse; /* Ensures the borders between cells are merged */
+  width: 100%; /* Adjust based on your layout */
+}
+
+/* Add a bottom border to the last cell of the first row */
+.calendar thead tr:first-child th:last-child {
+  border-bottom: 2px solid #000;
+}
+
+/* Add a top border to the first cell of the second row */
+.calendar thead tr:nth-child(2) th:first-child {
+  border-top: 2px solid #000;
+}
+
+/* Extend the top border across all cells of the second row */
+.calendar thead tr:nth-child(2) th {
+  border-top: 2px solid #000;
+}
+
+/* Adds a bottom border to the entire thead section */
+.calendar thead {
+  border-bottom: 2px solid #000;
+}
+
+.calendar th, .calendar td {
+  text-align: center;
+  padding: 10px;
+  border: none; /* Removes individual cell borders */
+}
+
+.calendar th {
+  text-align: center;
+  
+}
+
+#loginCalendar thead th {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+#loginCalendar tbody td {
+  text-align: center;
+  padding: 0.5rem;
+  overflow: hidden; /* Prevent text from overflowing */
+  white-space: nowrap; /* Keep the content on a single line */
+}
+
+#prevMonth, #nextMonth {
+  padding: 0.25rem 0.5rem; /* Adjust as necessary */
+  box-shadow: inset 0px 0px 3px 0px black;
+  font-weight: bold;
+  background-color: #d1dad3;
+}
+
+#prevMonth:hover, #nextMonth:hover {
+  background-color: #6dd5ed;
+}
+
+#monthYear {
+  margin: 0 20px; /* Adjust spacing around the month and year display */
+}
+
+#monthYear {
+  font-weight: bold;
+  padding: 0.25rem;
+  white-space: nowrap; 
+}
+
+/* Ensure buttons do not stretch beyond the table's width */
+.calendar button {
+  max-width: none;
+}
+
+
+
+
+
+  
+  /* Ensure that all parent elements of your content also stretch to the full height */
+  .container {
+    min-height: 100%;
+    /* Other styles for your container */
+  }
+
+  .navbar.bg-black {
+    background-color: black !important; /* Using !important to override any existing Bootstrap styles */
+  }
+  
+  /* Change the text color for the active nav item to yellow */
+  .navbar .nav-link.active-tab, .navbar .nav-link.active {
+    color: yellow !important; /* Using !important to override any existing Bootstrap styles */
+    background-color: transparent !important; /* Ensure the background is transparent */
+  }
+  
+  /* Optional: Change hover and focus styles for nav links */
+  .navbar .nav-link:hover, .navbar .nav-link:focus {
+    color: yellow; /* Change text color to yellow on hover/focus */
+    background-color: transparent; /* Ensure the background is transparent on hover/focus */
+  }
+  /* Add more custom styles as needed */
+
+  /* #navbarNav {
+    height: 70px;
+  } */
+
+  #navbarUL {
+    margin-left: 60px;
+  }
+
+  
+/* New styles for the brand name */
+.text-green {
+    color: green;
+  }
+  
+  .text-red {
+    color: red;
+  }
+  
+  /* Ensure that the navbar brand has no text decoration to remove the underline from the anchor tag */
+  .navbar-brand {
+    text-decoration: none;
+  }
+
+  .quiz-img {
+    height: 200px; /* Adjust the height as needed *//* This helps to preserve the aspect ratio */
+}
+
+.quiz-container {
+    border-radius: 30px;
+    box-shadow: 3px 2px 1px 2px;
+    background-color: #f2edcb;
+    margin-top: 65px;
+    border: 3px solid black;
+  
+}
+
+.progress-bar {
+  border: 0px solid black;
+  background-color: #87db88;
+  color: black;
+  font-weight: bold;
+  border-right: 2px solid black;
+}
+
+.progress {
+  background-color: 0px solid black;
+  background-color: rgb(226, 226, 226);
+  height: 25px;
+  width: 30%;
+  border: 2px solid black;
+}
+
+.unit_heading {
+  width: 200px;
+  margin-left: 30px;
+}
+
+.lead {
+  font-weight: bold;
+}
+
+#translationInput {
+  border: 2px solid black
+}
+
+#basic-addon {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  font-weight: bold;
+  color: black;
+}
+
+#big_close {
+  border: 2px solid black;
+  margin-right: 20px;
+  box-shadow: inset 0px 0px 5px 0px black;
+  background-color: rgb(219, 213, 213);
+  font-size: 20px; 
+  font-weight: bold;
+}
+
+#big_close:hover {
+  background-color: rgb(151, 151, 151);
+}
+
+#answer-addon {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+
+#checkAnswer, #submitButton, #checkOrder, #skipButton {
+  border: 2px solid black;
+  box-shadow:  inset 0px 0px 5px 0px black;
+  
+}
+
+
+
+.mcq_option {
+  border-radius: 5px;
+  border: 2px solid black;
+  box-shadow: inset 0px 0px 2.5px 0px black;
+  /* box-shadow: #000 0px 0px 5px 0px; */
+}
+
+.vocab-card {
+  border-radius: 30px;
+  box-shadow: 3px 2px 1px 2px;
+  background-color: #f2edcb;
+  margin-top: 30px;
+  border: 3px solid black;
+
+}
+
+.analytics-card {
+  border-radius: 30px;
+  box-shadow: 3px 2px 1px 2px;
+  background-color: #f2edcb;
+  margin-top: 30px;
+  border: 3px solid black;
+
+}
+
+.settings-card {
+  border-radius: 30px;
+  box-shadow: 3px 2px 1px 2px;
+  background-color: #f2edcb;
+  margin-top: 30px;
+  border: 3px solid black;
+
+}
+
+#searchQueryOverall {
+  border: 2px solid black;
+}
+
+
+.content-container {
+  border: 2px solid black;
+  border-radius: 15px;
+  margin: 10px;
+  margin-left: 25px;
+  font-size: 22px;
+  background-color: #f3e095;
+  padding: 6px;
+  box-shadow:  0px 0px 5px 0px black;
+  box-shadow: inset 0px 0px 5px 0px black;
+}
+
+
+.mcq-option {
+  margin: 10px;
+}
+
+.page-item {
+  border: 1px solid rgb(0, 0, 0);
+  box-shadow: 0px 0px 4px 0px;
+
+}
+
+.numbering {
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+#recordBtn {
+  border: 2px solid black;
+  border-radius: 5px;
+  box-shadow: 0px 0px 4px 0px black;
+  font-weight: bold;
+}
+
+.correctTick {
+  color: rgb(6, 179, 6);
+  font-size: 24px;
+  margin-left: 5px;
+}
+
+.incorrectTick {
+  color: red;
+  font-size: 24px;
+  margin-left: 5px;
+}

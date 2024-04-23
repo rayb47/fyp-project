@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - PortuguesePro</title>
+<link rel="stylesheet" href="{% static 'signin.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+
+<img class="gif-background" src="{% static 'Image1.png' %}" alt="GIF" class="gif">
+<img class="gif-background2" src="{% static 'Bem-Vindo Text (2).png' %}" alt="GIF" class="gif">
+<img class="gif-background3" src="{% static 'Welcome Text (2).png' %}" alt="GIF" class="gif">
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card" id="login-card">
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <img src="{% static 'Cock Logo.png' %}" class="mb-4" alt="Portuguese Flag" style="width: 200px; height: 150px;"> <!-- Adjust size as needed -->
+            <h1><b><span class="text-green" style="color:green">Portu</span><span class="text-red" style="color:rgb(202, 41, 41)">Pro</span></b></h1>
+            <p>A Portuguese language learning website to help you sharpen and develop your Portuguese. <br><span style="font-weight: bold"> Enter your login details below.</span></p>
+          </div>
+          
+          <form action="signin" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="inputEmail"><b>Username</b></label>
+              <input type="username" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <small id="passwordHelpBlock" class="form-text text-muted">
+                  <a href="#" onclick="togglePasswordVisibility()">Show Password</a>
+                </small>
+            </div> -->
+
+            <div class="form-group">
+                <label for="inputPassword"><b>Password</b></label>
+                <div class="input-group" id="inputPasswordtotal">
+                  <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                  <div class="input-group-append" style="border-left: 2px solid black;">
+                    <span class="input-group-text">
+                      <i class="fas fa-eye" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+            <!-- <div class="checkbox mb-3">
+              <label>
+                <input type="checkbox" name="remember-me" value="remember-me"> Remember me
+              </label>
+            </div> -->
+            
+            <center><button class="btn btn-lg btn-primary btn-block" type="submit" id="loginBtn" style="margin-top:10px">Login</button></center>
+            <div class="mt-3">
+              <!-- <a href="{% url 'login:password_reset' %}">Forgot Password?</a> -->
+              <center><a href="#" data-bs-toggle="modal" data-bs-target="#passwordResetModal">Forgot Password?</a></center>
+            </div>
+          </form>
+          
+          <div class="mt-4">
+            <p class="text-center">Don't have an account? <a href="signup" class="text-primary">Register</a></p>
+          </div>
+
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // Toggles the visibility of the password input field and updates the text of the password link.
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('inputPassword');
+        var togglePasswordIcon = document.getElementById('togglePassword');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePasswordIcon.classList.remove('fa-eye');
+            togglePasswordIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            togglePasswordIcon.classList.remove('fa-eye-slash');
+            togglePasswordIcon.classList.add('fa-eye');
+        }
+    }
+    
+
+
+    </script>
+    {% if messages %}
+    <script type="text/javascript">
+        window.onload = function() {
+            // Concatenate all messages into one string
+            let messageText = "{% for message in messages %}{{ message }}\n{% endfor %}";
+            alert(messageText);  // Use a simple alert for demonstration
+        }
+    </script>
+    {% endif %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#passwordResetForm').submit(function(e) {
+        e.preventDefault(); // Prevent default form submission
+        var email = $('#userEmail').val(); // Get the email from the input field
+        
+        $.ajax({
+            type: "POST",
+            url: "/password_reset", // Update with the path to your Django password reset view
+            data: {
+                email: email,
+                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() // Ensure CSRF token is sent with the request
+            },
+            success: function(response) {
+                // Handle success - perhaps display a message that the email has been sent
+                alert("Please check your email for the password reset link.");
+                $('#passwordResetModal').modal('hide'); // Optionally hide the modal
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                alert("An error occurred. Please try again.");
+            }
+        });
+    });
+});
+</script>
+          <!-- Password Reset Modal -->
+          <div class="modal fade" id="passwordResetModal" tabindex="-1" aria-labelledby="passwordResetModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="passwordResetModalLabel">Reset Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="passwordResetForm">
+                            <div class="mb-3">
+                                <label for="userEmail" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp" required>
+                                <div id="emailHelp" class="form-text">We'll send a link to reset your password.</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+       
+</body>
+</html>

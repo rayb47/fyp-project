@@ -1,0 +1,248 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz - Unit 3: Food And Drink</title>
+<link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
+<style>
+    .quiz-container {
+      max-width: 68%;
+      margin: 30px auto;
+      background-color: #f9f9f9;
+      padding: 20px;
+      padding-left: 0px;
+      padding-right: 0px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .option:hover {
+      background-color: #f0f0f0;
+    }
+    .option img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .progress {
+      height: 20px;
+    }
+    .progress-bar {
+      background-color: #4CAF50;
+    }
+    hr {
+        border: none;
+        height: 1px;
+        width: 100%;
+        margin-left: 0px;  /* counteract the left padding of the container */
+        margin-right: 0px; /* counteract the right padding of the container */
+        background-color: #000000; /* or any color that fits the design */
+        margin-top: 20px; /* or any value that fits the design */
+        margin-bottom: 20px; /* or any value that fits the design */
+    }
+
+    input[type="radio"]:checked + img {
+  border: 8px solid #4CAF50; /* Green border for selected item */
+  /* padding: 4px; */
+}
+
+.match-item { cursor: pointer; }
+.matched { background-color: #198754; color: rgb(34, 190, 34); font-weight: 600; }
+.mismatched { color: red; font-weight: bold;}
+
+
+
+
+.option-container {
+    margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
+}
+
+.list-group.match-list {
+        margin: 20px;
+        border-radius: 5px;
+    }
+    #listA {
+        border: 3px solid black;  /* Light grey background */
+    }
+
+    #listB {
+        border: 3px solid black;  /* Light grey background */
+    }
+
+    #columnA, #columnB {
+      border-bottom: 1.5px solid black; /* Light grey background */
+      box-shadow:  0 0 5px 0px;
+      background-color: #eeeee4;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+
+    #columnA:hover, #columnB:hover {
+      background-color: #b9b987;
+    }
+
+
+
+
+  </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+  {% include 'mainsite/navbar.html' %}
+  <div class="container">
+    <div class="quiz-container">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="unit_heading">
+          <b>{{unit_name}} </b>
+        </div>
+        <div class="progress" style="width: 30%;"> 
+          <div class="progress-bar" style="width:70%"></div>
+        </div>
+        {% if not repeated_question %}
+        <div class='numbering'><b>{{question_id}} of 11</b></div>
+      {% else %}
+        <b>Repeated Question</b>
+      {% endif %} 
+        <a href="/home" class="btn btn-light big-close" id="big_close" style="border: solid 1px #000000; margin-right: 10px;">&times;</a>
+      </div>
+      <hr> 
+      <center><h2>Match the following</h2></center>
+    <form id="quiz-form">
+    {% csrf_token %}
+    <input type="hidden" name="form_type" value="{{question_id}}">
+    <input type="hidden" id="matchCount" value="{{ match_items|length }}">
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-6">
+            <u><h5 style="text-align: center;"><b>Portuguese</b></h5></u>
+            <ul class="list-group match-list" id="listA" style="margin-left: 30px;">
+              {% for item, value in match_items.items %}
+                <li class="list-group-item match-item" data-match="{{value}}" id="columnA">
+                  {{value}}
+                </li>
+              {% endfor %}
+            </ul>
+        </div>
+        <div class="col-6">
+            <u><h5 style="text-align: center;"><b>English</b></h5></u>
+            <ul class="list-group match-list" id="listB" style="margin-right: 30px;">
+              {% for item in left_col_q %}
+                <li class="list-group-item match-item" data-match="{{ match_items|get_item:item }}" id="columnA">{{item}}</li>
+              {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="text-center" style="padding-top:25px">
+      <button id="submitButton" class="btn btn-success btn-lg" disabled>Continue</button>
+    </div>
+    </form>
+    </div>
+  </div>
+
+<audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
+<audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
+<!-- Replace the 'slim' version with the full version of jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#submitButton').click(function(e){
+        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
+        var formData = $('#quiz-form').serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/submit_answer',  // Change to your actual view URL
+            data: formData,
+            success: function(response) {
+                // Do something with the response if needed
+                console.log("Success");
+                window.location.reload()
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors here
+                console.error('Error on AJAX request: ' + error);
+                // window.location.reload();
+            }
+        });
+        // window.location.reload();
+    }); 
+    // let lastClicked = null;
+    // $('.match-item').click(function() {
+    //     const currentClicked = $(this);
+    //     if (lastClicked && lastClicked[0] !== currentClicked[0]) { // Ensure they are different elements
+    //         if (lastClicked.data('match') === currentClicked.attr('data-match')) { // Check if data-match values are equal
+    //             currentClicked.addClass('matched');
+    //             lastClicked.addClass('matched');
+    //             var buzzer = document.getElementById('correctSound');
+    //             buzzer.play();
+    //         } else {
+    //             currentClicked.addClass('mismatched');
+    //             lastClicked.addClass('mismatched');
+    //             var buzzer = document.getElementById('wrongSound');
+    //             buzzer.play();
+    //             // Store lastClicked in a separate variable to use in the timeout function
+    //             const tempLastClicked = lastClicked;
+    //             setTimeout(() => {
+    //                 // Remove 'mismatched' class from both last clicked and current clicked elements
+    //                 currentClicked.removeClass('mismatched');
+    //                 tempLastClicked.removeClass('mismatched');
+    //             }, 1000);
+    //         }
+    //         lastClicked = null; // Reset lastClicked after handling
+    //     } else {
+    //         lastClicked = currentClicked; // Set currentClicked as lastClicked for the next click
+    //     }
+    // });
+});
+
+let lastClicked = null;
+let totalMatchesRequired = parseInt(document.getElementById('matchCount').value);
+let currentMatches = 0;
+
+$('.match-item').click(function() {
+    const currentClicked = $(this);
+    console.log(currentMatches);
+    if (lastClicked && lastClicked[0] !== currentClicked[0]) {
+        if (lastClicked.data('match') === currentClicked.attr('data-match')) {
+            if (!currentClicked.hasClass('matched') && !lastClicked.hasClass('matched')) {
+                currentMatches++;
+                currentClicked.addClass('matched').off('click');
+                lastClicked.addClass('matched').off('click');
+                var buzzer = document.getElementById('correctSound');
+                buzzer.play();
+                if (currentMatches == totalMatchesRequired) {
+                    $('#submitButton').removeAttr('disabled');
+                }
+            }
+        } else {
+            currentClicked.addClass('mismatched');
+            lastClicked.addClass('mismatched');
+            var buzzer = document.getElementById('wrongSound');
+            buzzer.play();
+            const tempLastClicked = lastClicked;
+            setTimeout(() => {
+                currentClicked.removeClass('mismatched');
+                tempLastClicked.removeClass('mismatched');
+            }, 2000);
+        }
+        lastClicked = null;
+    } else {
+        lastClicked = currentClicked;
+    }
+});
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

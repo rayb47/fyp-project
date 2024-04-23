@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PortuguesePro Learning Dashboard</title>
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Include Bootstrap JS and its dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="{% static 'architecture.css' %}">
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<style>
+.container {
+    max-width: 800px; /* Limiting the width for better readability */
+}
+
+.form-control, .btn {
+    border-radius: 0.25rem; /* Slightly rounded borders for form controls and button */
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.form-group label {
+    font-weight: bold; /* Makes labels bold */
+}
+
+textarea {
+    resize: none; /* Prevent resizing of the textarea */
+}
+
+
+</style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="#">
+      
+      <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+      <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
+      
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto" id="navbarUL">
+        <li class="nav-item active">
+          <a class="nav-link nb-item" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/vocab">Vocabulary</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">Analytics</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
+  </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Culture
+          </a>
+          <div class="dropdown-menu" aria-labelledby="cultureDropdown">
+            <a class="dropdown-item" href="/architecture">Architecture</a>
+            <a class="dropdown-item" href="/festivals">Festivals</a>
+            <a class="dropdown-item" href="page3.html">Media</a>
+            <!-- More dropdown items -->
+          </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active-tab" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
+    </li>
+        <!-- More nav items -->
+      </ul>
+      <span class="navbar-text">
+        <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
+          <i id="discordLogo" class="fab fa-discord"></i>
+      </a>
+        <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
+      </span>
+    </div>
+  </nav>
+  <div class="container mt-4">
+    <h1 class="mb-4 heading">User Settings</h1>
+    <div class="card mb-3 settings-card">
+        <div class="card-body">
+            <!-- Username and Email -->
+            <div class="form-row">
+                <div class="col-md-6 form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" value="{{user.username}}" readonly>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" class="form-control" id="userEmail" value="{{user.email}}" readonly>
+                </div>
+            </div>
+
+            <!-- First Name and Last Name -->
+            <div class="form-row">
+                <div class="col-md-6 form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" value="{{user.first_name}}" readonly>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" value="{{user.last_name}}" readonly>
+                </div>
+            </div>
+
+            <!-- Daily Goal and Site Language -->
+            <div class="form-row">
+                <div class="col-md-6 form-group">
+                    <label for="dailyGoal">Daily Activity Goal</label>
+                    <input type="number" class="form-control" id="dailyGoal" value="10">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="siteLanguage">Site Language
+                      <a href="#" data-toggle="tooltip" title="This only affects the Culture Pages.">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                    </label>
+                    <select class="form-control" id="siteLanguage">
+                        <option value="English">English</option>
+                        <option value="Portuguese">Portuguese</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Feedback Box -->
+            <!-- Feedback Box -->
+            <div class="form-group">
+              <label for="feedback">Feedback</label>
+              <textarea class="form-control" id="feedback" rows="3" placeholder="Enter your feedback here..."></textarea>
+          </div>
+
+          <!-- Submit Button for Feedback -->
+          <div class="form-group text-center">
+              <button type="button" class="btn btn-secondary">Submit Feedback</button>
+          </div>
+
+            <!-- Save Button -->
+            <div class="form-group text-center">
+                <button type="button" class="btn btn-primary">Save Settings</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+    
+    <!-- Add more cards for other locations as needed -->
+    
+  
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+</body>
+</html>
