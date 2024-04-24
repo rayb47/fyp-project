@@ -25,6 +25,7 @@ from django.db.models import Count, Case, When, IntegerField
 from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.db.models import OuterRef, Subquery
 from django.db.models.functions import TruncDate
 from datetime import date
 from django.utils import translation
@@ -519,12 +520,6 @@ def quiz(request, unit_id, quiz_id):
         user_attempt = UserAttempts.objects.create(quiz=quiz_accessed, user=request.user)
         print("This quiz has not been accessed")
     
-    # if unit_id == 2:
-    #     question_obj = Question.objects.get(id=number)
-    # else:
-    #     question_obj = Question.objects.get(id=number)
-    # question_obj = Question.objects.get(id=number)
-    # question_obj = Question.objects.last()
     jumbled_answer = []
     questions_not_answered_correctly = []
     unanswered_questions = Question.objects.filter(
@@ -536,18 +531,24 @@ def quiz(request, unit_id, quiz_id):
         ).values_list('question_id', flat=True)
     )
 
-    
-    # questions_answered_correctly_twice = UserAnswers.objects.filter(
-    #     question__quiz_id=quiz_id,
-    #     user_id=request.user,
-    #     is_correct=True
-    # ).values(
-    #     'question_id'
-    # ).annotate(
-    #     correct_count=Count('id')
-    # ).filter(
-    #     correct_count__gte=2
-    # ).values_list('question_id', flat=True)
+    # Subquery to get the ID of the latest incorrect answer for each question
+    latest_incorrect_answer_subquery = UserAnswers.objects.filter(
+        question=OuterRef('pk'),  # Reference to the question in the outer query
+        is_correct=False,  # Focus on incorrect answers
+        user=request.user
+    ).order_by('-answer_date').values('id')[:1]  # Get the most recent incorrect answer's ID
+
+    # Query to find questions where the latest answer is incorrect
+    questions_with_latest_incorrect_answer = Question.objects.annotate(
+        latest_incorrect_answer_id=Subquery(latest_incorrect_answer_subquery)
+    ).filter(
+        user_answers__id=Subquery(latest_incorrect_answer_subquery)  # Ensures we filter on the latest incorrect answer
+    ).values_list('id', flat=True)  # Get the IDs of those questions
+
+    # Execute the query and convert to a list
+    list_of_question_ids = list(questions_with_latest_incorrect_answer)
+    print(list_of_question_ids)
+
         
     print("Number of incorrect answers in this quiz are:",UserAnswers.objects.filter(attempt=user_attempt, user=request.user, is_correct=False).count())
     if unanswered_questions:
@@ -592,7 +593,7 @@ def quiz(request, unit_id, quiz_id):
         # question_obj = user_answer.question
     print("Unanswered questions are:", unanswered_questions)
 
-    question_obj = Question.objects.filter(question_type='Arrange')[0]
+    question_obj = Question.objects.filter(question_type='Translate')[0]
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
