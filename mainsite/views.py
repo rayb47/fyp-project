@@ -290,14 +290,30 @@ def architecture(request):
         if request.user.portuguese_default:
             print("I NEED PORTUGUESE")
             translation.activate('pt')  # Activate Portuguese
-            request.session['django_language'] = 'pt'  # Correctly set the language key in the session
+            # request.session['django_language'] = 'pt'  # Correctly set the language key in the session
         else:
             translation.deactivate_all()  # or activate a default language
     return render(request, 'mainsite/architecture.html')
 
 @login_required
 def festivals(request):
+    if request.user.is_authenticated:
+        if request.user.portuguese_default:
+            print("I NEED PORTUGUESE")
+            translation.activate('pt')  # Activate Portuguese
+            request.session['django_language'] = 'pt'  # Correctly set the language key in the session
+        else:
+            translation.deactivate_all()  # or activate a default language
     return render(request, 'mainsite/festivals.html')
+
+def submit_feedback(request):
+    feedback = request.POST.get('feedback')
+    print("Inside submit feedback view")
+    print("Feedback:", feedback)
+    UserFeedback.objects.get_or_create(user=request.user, feedback=feedback)
+
+    return JsonResponse({"message": 'Thank you for your feedback!'})
+    return render(request, 'mainsite/test_diacritics.html')
 
 @login_required
 def testdiacritics(request):
@@ -306,6 +322,21 @@ def testdiacritics(request):
 @login_required
 def diacritics(request):
     return render(request, 'mainsite/diacritics.html')
+
+@login_required
+def save_settings(request):
+    if request.user.is_authenticated:
+        current_user_id = request.user.id
+        current_user_object = CustomUser.objects.get(id=current_user_id)
+    data = request.POST.get('dataToSend', None)
+    if data:
+        data = json.loads(data)
+        if 'siteLanguage' in data:
+            current_user_object.portuguese_default = True if data['siteLanguage'] == 'Portuguese' else False
+        current_user_object.save()
+    
+    return JsonResponse({'words': 'Data edited successfully!'})
+    return render(request, 'mainsite/settings.html')
 
 @login_required
 def vocab_search(request):

@@ -137,6 +137,13 @@ class UserActivity(models.Model):
         return f"{self.user.username} - {self.date} - {self.duration}"
 
 
+class UserFeedback(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="User")
+    feedback = models.TextField(verbose_name="Feedback")
+
+    def __str__(self):
+        return f"Feedback from {self.user.username}"
+
     
     
 
