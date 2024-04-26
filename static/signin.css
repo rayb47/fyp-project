@@ -45,7 +45,7 @@ background-color: #0056b3; /* Custom color for the primary button */
   margin-left: 40px;
   position: fixed; /* Or 'absolute' if you want it to scroll with the page */
   left: 0; /* Align to the left side */
-  top: 58%; /* Center vertically */
+  top: 65%; /* Center vertically */
   transform: translateY(-50%); /* Adjust to center the image vertically */
    /* Ensure it overlaps the background */
 
@@ -54,8 +54,8 @@ background-color: #0056b3; /* Custom color for the primary button */
 
 /* Position the second image on the right side */
 .gif-background2 {
-  height: 50vh;
-  width: 350px;
+  height: 65vh;
+  width: 375px;
   margin-right: 100px;
   position: fixed; /* Or 'absolute' if you want it to scroll with the page */
   right: 0; /* Align to the right side */
@@ -82,6 +82,19 @@ background-color: #0056b3; /* Custom color for the primary button */
   border: green 2px solid;
   background-color: #dad5b6;
   border-radius: 15px;
+  /* animation: rotateY 12s ease-in-out reverse infinite; */
+  /* Ensure it overlaps the background */
+}
+
+.gif-background4 {
+  height: 20vh;
+  width: 450px;
+  margin-left: 30px;
+  position: fixed; /* Or 'absolute' if you want it to scroll with the page */
+  left: 0; /* Align to the right side */
+  top: 35%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust to center the image vertically */
+
   /* animation: rotateY 12s ease-in-out reverse infinite; */
   /* Ensure it overlaps the background */
 }

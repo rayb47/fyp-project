@@ -284,10 +284,14 @@
 /* New styles for the brand name */
 .text-green {
     color: green;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
   }
   
   .text-red {
     color: red;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
   }
   
   /* Ensure that the navbar brand has no text decoration to remove the underline from the anchor tag */

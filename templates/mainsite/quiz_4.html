@@ -161,7 +161,7 @@
             {% for option in options %}
             <li>
                 <input type="radio"  id="option{{forloop.counter}}" name="quiz" value="{{option}}">
-                <label class="mcq_option" for="option{{forloop.counter}}"><b>{{option}}
+                <label class="mcq_option" for="option{{forloop.counter}}" data-option="{{option}}"><b>{{option}}
                 </b></label>
                 <i id='correctTick{{option}}' class="far fa-check-circle correctTick" style="display:none">
                 </i><i id='incorrectTick{{option}}' 
@@ -196,7 +196,7 @@
         </div>
         <!-- {% endif %} -->
         <div class="text-center">
-            <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
+            <button id="submitButton" type="submit" class="btn btn-success btn-lg" disabled>Check</button>
         </div>
         </form>
         <!-- <div class="text-center">
@@ -216,6 +216,20 @@
 <script>
 
 $(document).ready(function() {
+    $('.mcq_option').click(function() {
+        var optionValue = $(this).data('option'); // Retrieve the data-option attribute value
+        convertTextToSpeech(optionValue); // Call the function to handle the click event
+    });
+
+    $('input[type="radio"][name="quiz"]').change(function() {
+            // Check if any radio button is selected
+            if ($('input[type="radio"][name="quiz"]:checked').length > 0) {
+                $('#submitButton').prop('disabled', false); // Enable the submit button if any radio is checked
+            } else {
+                $('#submitButton').prop('disabled', true); // Otherwise, keep it disabled
+            }
+        });
+
     $('#submitButton').click(function(event) {
         event.preventDefault();  // Prevent the default form submission
         var formData = $('#quiz-form').serialize();  // Serialize form data
@@ -262,6 +276,20 @@ $(document).ready(function() {
     });
 });
 
+function convertTextToSpeech(textToSpeak) {
+        $.ajax({
+            url: '/text-to-speech/',  // URL to Django view
+            type: 'POST',
+            data: { 'text': textToSpeak },
+            success: function(response) {
+                console.log(response.message);
+                // Optional: Play the response if it includes audio data
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
 </script>
 
 </body>
