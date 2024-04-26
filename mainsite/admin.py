@@ -77,6 +77,8 @@ class UserActivityAdmin(admin.ModelAdmin):
 
 admin.site.register(UserActivity, UserActivityAdmin)
 
+admin.site.register(UserFeedback)
+
 
 
 

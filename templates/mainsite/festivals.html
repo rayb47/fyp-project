@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,12 +107,17 @@
 </head>
 <body onload="initMaps()">
     <div class="container mt-4">
-        <h1 class="mb-4 header" style="text-shadow: 3px 3px #000000;">Architecture</h1>
+        <h1 class="mb-4 header" style="text-shadow: 3px 3px #000000;">{% translate 'Architecture' %}</h1>
         <div class="intro-text" style="margin-bottom: 40px;">
-            <p>Portugal is renowned for its rich architecural heritage, spanning across several centuries and a variety of styles, from Romanesque to 
+            <p>
+                {% blocktranslate %}
+                Portugal is renowned for its rich architecural heritage, spanning across several centuries and a variety of styles, from Romanesque to 
                 Manueline, and from Baroque to Modern. Information on the six most famous architectural sites in Portugal are displayed below.
+                {% endblocktranslate %}
             </p>
-            <span style="font-weight: 700; font-size: 14px; color: rgb(16, 16, 180);">Interact with the maps and switch to Street View to get a better view of the sites.</span>
+            <span style="font-weight: 700; font-size: 14px; color: rgb(16, 16, 180);">
+                {% translate 'Interact with the maps and switch to Street View to get a better view of the sites.' %}
+            </span>
         </div>
         <section>
             <div class="card">
@@ -127,15 +133,18 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <p class="card-text">Located in the heart of Lisbon, this tower is a masterpiece of the Manueline style,
+                                    <p class="card-text">
+                                        {% blocktranslate %}
+                                        Located in the heart of Lisbon, this tower is a masterpiece of the Manueline style,
                                         combining elements of Gothic and Renaissance architecture. It was built in the early 16th century as a part of the
                                         defenses at the mouth of the Lisbon Harbor. Now, it is a UNESCO World Heritage Site and one of the most photographed
                                         landmarks of Portugal.
+                                        {% endblocktranslate %}
                                     </p>
                                 </div>
                             </div>
                             <div class="col-md-4 img-div">
-                                <img src="https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJYlQxQ-PTYjGRUKHB6gKtDvxoeIuSPjz82nkTqJSwyOHlNM5d_yuUQA-JwygERCzXGIM21UqcgBpJFv_lPUzFwsl-wmL1DlOh_nvgc3NTcG6o6J6vGzUYZQM0Q3tKNXJwnPh2bYKtm5K_BNIhWOFkNIcj6yhCAa87KFKT6Sj1pKeWsj&4u16383&5m1&2e1&callback=none&client=google-maps-pro&token=76886" 
+                                <img src="{% static 'belem.jpg' %}" 
                                 alt="Madeira's Flower Festival" class="img-fluid"
                                 > <span id="pictureCredits">From Google maps by <a target="_blank" href="https://www.google.com/maps/contrib/117436593173758429032/photos/@43.362255,-5.8442514,17z/data=!3m1!4b1!4m3!8m2!3m1!1e1?entry=ttu">
                                     Antonio Alba</a></span>
@@ -158,10 +167,13 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <p class="card-text">Also located in Belem, Lisbon, the Jeronimos Monastery is one of the best examples of the late
+                                    <p class="card-text">
+                                        {% blocktranslate %}
+                                        Also located in Belem, Lisbon, the Jeronimos Monastery is one of the best examples of the late
                                         Gothic Architecture. It was built in the early 16th century by King Manuel I to commemorate the return of 
                                         Vasco De Gama from his journey to India, and give thanks to God for the wealth it brought to Portugal. This
                                         site is also a part of the same UNESCO World Heritage designation as the Tower Of Belem.
+                                        {% endblocktranslate %}
                                     </p>
                                 </div>
                             </div>
@@ -188,10 +200,13 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <p class="card-text">Situated upon a hilltop in the Sintra mountains surrounded by lush forests and gardens, 
+                                    <p class="card-text">
+                                        {% blocktranslate %}
+                                        Situated upon a hilltop in the Sintra mountains surrounded by lush forests and gardens, 
                                         this palace is one of the finest examples of
                                         19th century romanticism in the world. Today, the palace is a UNESCO World Heritage Site and considered to be one
                                         of the Seven Wonders of Portugal.
+                                        {% endblocktranslate %}
                                     </p>
                                     <p class="card-text"><strong>Dates:</strong> April 23 - May 30</p>
                                 </div>
@@ -221,9 +236,11 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <p class="card-text">
+                                        {% blocktranslate %}
                                         Located in Batalha, this monastery is one of the most important Gothic sites in Portugal, renowned for its intricate Manueline flourishes. It was
                                         built to commemorate the Battle of Aljubarotta (1385) and took over a century to complete. It features a breathtaking array of 
                                         sculptures, filigree and the famed Unfinished Chapels.
+                                        {% endblocktranslate %}
                                     </p>
                                 </div>
                             </div>
@@ -252,10 +269,12 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <p class="card-text">
+                                        {% blocktranslate %}
                                         Located in Porto, Casa de Musica is one of the most strikingly modern and innovative architectural landmarks
                                         in Portugal. It was designed by Dutch Artist Rem Koolhas in 2001, and the construction was completed in 2005. It stands out
                                         not only for its distinct contemporary design, but also for its cultural significance as a principal venue for music and performing
                                         arts.
+                                        {% endblocktranslate %}
                                     </p>
                                     
                                 </div>
@@ -284,9 +303,12 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <p class="card-text">The Alcobaça Monastery is one of the oldest and most impressive exapmples of Cistercian architecure
+                                    <p class="card-text">
+                                        {% blocktranslate %}
+                                        The Alcobaça Monastery is one of the oldest and most impressive exapmples of Cistercian architecure
                                         in Portugal. Founded in the 12th century, the monastery is celebrated for the purity and clarity of its architectural style, and is 
                                         particularly noted for the ornate tombs of King Pedro I and Inês de Castro.
+                                        {% endblocktranslate %}
                                     </p>
                                 </div>
                             </div>

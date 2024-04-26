@@ -196,7 +196,7 @@
                 <!-- Initially, no append span for icon -->
               </div>
             <div class="text-center" style="margin-top: 60px;">
-                <button id="checkAnswer" class="btn btn-success btn-lg">Check</button>
+                <button id="checkAnswer" class="btn btn-success btn-lg" disabled>Check</button>
             </div>
         </form>
       </div>
@@ -211,6 +211,10 @@
 <script>
 
 $(document).ready(function() {
+    $('#translationInput').on('input', function() {
+        var inputValue = $(this).val(); // Get the current value of the input field using jQuery
+        $('#checkAnswer').prop('disabled', inputValue.length === 0); // Enable or disable the button
+    });
 
     $("#checkAnswer").click(function() {
         event.preventDefault()

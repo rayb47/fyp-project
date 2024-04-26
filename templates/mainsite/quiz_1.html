@@ -55,8 +55,9 @@
 
 input[type="radio"]:checked + .content-container {
   border: 4px solid #e9d206; /* Green border for selected item */
-  padding: 4px;
-  padding-bottom: 1px;
+  background-color: #cfbc0b;
+  /* padding: 4px;
+  padding-bottom: 1px; */
   /* If you want padding inside the border */
 }
 /* 
@@ -67,9 +68,7 @@ input[type="radio"]:checked + img {
 
 
 
-.option-container {
-    margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
-}
+
 
 .big-close {
   border: solid 1px #e6a9a9; 
@@ -217,7 +216,7 @@ input[type="radio"]:checked + img {
           </div> -->
         </div>
         <div class="text-center" style="padding:0px">
-          <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button><br>
+          <button id="submitButton" type="submit" class="btn btn-success btn-lg" disabled>Check</button><br>
           <div id="message-container"></div>
         </div>
       </form>
@@ -241,6 +240,16 @@ document.getElementById('clue-button').addEventListener('click', function() {
 });
   // Using jQuery
 $(document).ready(function() {
+  $('input[type="radio"][name="quiz"]').change(function() {
+            // Check if any radio button is selected
+            if ($('input[type="radio"][name="quiz"]:checked').length > 0) {
+                $('#submitButton').prop('disabled', false); // Enable the submit button if any radio is checked
+            } else {
+                $('#submitButton').prop('disabled', true); // Otherwise, keep it disabled
+            }
+        });
+
+
   $('#clue-button').click(function() {
     $('.quiz-img').toggleClass('hidden');
   });

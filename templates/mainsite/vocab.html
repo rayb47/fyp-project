@@ -343,7 +343,7 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <span class="align-middle">
+                                                    <span class="align-middle notranslate">
                                                         {% if usage.portuguese_usage %}
                                                             {{usage.portuguese_usage}}
                                                             <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
@@ -792,11 +792,11 @@ $(document).ready(function() {
         data: {
             'portuguese': portuguese,
             'english': english,
-            'word_type': 'general'
+            'word_type': 'custom'
         },
         success: function(response) {
             $('.toast').toast('show');
-            console.log('Added to list successfully:', response);
+            console.log('Added to list succccccessfully:', response);
             // Optionally update the UI to reflect the addition
         },
         error: function(xhr, status, error) {
