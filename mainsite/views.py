@@ -197,7 +197,8 @@ def analytics(request):
     incorrect_count = UserAnswers.objects.filter(user=request.user, is_correct=False).count()
     lessons_done = UserAttempts.objects.filter(user=request.user, lesson__isnull=False)
     for lesson in lessons_done:
-        word_count_studied = 2 * int(lesson.pages_covered-1)
+        pg_covered = 1 if lesson.pages_covered == 0 else lesson.pages_covered
+        word_count_studied = 2 * int(pg_covered-1)
 
     main_data = {}
     for unit in Unit.objects.all():
@@ -408,7 +409,7 @@ def store_page_number(request):
     print("Lesson ID is:",lesson_id)
     lesson_obj = Lesson.objects.get(id=int(lesson_id))
     if not UserAttempts.objects.filter(lesson=lesson_obj, user=request.user).exists():
-        UserAttempts.objects.create(lesson=lesson_obj, user=request.user)
+        UserAttempts.objects.create(lesson=lesson_obj, user=request.user, pages_covered=0)
     else:
         user_attempt = UserAttempts.objects.get(lesson=lesson_obj, user=request.user)
         user_attempt.pages_covered = int(page)-1
@@ -448,7 +449,7 @@ def lesson(request, lesson_id):
         words = paginator.page(paginator.num_pages)
 
     if not UserAttempts.objects.filter(lesson=lesson, user=request.user).exists():
-        UserAttempts.objects.create(lesson=lesson, user=request.user)
+        UserAttempts.objects.create(lesson=lesson, user=request.user, pages_covered=0)
     else:
         user_attempt = UserAttempts.objects.get(lesson=lesson, user=request.user)
         user_attempt.pages_covered = int(page)
@@ -548,7 +549,7 @@ def quiz(request, unit_id, quiz_id):
         print("This quiz has been accessed")
         user_attempt = UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user)[0]
     else:
-        user_attempt = UserAttempts.objects.create(quiz=quiz_accessed, user=request.user)
+        user_attempt = UserAttempts.objects.create(quiz=quiz_accessed, user=request.user, questions_answered=0)
         print("This quiz has not been accessed")
     
     jumbled_answer = []
