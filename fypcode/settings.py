@@ -23,7 +23,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'portupro24@gmail.com'
 EMAIL_HOST_PASSWORD = 'xxkg wlwz hrck zdot'
-USE_HTTPS = False
+USE_HTTPS = True
 
 LOGIN_URL = 'login:signin'
 
@@ -40,7 +40,7 @@ SESSION_SAVE_EVERY_REQUEST = True
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fjs30!8i+@iql#ap(fb&8=n!nk$zun1sds)d94mr!n5#g9-)u3')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)=="True"
+DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', "fyp-project-1.onrender.com"]
 
