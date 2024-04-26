@@ -40,7 +40,7 @@ SECRET_KEY = 'django-insecure-fjs30!8i+@iql#ap(fb&8=n!nk$zun1sds)d94mr!n5#g9-)u3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', "fyp-project-1.onrender.com"]
 
 
 # Application definition
