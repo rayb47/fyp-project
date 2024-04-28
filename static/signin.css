@@ -45,7 +45,7 @@ background-color: #0056b3; /* Custom color for the primary button */
   margin-left: 40px;
   position: fixed; /* Or 'absolute' if you want it to scroll with the page */
   left: 0; /* Align to the left side */
-  top: 65%; /* Center vertically */
+  top: 70%; /* Center vertically */
   transform: translateY(-50%); /* Adjust to center the image vertically */
    /* Ensure it overlaps the background */
 
@@ -87,9 +87,9 @@ background-color: #0056b3; /* Custom color for the primary button */
 }
 
 .gif-background4 {
-  height: 20vh;
-  width: 450px;
-  margin-left: 30px;
+  height: 25vh;
+  width: 520px;
+  margin-left: 1px;
   position: fixed; /* Or 'absolute' if you want it to scroll with the page */
   left: 0; /* Align to the right side */
   top: 35%; /* Center vertically */
