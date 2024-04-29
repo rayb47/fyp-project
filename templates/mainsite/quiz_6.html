@@ -6,8 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz - Unit 3: Food And Drink</title>
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
         #sortable li { margin: 3px 3px 3px 0; padding: 8px; float: left;  font-size: 1.5em; text-align: center;}
@@ -204,8 +202,10 @@
   </div>
   
 <!-- Replace the 'slim' version with the full version of jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 <audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
 <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <script>

@@ -63,6 +63,7 @@
       /* This styles the dropdown background */
 .navbar .dropdown-menu {
   background-color: black; /* Sets the dropdown background to black */
+  font-size: 22px;
 }
 
 /* This styles each dropdown item */
@@ -120,12 +121,13 @@
 }
 
 .calendar td.logged-in {
-  background-color: #88ff88;
-  border: 1px solid black;
+  background-color: #66df66;
+  border: 2px solid black;
+  /* font-weight: bold; */
 }
 
 .calendar {
-  background-color: #f2edcb;
+  background-color: #e9e4c2;
   margin-bottom: 0px;
   padding-left: 0; /* Reset left padding */
   padding-right: 0; /* Reset right padding */
@@ -286,12 +288,14 @@
     color: green;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    text-shadow: rgb(233, 225, 183) 1px 1px
   }
   
   .text-red {
     color: red;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    text-shadow: rgb(233, 225, 183) 1px 1px
   }
   
   /* Ensure that the navbar brand has no text decoration to remove the underline from the anchor tag */
@@ -401,6 +405,15 @@
 
 }
 
+.diacritics-card {
+  border-radius: 30px;
+  box-shadow: 3px 2px 1px 2px;
+  background-color: #f2edcb;
+  margin-top: 30px;
+  border: 3px solid black;
+
+}
+
 .settings-card {
   border-radius: 30px;
   box-shadow: 3px 2px 1px 2px;
@@ -460,4 +473,22 @@
   color: red;
   font-size: 24px;
   margin-left: 5px;
+}
+
+
+#discordLogo {
+  color: #cab2fb;
+}
+
+#discordLogo:hover{
+  color: #7e61ab;
+}
+
+#discordHref {
+  text-decoration: none
+}
+
+#closeModal:hover {
+  background-color: rgb(224, 107, 107);
+  font-weight: bold;
 }

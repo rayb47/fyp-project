@@ -96,6 +96,7 @@
 
   </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
 <body>
@@ -107,7 +108,7 @@
           <b>{{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%;"> 
-          <div class="progress-bar" style="width:70%"></div>
+          <div class="progress-bar progress-bar-striped" style="width:70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
         </div>
         {% if not repeated_question %}
         <div class='numbering'><b>{{question_id}} of 11</b></div>
@@ -153,6 +154,8 @@
 <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <!-- Replace the 'slim' version with the full version of jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#submitButton').click(function(e){

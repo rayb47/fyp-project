@@ -36,6 +36,10 @@ textarea {
     resize:vertical; /* Prevent resizing of the textarea */
 }
 
+.header {
+     color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px;
+}
+
 
 </style>
 </head>
@@ -43,7 +47,7 @@ textarea {
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <a class="navbar-brand" href="#">
       
-      <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+      <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top: 8px">
       <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
       
     </a>
@@ -90,7 +94,7 @@ textarea {
     </div>
   </nav>
   <div class="container mt-4">
-    <h1 class="mb-4 heading">User Settings</h1>
+    <h1 class="mb-4 header">User Settings</h1>
     <div class="card mb-3 settings-card">
         <div class="card-body">
           <form>
@@ -119,11 +123,29 @@ textarea {
                 </div>
             </div>
 
+            
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="dailyGoalMinutes">Minutes per Day Goal</label>
+                <input type="number" name="dailyGoalMinutes" id="dailyGoalMinutes" class="form-control" placeholder="Minutes/day...." required>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="dailyGoalQuestions">Questions per Day Goal</label>
+                <input type="number" name="dailyGoalQuestions" id="dailyGoalQuestions" class="form-control" placeholder="Questions/day...." required>
+              </div>
+            </div>
+
+
             <!-- Daily Goal and Site Language -->
             <div class="form-row">
                 <div class="col-md-6 form-group">
-                    <label for="dailyGoal">Daily Activity Goal</label>
-                    <input type="number" class="form-control" id="dailyGoal" value="10">
+                  <label for="proficiencyLevel">Proficiency Level</label>
+                  <select class="form-control" id="proficiencyLevel">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                  </select>
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="siteLanguage">Site Language
@@ -138,18 +160,33 @@ textarea {
                 </div>
             </div>
 
-            <!-- Feedback Box -->
-            <!-- Feedback Box -->
-            <div class="form-group">
-              <label for="feedback">Feedback</label>
-              <textarea class="form-control" id="feedback" rows="3" placeholder="Enter your feedback here..."></textarea>
-          </div>
+            <div class="form-row">
+              <div class="form-group col-md-8">
+                <label for="feedback">Feedback</label>
+              <div class="input-group">
+                  <textarea class="form-control" id="feedback" rows="1" placeholder="Enter your feedback here..."></textarea>
+                  <div class="input-group-append">
+                      <button type="button" id="saveFeedbackBtn" class="btn btn-secondary" disabled>Submit Feedback</button>
+                  </div>
+              </div>
+              </div>
 
-          <!-- Submit Button for Feedback -->
+              <div class="form-group col-md-4">
+                <label for="playbackSpeed">Audio Playback Speed</label>
+                <select class="form-control" id="playbackSpeed">
+                  <option value="Slow">Slow</option>
+                  <option value="Fast">Fast</option>
+                </select>
+              </div>
+            </div>
+
+
+          <!-- Submit Button for Feedback
           <div class="form-group text-center">
               <button type="button" id="saveFeedbackBtn" class="btn btn-secondary" disabled>Submit Feedback</button>
-          </div>
+          </div> -->
 
+            <br><br>
             <!-- Save Button -->
             <div class="form-group text-center">
                 <button type="button" id="saveSettingsBtn" class="btn btn-primary" disabled>Save Settings</button>
@@ -174,26 +211,7 @@ textarea {
   </div>
 </div> -->
 
-<!-- Discord Modal -->
-<div class="modal fade" id="discordModal" tabindex="-1" role="dialog" aria-labelledby="discordModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="discordModalLabel">Join Our Discord</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              Join our discord to interact with the community
-              <a href="https://discord.gg/placeholder" target="_blank">https://discord.gg/placeholder</a>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-      </div>
-  </div>
-</div>
+{% include 'mainsite/discord_modal.html' %}
 
 <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 100px; z-index: 1050;">
   <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
@@ -230,19 +248,26 @@ textarea {
   $(document).ready(function(){
     $('.toast').toast({autohide: false});
     $('[data-toggle="tooltip"]').tooltip();   
-    var originalGoal = $('#dailyGoal').val();
+    var originalDailyGoalMinutes = $('#dailyGoalMinutes').val();
+    var originalDailyGoalQuestions = $('#dailyGoalQuestions').val();
     var originalLanguage = $('#siteLanguage').val();
     console.log(originalLanguage);
     $('#saveSettingsBtn').click(function(e) {
         e.preventDefault();
-        var currentGoal = $('#dailyGoal').val();
+        var currentDailyGoalMinutes = $('#curentDailyGoalMinutes').val();
+        var currentDailyGoalQuestions = $('#currentDailyGoalQuestions').val();
         var currentLanguage = $('#siteLanguage').val();
         console.log(currentLanguage);
         var dataToSend = {};
 
-        if (currentGoal !== originalGoal) {
-            dataToSend.dailyGoal = currentGoal;
+        if (currentDailyGoalMinutes !== originalDailyGoalMinutes) {
+            dataToSend.dailyGoalMinutes = currentDailyGoalMinutes;
         }
+
+        if (currentDailyGoalQuestions !== originalDailyGoalQuestions) {
+            dataToSend.dailyGoalQuestions = currentDailyGoalQuestions;
+        }
+
         if (currentLanguage !== originalLanguage) {
             dataToSend.siteLanguage = currentLanguage;
         }
@@ -261,7 +286,7 @@ textarea {
                 success: function(response) {
                     console.log('Settings saved successfully:', response);
                     // Update original values to the current, so no unnecessary triggers on next save
-                    originalGoal = currentGoal;
+                    originalGoal = currentDailyGoalMinutes;
                     originalLanguage = currentLanguage;
                     // alert('Settings updated successfully!');
                     // $('.toast').toast('show');  // Shows the toast
@@ -320,11 +345,28 @@ textarea {
             $('#saveFeedbackBtn').prop('disabled', true); // Disable the button if empty
         }
     });
+    $('#dailyGoalQuestions').on('input', function() {
+        var input = $(this).val();
+        if(input) {
+            $('#saveSettingsBtn').prop('disabled', false); // Enable the button if there's text
+        } else {
+            $('#saveSettingsBtn').prop('disabled', true); // Disable the button if empty
+        }
+    });
+    $('#dailyGoalMinutes').on('input', function() {
+        var input = $(this).val();
+        if(input) {
+            $('#saveSettingsBtn').prop('disabled', false); // Enable the button if there's text
+        } else {
+            $('#saveSettingsBtn').prop('disabled', true); // Disable the button if empty
+        }
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {
     // Select the fields that trigger the button enablement
-    var dailyGoalInput = document.getElementById('dailyGoal');
+    var dailyGoalMinutesInput = document.getElementById('dailyGoalMinutes');
+    var dailyGoalQuestionsInput = document.getElementById('dailyGoalQuestions');
     var siteLanguageSelect = document.getElementById('siteLanguage');
 
     // Function to enable the button
@@ -333,7 +375,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Add change event listeners to the inputs
-    dailyGoalInput.addEventListener('change', enableSaveButton);
+    dailyGoalMinutesInput.addEventListener('change', enableSaveButton);
+    dailyGoalQuestionsInput.addEventListener('change', enableSaveButton);
     siteLanguageSelect.addEventListener('change', enableSaveButton);
 });
 </script>

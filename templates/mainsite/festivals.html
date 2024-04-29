@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PortuguesePro Learning Dashboard</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
@@ -14,7 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <a class="navbar-brand" href="#">
           
-          <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+          <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top:8px">
           <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
           
         </a>
@@ -55,7 +56,7 @@
             <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
               <i id="discordLogo" class="fab fa-discord"></i>
           </a>
-            <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
+            <a href="/signout" class="settings-link nb-item" style="font-size:22px; text-decoration: none;">Logout</a>
           </span>
         </div>
       </nav>
@@ -72,15 +73,13 @@
         .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
         .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
         .card { 
-            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 0px ; background-color: beige;
+            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 0px ; background-color: #f2edcb;
         }
         .card-header { 
             border-top-right-radius: 10px;
         }
         .map { border-radius: 10px; }
         .map { height: 314px; width: 100%; } /* Fixed height and full width for maps */
-        .carousel-item { height: 250px; background: #ccc; }
-        .carousel-item img { height: 250px; width: auto; margin: auto; }
         .sub-heading { color: #343a40; font-size: 1.5rem; }
         .intro-text { 
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
@@ -103,6 +102,8 @@
         #pictureCredits {
             font-size: 12px;
         }
+
+        
     </style>
 </head>
 <body onload="initMaps()">
@@ -178,7 +179,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 img-div">
-                                <img src="https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJZ6A3KXzVKRk8BDoFXe3diNeQA_OMSc1L26wpa3oOOmvxrhD5VjzoSGfqV3IDBuMZtqLJUPV3ScpCWcZtCjgM569lDPyO09FtdJ_hNDWo4T7QowMbmFUJ_41lK1YjcuCuEZKUkXCo4jbSY-JiCONPiZ4m4xwlcyAG0EG-3GJgw_UAK4&4u16383&5m1&2e1&callback=none&client=google-maps-pro&token=20238" 
+                                <img src="{% static 'jero.jpg' %}" 
                                 alt="Madeira's Flower Festival" class="img-fluid"
                                 > <span id="pictureCredits">From Google maps by <a target="_blank" href="https://www.google.com/maps/contrib/111163895397347329580/photos/@48.4767173,5.6837776,6z/data=!3m1!4b1!4m3!8m2!3m1!1e1?entry=ttu">
                                     Stefano Andrighetto</a></span>
@@ -328,7 +329,7 @@
             <!-- Additional festival cards with similar layout -->
         </section>
     </div>
-    
+    {% include 'mainsite/discord_modal.html' %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtutlR-5LD8Hzjs2uR1I5Sbku7_aml5pQ&callback=initMap" async defer></script>
     <script>

@@ -5,13 +5,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Register - PortuguesePro</title>
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
 <style>
   body {
     background: linear-gradient(to right, #33A251, #BB4B3C); /* Start and end colors of the gradient */
@@ -21,7 +21,7 @@
   }
   .registration-container {
     max-width: 600px;
-    margin: 50px auto;
+    margin: 20px auto;
     background: white;
     padding: 20px;
     border-radius: 30px;
@@ -40,14 +40,21 @@
     background-color: #D32F2F;
     border-color: #D32F2F;
   }
+
+  .form-group {
+    position: relative;
+  }
+
+  #togglePassword, #togglePassword2 {
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
 
 <div class="registration-container">
   <a href="/signin" class="text-secondary"><b>&larr; Login</b></a>
-  <img src="{% static 'Cock Logo.png' %}" class="mb-4" alt="Portuguese Flag" style="width: 200px; height: 150px;"> <!-- Adjust size as needed -->
-  <h1><b><span class="text-green" style="color:green">Portu</span><span class="text-red" style="color:rgb(202, 41, 41)">Pro</span></b></h1>
+  <img src="{% static 'Small Logo for Centre.png' %}" class="mb-4" alt="Portuguese Flag" style="width: 215px; height: 215px;"> <!-- Adjust size as needed -->
   <p class="text-center">A Portuguese language learning website to help you sharpen and develop your Portuguese.<br> 
     <span style="font-weight: bold;"> Enter your details to register for an account below.</span></p>
   
@@ -77,18 +84,59 @@
 
     <div class="form-row">
       <div class="form-group col-md-6">
-        <label for="inputPassword"><b>Password</b></label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <label for="inputUsername"><b>First Name</b></label>
+        <input type="text" name="first_name" id="firstName" class="form-control" placeholder="First Name...." required autofocus>
       </div>
-
+      
       <div class="form-group col-md-6">
-        <label for="inputPasswordConfirm"><b>Re-Enter Password</b></label>
-        <input type="password" name="passwordConfirm" id="inputPasswordConfirm" class="form-control" placeholder="Re-Enter Password" required>
+        <label for="lastNameEmail"><b>Last Name</b></label>
+        <input type="text" name="last_name" id="lastName" class="form-control" placeholder="Last Name...." required>
       </div>
     </div>
 
-    <div class="form-group">
-        <label for="studyFrequency"><b>Study Frequency</b></label>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputPassword"><b>Password</b></label>
+        <div class="input-group" id="inputPasswordtotal">
+          <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+          <div class="input-group-append" style="border-left: 2px solid black;">
+            <span class="input-group-text">
+              <i class="fas fa-eye" id="togglePassword" onclick="togglePasswordVisibility('inputPassword','togglePassword')"></i>
+            </span>
+          </div>
+        </div>
+        <!-- <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required> -->
+      </div>
+
+      <div class="form-group col-md-6">
+        <!-- <label for="inputPasswordConfirm"><b>Re-Enter Password</b></label>
+        <input type="password" name="passwordConfirm" id="inputPasswordConfirm" class="form-control" placeholder="Re-Enter Password" required> -->
+        <label for="inputPasswordConfirm"><b>Re-enter Password</b></label>
+        <div class="input-group" id="inputPasswordtotal">
+          <input type="password" name="passwordConfirm" id="inputPasswordConfirm" class="form-control" placeholder="Re-enter Password" required>
+          <div class="input-group-append" style="border-left: 2px solid black;">
+            <span class="input-group-text">
+              <i class="fas fa-eye" id="togglePassword2" onclick="togglePasswordVisibility('inputPasswordConfirm', 'togglePassword2')"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="dailyMinutesGoal"><b>Minutes per Day Goal</b></label>
+        <input type="number" name="dailyMinutesGoal" id="dailyMinutesGoal" class="form-control" placeholder="Minutes/day...." required>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="dailyQuestionsGoal"><b>Questions per Day Goal</b></label>
+        <input type="number" name="dailyQuestionsGoal" id="dailyQuestionsGoal" class="form-control" placeholder="Questions/day...." required>
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
+        <label for="studyFrequency"><b>Activity Goals</b></label>
         <div class="input-group">
           <input type="number" name="studyFrequency" id="studyFrequency" class="form-control" placeholder="Number" aria-label="Study frequency number">
           <div class="input-group-append">
@@ -98,7 +146,7 @@
             </select>
           </div>
         </div>
-      </div>
+      </div> -->
 
     <div class="form-row">
     <fieldset class="form-group col-md-6">
@@ -123,24 +171,21 @@
       </div>
     </fieldset>
 
-    <fieldset class="form-group col-md-6">
-      <legend class="col-form-label pt-0">Default site language to Portuguese?</legend>
-      <div class="form-check">
-        <input class="form-check-input" name="languageYes" type="checkbox" name="siteLanguage" id="languageYes" value="yes">
-        <label class="form-check-label" for="languageYes">
-          Yes
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" name="languageNo" type="checkbox" name="siteLanguage" id="languageNo" value="no">
-        <label class="form-check-label" for="languageNo">
-          No
-        </label>
-      </div>
-    </fieldset>
+    <div class="form-group">
+      <label for="siteLanguage"><b>Default Site Language to</b>
+          <a href="#" data-toggle="tooltip" data-placement="right" title="This affects mainly the Culture pages of the website.">
+              <i class="fas fa-info-circle"></i>
+          </a>
+      </label>
+      <select class="form-control" id="siteLanguage">
+          <option value="English">English</option>
+          <option value="Portuguese">Portuguese</option>
+      </select>
+  </div>
     </div>
 
     <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    
   </form>
 </div>
 {% if messages %}
@@ -169,19 +214,41 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script>
+    function togglePasswordVisibility(element_id, icon_id) {
+        var passwordInput = document.getElementById(element_id);
+        var togglePasswordIcon = document.getElementById(icon_id);
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePasswordIcon.classList.remove('fa-eye');
+            togglePasswordIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            togglePasswordIcon.classList.remove('fa-eye-slash');
+            togglePasswordIcon.classList.add('fa-eye');
+        }
+    }
+    
+
+
 document.getElementById('signup-form').addEventListener('submit', function(e) {
     e.preventDefault();
     var formData = new FormData(this);
+
+     // Retrieve the CSRF token from the form
+     var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
 
     fetch('/signup', {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
+          'X-CSRFToken': csrftoken,
         }
     }).then(response => response.json())
     .then(data => {
         if(data.status === 'error') {
+            console.log(data.message);
+            console.log("EHFEHHF")
             const errorToastEl = document.getElementById('errorToast');
             const errorToastBody = errorToastEl.querySelector('.toast-body');
             // Check if data.message is an array
@@ -193,6 +260,7 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
                 errorToastBody.innerHTML = data.message;
             }
             const errorToast = new bootstrap.Toast(errorToastEl);
+            console.log("Inside here")
             errorToast.show(); // Show the toast
         } else {
             alert(data.message);
@@ -201,6 +269,10 @@ document.getElementById('signup-form').addEventListener('submit', function(e) {
     }).catch(error => {
         console.error('Error:', error);
     });
+});
+
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); // Initialize tooltip
 });
 
 </script>

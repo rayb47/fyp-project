@@ -1,6 +1,5 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from login.models import CustomUser
@@ -155,13 +154,7 @@ def media(request):
     return render(request, 'mainsite/media.html')
 
 def get_incorrect_questions(request, unit_id):
-    questions_data = {
-        '1': [
-            {'question': 'What is the capital of Portugal?', 'type': 'Multiple Choice', 'answer': 'Lisbon', 'correctAnswer': 'Lisbon'},
-            {'question': 'Translate "dog" to Portuguese.', 'type': 'Translation', 'answer': 'Cãooo', 'correctAnswer': 'Cão'}
-        ],
-        # Add cases for other units
-    }
+    # Fetches data on the incorrect answers for a particular unit
     answer_data = []
     for item in UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit_id), is_correct=False):
         answer_data.append(
@@ -171,7 +164,7 @@ def get_incorrect_questions(request, unit_id):
              'correctAnswer': item.question.correct_answer}
         )
 
-    # questions = questions_data.get(unit_id, [])
+    # Returns the data in JSON format to be displayed on the frontend
     return JsonResponse({'questions': answer_data})
 
 def quiz4(request):
@@ -192,6 +185,7 @@ def get_unit_details(request, unit_id):
     return JsonResponse(unit_details)
 
 def analytics(request):
+    # Calculations for analytics display
     word_count_studied = 0
     correct_count = UserAnswers.objects.filter(user=request.user, is_correct=True).count()
     incorrect_count = UserAnswers.objects.filter(user=request.user, is_correct=False).count()
@@ -200,6 +194,7 @@ def analytics(request):
         pg_covered = 1 if lesson.pages_covered == 0 else lesson.pages_covered
         word_count_studied = 2 * int(pg_covered-1)
 
+    # Adding formulated data for each unit to main_data dictionary
     main_data = {}
     for unit in Unit.objects.all():
         correct = UserAnswers.objects.filter(user=request.user, is_correct=True, question__quiz__unit=int(unit.id)).count()
@@ -224,7 +219,7 @@ def analytics(request):
             'details': detail_list
         }
 
-    print("Main Data:", main_data)
+    # Finding best and worst performing unit
     correct_answers = UserAnswers.objects.filter(is_correct=True, user=request.user).annotate(
     unit_id=Case(
         When(attempt__lesson__isnull=False, then='attempt__lesson__unit'),
@@ -341,10 +336,8 @@ def save_settings(request):
 
 @login_required
 def vocab_search(request):
-    # ADD VALIDATION FOR PASSING BLANK STRINGS IF NONSENSE IS INPUTTED
     query = request.GET.get('query',None)
-    print("Inside vocab general view")
-    # Translation API 
+    # Translation API application
     url = "https://text-translator2.p.rapidapi.com/translate"
     headers = {
         "content-type": "application/x-www-form-urlencoded",
@@ -619,40 +612,19 @@ def quiz(request, unit_id, quiz_id):
                 print("Inside the else")
         if not question_obj:
             return render(request, 'mainsite/cube.html')
-        # user_answer = UserAnswers.objects.filter(attempt=user_attempt, user=request.user, is_correct=False)[0]
-        # number = random.randint(1, 11)
-        # question_obj = Question.objects.get(quiz=quiz_accessed, id=number)
-        # question_obj = user_answer.question
-    print("Unanswered questions are:", unanswered_questions)
 
-    question_obj = Question.objects.filter(question_type='MCQ')[0]
+    question_obj = Question.objects.filter(question_type='Speech')[0]
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
-            print("Options:", option)
             word = Word.objects.get(portuguese_word=option)
-            # payload = {
-            #     "source_language": "pt",
-            #     "target_language": "en",
-            #     "text": option
-            # }
-            # translation_response = requests.post(url, data=payload, headers=headers)
-            #print("English option:", translation_response.json()['data']['translatedText'])
-            # image_params = {
-            #     'query': translation_response.json()['data']['translatedText'],  # The search term you're looking for
-            #     'per_page': 10,     # Number of results per page
-            #     'page': 1           # Page number (if you want to implement pagination)
-            # }
             image_params = {
                 'query': word.english_translation,
                 'per_page': 10,
                 'page': 1
             }
-            # image_response = requests.get(image_url, headers=image_headers, params=image_params)
-            # photo = image_response.json()['photos'][0]['src']['original']
-            photo = "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
-            # image_response = requests.get('https://pixabay.com/api/?key=40135184-dc7bf4341a3143778714e9097&q={}'.format(option))
-            # data = image_response.json()
+            image_response = requests.get(image_url, headers=image_headers, params=image_params)
+            photo = image_response.json()['photos'][0]['src']['original']
             options[option] = photo
     elif question_obj.question_type == 'MCQ_Text':
         options_list = question_obj.option_set.all()

@@ -54,7 +54,7 @@
 
 #unit-wise-tab:hover, #overall-tab:hover {
     border: 1px solid black;
-    background-color: #88c0fc;
+    background-color: #0075f3;
     color: white;
     box-shadow: inset 0px 0px 10px 0px black;
 }
@@ -102,6 +102,10 @@
     z-index: 10; /* Ensure it's above other rows for stacking */
 }
 
+.header {
+     color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px;
+}
+
 
 </style>
 </head>
@@ -109,7 +113,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <a class="navbar-brand" href="#">
           
-          <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+          <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top: 8px">
           <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
           
         </a>
@@ -156,7 +160,7 @@
       </nav>
 
   <div class="container mt-4">
-    <h1 class="mb-4 heading">Analytics</h1>
+    <h1 class="mb-4 header">Analytics</h1>
     <div class="card mb-3 analytics-card">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" id="analyticsTabs" role="tablist">
@@ -257,9 +261,12 @@
                                         Correct and Incorrect Answers
                                     </div>
                                     <ul class="list-group list-group-flush" style="border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
-                                        <li class="list-group-item"><b>Today:</b> 15 Answers</li>
-                                        <li class="list-group-item"><b>This Week:</b> 70 Answers</li>
-                                        <li class="list-group-item"><b>This Month:</b> 285 Answers</li>
+                                        <li class="list-group-item"><b>Today: </b><span class='text-green'>15 correct</span><b> / </b> 
+                                            <span class='text-red'>5 incorrect</span> answers</li>
+                                        <li class="list-group-item"><b>This Week: </b><span class='text-green'>27 correct</span><b> / </b> 
+                                            <span class='text-red'>9 incorrect</span> answers</li>
+                                        <li class="list-group-item"><b>This Month: </b><span class='text-green'>46 correct</span><b> / </b> 
+                                            <span class='text-red'>14 incorrect</span> answers</li>
                                     </ul>
                                 </div>
                             </div>
@@ -308,8 +315,8 @@
                 <div class="container">
                     <!-- Dropdown to select units -->
                     <div class="mb-3">
-                        <label for="unitSelection" class="form-label">Select Unit:</label>
-                        <select class="form-control" id="unitSelection">
+                        <label for="unitSelection" class="form-label" style="font-weight: bold; font-size: 24px;">Select Unit:</label>
+                        <select class="form-control" id="unitSelection" style="border: 2px solid black;">
                             <option value="1" selected>Unit 1</option>
                             <option value="2">Unit 2</option>
                             <option value="3">Unit 3</option>
@@ -368,6 +375,8 @@
         </div>
     </div>
 </div>
+
+{% include 'mainsite/discord_modal.html' %}
 
 {{ total_data|json_script:"total-data" }}
 <script>

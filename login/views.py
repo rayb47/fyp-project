@@ -46,6 +46,7 @@ def signup(request):
         
         language_yes = request.POST.get('languageYes')
         language_no = request.POST.get('languageNo')
+        print("Past picking up data")
         # Collect form data
         form_data = {
             'username': request.POST.get('username'),
@@ -60,21 +61,30 @@ def signup(request):
             'language_yes': request.POST.get('languageYes'),
             'language_no': request.POST.get('languageNo'),
         }
+        print("After form data")
 
         # Check if the username already exists
         if CustomUser.objects.filter(username=form_data['username']).exists():
-            return JsonResponse({'status': 'error', 'message': 'Username already exists'}, status=400)
+            msg = "Username already exists!"
+            return JsonResponse({'status': 'error', 'message': msg}, status=400)
+        
+        print("Email:", form_data['email'])
+
+        # Check if the email is already registered to an account
+        if CustomUser.objects.filter(email=form_data['email']).exists():
+            msg = "Email is already registered with an account!"
+            return JsonResponse({'status': 'error', 'message': msg}, status=400)
         
         # Verifies passwords match
         if password != confirm_password:
             return JsonResponse({'status': 'error', 'message': 'Passwords do not match'}, status=400)
-        
+        print("before validating passowrd:", password)
         # Validates password
         try:
             validate_password(password)
         except ValidationError as e:
             return JsonResponse({'status': 'error', 'message': e.messages}, status=400)
-
+        print("Before user object creation")
         try:
             myuser = CustomUser(username=username, email=email)
             myuser.set_password(password)
