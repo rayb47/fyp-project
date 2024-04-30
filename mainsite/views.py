@@ -62,22 +62,19 @@ def weather_data(request):
     return JsonResponse({'data': data})
 
     
-
+# Renders the Home Page
 @login_required
 def home(request):
 
+    # Dates a user has been active for more than the set activity goal (10 minutes by default)
     user_activity_dates = [
     DateFormat(date).format('Y-m-d') for date in UserActivity.objects.filter(
         user=request.user,
         date__lt=date.today() 
     ).values_list('date', flat=True).distinct()
     ]
-    print(user_activity_dates)
-    print("IN HOME REQUEST")
-    combined_city_data = []
-    # Units
-    units = Unit.objects.all()    
 
+    # Dates a user has answered more than 5 questions
     dates_with_more_than_five_answers = UserAnswers.objects.filter(user=request.user) \
         .annotate(answer_day=TruncDate('answer_date')) \
         .values('answer_day') \
@@ -86,14 +83,17 @@ def home(request):
         .values_list('answer_day', flat=True) \
         .order_by('answer_day')
     formatted_goal_dates = [date.strftime('%Y-%m-%d') for date in dates_with_more_than_five_answers]
-    print(formatted_goal_dates)
-
+    
+    # All existing units
+    units = Unit.objects.all() 
+       
     r = requests.get("http://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q=Lisbon")
     r = r.json()
-    current_hour = int(r['location']['localtime'].split(' ')[1].split(':')[0])
     current_date = r['location']['localtime'].split(' ')[0]
+    current_hour = int(r['location']['localtime'].split(' ')[1].split(':')[0])
+    
 
-
+    combined_city_data = []
     # for city_name in ['Porto', 'Madeira']:
     #     res = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city_name))
     #     res = res.json()
@@ -103,7 +103,7 @@ def home(request):
     #         # 'image': res['current']['condition']['icon'],
     #     })
     # print("Combined city data is:", combined_city_data)
-
+    # Set type of greeting based on time of day
     greeting = ''
     if current_hour < 12:
         greeting = "Good morning"
@@ -112,6 +112,7 @@ def home(request):
     else:
         greeting = "Good evening"
     print("Local time variable:", type(current_date))
+    # Edit date to appropriate format to be displayed (Format Example: 13th January, 2024)
     date_obj = datetime.strptime(current_date, '%Y-%m-%d')
     added_suffix = ''
     if 4 <= date_obj.day <= 20 or 24 <= date_obj.day <= 30:
@@ -119,6 +120,8 @@ def home(request):
     else:
         added_suffix = str(date_obj.day) + ["st", "nd", "rd"][date_obj.day % 10 - 1]
     current_date = f"{added_suffix} {date_obj.strftime('%B')}, {date_obj.year}"
+
+    # Data to be passed to the template
     data = {
         'uname': request.session.get('uname'),
         'city': r['location']['name'],
@@ -132,16 +135,15 @@ def home(request):
         'user_activity_dates': user_activity_dates,
         'goal_dates': formatted_goal_dates
     }
-    
-    for unit in units:
-        print(unit.name, unit.id, unit.description)
-        
+
+    # Render the home page template   
     return render(request, "mainsite/test_dashboard.html", data)
 
+# Signs out a user from the website
 def signout(request):
-    print("Inside the signout view")
     logout(request)
     messages.success(request, "Logged out successfully")
+    # Redirect to the login page
     return redirect('login:signin')
 
 def quiz2(request):
@@ -153,8 +155,8 @@ def quiz3(request):
 def media(request):
     return render(request, 'mainsite/media.html')
 
+# Fetches data on the incorrect answers for a particular unit
 def get_incorrect_questions(request, unit_id):
-    # Fetches data on the incorrect answers for a particular unit
     answer_data = []
     for item in UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit_id), is_correct=False):
         answer_data.append(
@@ -184,6 +186,7 @@ def get_unit_details(request, unit_id):
     }
     return JsonResponse(unit_details)
 
+# Computes the necessary data and renders the Analytics Page
 def analytics(request):
     # Calculations for analytics display
     word_count_studied = 0
@@ -207,6 +210,7 @@ def analytics(request):
         else:
             word_count = 0
 
+        # Statistics to be displayed
         detail_list = [
             {'icon': 'check-circle', 'text': 'Correct Answers', 'value': correct, 'color': 'text-success'},
             {'icon': 'times-circle', 'text': 'Incorrect Answers', 'value': incorrect, 'color': 'text-danger'},
@@ -238,6 +242,7 @@ def analytics(request):
     best_unit = Unit.objects.get(id=correct_answers.first()['unit_id']).name if correct_answers.first() else 'None'
     worst_unit = Unit.objects.get(id=incorrect_answers.first()['unit_id']).name if incorrect_answers.first() else 'None'
 
+    # Data to be sent to the template
     data = {
         'total_correct_answers':correct_count,
         'total_incorrect_answers':incorrect_count,
@@ -249,6 +254,7 @@ def analytics(request):
 
     return render(request, 'mainsite/analytics.html', data)
 
+# Writes the content of the User Saved Vocabulary to CSV file
 def download_table(request):
     if request.method == 'POST':
         table_data = request.POST.getlist('table_data[]')
@@ -265,43 +271,43 @@ def download_table(request):
 
         return response
 
+# Deletes all user saved words
 @login_required
 def delete_all_saved_words(request):
-    # Assuming you have a function to delete items, adapt as necessary.
     try:
-        # Your deletion logic here
-        # Item.objects.filter(user=request.user).delete()
         UserSavedWords.objects.filter(user=request.user).delete()
         return JsonResponse({"success": True}, status=200)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
+# Renders the Settings page
 def settings(request):
     return render(request, 'mainsite/settings.html')
 
-
+# Renders the Festivals page
 @login_required
 def architecture(request):
     if request.user.is_authenticated:
+        # Renders the Portuguese or English version of the page depending on the user's settings
         if request.user.portuguese_default:
-            print("I NEED PORTUGUESE")
-            translation.activate('pt')  # Activate Portuguese
+            translation.activate('pt')
             # request.session['django_language'] = 'pt'  # Correctly set the language key in the session
         else:
-            translation.deactivate_all()  # or activate a default language
+            translation.deactivate_all()
     return render(request, 'mainsite/architecture.html')
 
+# Renders the Architecture page
 @login_required
 def festivals(request):
     if request.user.is_authenticated:
         if request.user.portuguese_default:
-            print("I NEED PORTUGUESE")
             translation.activate('pt')  # Activate Portuguese
-            request.session['django_language'] = 'pt'  # Correctly set the language key in the session
+            request.session['django_language'] = 'pt'
         else:
-            translation.deactivate_all()  # or activate a default language
+            translation.deactivate_all()
     return render(request, 'mainsite/festivals.html')
 
+# Saves submitted User Feedback
 def submit_feedback(request):
     feedback = request.POST.get('feedback')
     print("Inside submit feedback view")
@@ -315,25 +321,35 @@ def submit_feedback(request):
 def testdiacritics(request):
     return render(request, 'mainsite/test_diacritics.html')
 
+# Renders the Diacritics page
 @login_required
 def diacritics(request):
     return render(request, 'mainsite/diacritics.html')
 
+# Saves edited user settings
 @login_required
 def save_settings(request):
     if request.user.is_authenticated:
         current_user_id = request.user.id
         current_user_object = CustomUser.objects.get(id=current_user_id)
-    data = request.POST.get('dataToSend', None)
-    if data:
-        data = json.loads(data)
-        if 'siteLanguage' in data:
-            current_user_object.portuguese_default = True if data['siteLanguage'] == 'Portuguese' else False
-        current_user_object.save()
+        data = request.POST.get('dataToSend', None)
+        print(data)
+        if data:
+            data = json.loads(data)
+            if 'siteLanguage' in data:
+                current_user_object.portuguese_default = True if data['siteLanguage'] == 'Portuguese' else False
+            if 'dailyGoalMinutes' in data:
+                current_user_object.daily_activity_goal = int(data['dailyGoalMinutes'])
+            if 'dailyGoalQuestions' in data:
+                current_user_object.daily_question_goal = int(data['dailyGoalQuestions'])
+            if 'playbackSpeed' in data:
+                current_user_object.playback_speed = data['playbackSpeed']
+            current_user_object.save()
     
     return JsonResponse({'words': 'Data edited successfully!'})
     return render(request, 'mainsite/settings.html')
 
+# Finds equivalent Portuguese for the inputted English phrase/word
 @login_required
 def vocab_search(request):
     query = request.GET.get('query',None)
@@ -354,6 +370,7 @@ def vocab_search(request):
 
     return JsonResponse({'words': [{'english': query, 'portuguese': translation_response.json()['data']['translatedText']}]}, safe=False)
 
+# Displays the Vocabulary List
 @login_required
 def vocab(request):
     # FILTER OVERALL WORD DISPLAY BASED ON UNIT
@@ -369,18 +386,19 @@ def vocab(request):
         words = Word.objects.all()
     return render(request, 'mainsite/vocab.html', {'saved_words': user_saved_words, 'words': words})
 
+# Carries out the dynamic search over the Vocabulary List
 @login_required
 def search_word(request):
     search_query = request.GET.get('query', None)
     words = Word.objects.filter(
-    Q(portuguese_word__icontains=search_query) | 
-    Q(english_translation__icontains=search_query)
-)
+        Q(portuguese_word__icontains=search_query) | 
+        Q(english_translation__icontains=search_query)
+    )
 
     # Serialize the words along with their example usages
     words_data = []
     for word in words:
-        # Getting the first example usage for simplicity; adjust according to your needs
+        # Getting the first example usage to display in the table
         example_usage = word.example_usages.first()  
         words_data.append({
             'id': word.id,
@@ -613,7 +631,7 @@ def quiz(request, unit_id, quiz_id):
         if not question_obj:
             return render(request, 'mainsite/cube.html')
 
-    question_obj = Question.objects.filter(question_type='Speech')[0]
+    question_obj = Question.objects.filter(question_type='Translate')[0]
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
@@ -758,7 +776,8 @@ def submit_answer(request):
 def get_quiz_data(request):
     quizzes = []
     unit_id = request.GET.get('unit_id')
-    quiz_data = Quiz.objects.filter(unit_id=int(unit_id))
+    difficulty = 'Beginner'
+    quiz_data = Quiz.objects.filter(unit_id=int(unit_id), difficulty=difficulty)
     quiz_number = 0
     for quiz in quiz_data:
         total_questions = quiz.questions.all().count() 
@@ -790,8 +809,17 @@ def text_to_speech(request):
          # Load the speech audio
         sound = AudioSegment.from_file("output.mp3")
 
+        playback = CustomUser.objects.get(id=request.user.id).playback_speed
+
+        if playback == 'Normal':
+            playback_speed = 1.0
+        elif playback == 'Slow':
+            playback_speed = 0.9
+        else:
+            playback_speed = 1.1
         # Change speed of the audio
-        speed = 1.2  # Speed factor > 1 to increase speed
+        speed = playback_speed  # Speed factor > 1 to increase speed
+        print("Playback speed:", playback_speed)
         altered_frame_rate = int(sound.frame_rate * speed)
         faster_sound = sound._spawn(sound.raw_data, overrides={"frame_rate": altered_frame_rate})
         faster_sound = faster_sound.set_frame_rate(sound.frame_rate)

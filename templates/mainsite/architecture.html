@@ -5,64 +5,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PortuguesePro Learning Dashboard</title>
+<title>PortuguesePro - Festivals Page</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <style>
-  .map2 {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 600px; /* Adjusted for visibility of smaller cube */
-      perspective: 1200px; /* Slightly reduced for better 3D effect */
-  }
+  .map2 { display: flex; justify-content: center; align-items: center; height: 600px; perspective: 1200px; }
 
-  .header {
-     color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px;
-}
-        .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
-        .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
-        .card { 
-            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 2px ; background-color: #f2edcb;;
-        }
-        .map { border-radius: 10px; }
-        .map { height: 250px; width: 100%; } /* Fixed height and full width for maps */
-        .carousel-item { height: 250px; background: #ccc; }
-        .carousel-item img { height: 250px; width: auto; margin: auto; }
-        .sub-heading { color: #343a40; font-size: 1.5rem; }
-        .intro-text { 
-            border-radius: 20px;
-            border-width: 1px;
-            border-color: black;
-            box-shadow: inset 0 0 10px 2px #000000; /* Horizontal offset, vertical offset, blur radius, spread radius, color */
-            transition: 0.8s; /* Optional: adds a transition effect when the shadow changes */
-            background-color: beige;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .img-fluid {
-            margin-top: 25px;
-            border: 2px solid black;
-            width: 100%;
-            height: 88%;
-        }
-  
-  #cube {
-      width: 300px; /* Decreased from 400px */
-      height: 300px; /* Decreased from 400px */
-      position: relative;
-      transform-style: preserve-3d;
-      transform-origin: 50% 50%;
-      transform: rotateX(var(--rotation-x)) rotateY(var(--rotation-y));
-  }
-  
+  .header { color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px;}
+        
+  .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
+        
+  .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
+        
+  .card { margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 2px ; background-color: #f2edcb; }
+        
+  .map { border-radius: 10px; }
+        
+  .map { height: 250px; width: 100%; } /* Fixed height and full width for maps */
+        
+  .carousel-item { height: 250px; background: #ccc; }
+        
+  .carousel-item img { height: 250px; width: auto; margin: auto; }
+        
+  .sub-heading { color: #343a40; font-size: 1.5rem; }
+        
+  .intro-text { border-radius: 20px; border-width: 1px; border-color: black; box-shadow: inset 0 0 10px 2px #000000; transition: 0.8s; background-color: #f2edcb; padding: 20px; margin-bottom: 20px; }
+        
+  .img-fluid { margin-top: 25px; border: 2px solid black; width: 100%; height: 88%; }
+    
   .face {
       position: absolute;
-      width: 300px; /* Decreased from 400px */
-      height: 300px; /* Decreased from 400px */
+      width: 300px;
+      height: 300px;
       background-size: cover;
       background-position: center;
       border-radius: 10px;
@@ -96,28 +73,20 @@
     border-bottom-right-radius: 10px;
   }
 
-  .card-body {
-    -webkit-user-select: none;  
-    -ms-user-select: none;      
-    user-select: none;
-  }
+  .card-body { -webkit-user-select: none;  -ms-user-select: none; user-select: none; }
 
-  a {
-    color: rgb(0, 4, 255);
-  }
+  a { color: rgb(0, 4, 255); }
+
+  #cube { width: 300px; height: 300px; position: relative; transform-style: preserve-3d; transform-origin: 50% 50%; transform: rotateX(var(--rotation-x)) rotateY(var(--rotation-y)); }
   
-  </style>
-  
-  
+</style>
   
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-    <a class="navbar-brand" href="#">
-      
+    <a class="navbar-brand" href="/home">
       <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top: 8px">
       <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
-      
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -143,7 +112,7 @@
       <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">
         {% translate 'Diacritics' %} 
       </a>
-  </li>
+    </li>
       <li class="nav-item dropdown">
           <a class="nav-link active-tab dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {% translate 'Culture' %} 
@@ -151,25 +120,24 @@
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
             <a class="dropdown-item" href="/architecture">{% translate 'Architecture' %} </a>
             <a class="dropdown-item" href="/festivals">{% translate 'Festivals' %} </a>
-            <a class="dropdown-item" href="page3.html">{% translate 'Media' %} </a>
-            <!-- More dropdown items -->
+            <a class="dropdown-item" href="/media">{% translate 'Media' %} </a>
           </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
     </li>
-        <!-- More nav items -->
       </ul>
       <span class="navbar-text">
         <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
           <i id="discordLogo" class="fab fa-discord"></i>
       </a>
-        <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
+        <a href="/signout" class="settings-link nb-item" style="font-size:22px; text-decoration: none;">Logout</a>
       </span>
     </div>
   </nav>
 
   <div class="container mt-4">
+    <!-- Introduction paragraph -->
     <h1 class="mb-4 header">Festivals</h1>
     <div class="card mb-3 culture-card" style="border-radius: 20px; box-shadow: inset 0 0 10px 2px #000000; border: 1px solid black;">
       <div class="card-body" style="display: flex;   border-radius:20px">
@@ -185,6 +153,7 @@
           <br><br><span style="font-weight: 700; font-size: 14px; color: rgb(16, 16, 180);">
             {% translate 'Rotate the cube on the right to view images of some common Portuguese festivals.' %}<br>
             {% translate 'Click on their names to learn more.' %}</span></p>
+        <!-- 3D Cube -->
         <div class="map2" style="margin-left: 5%; margin-right: 5%; height: 380px;">
           <div id="cube" style="background-color: green;">
               <div class="face front"><div class='bottomLine' style="top: 100%; border: 1px solid black;">
@@ -204,13 +173,10 @@
       </div>
     </div>
     <br>
-
+    <!-- Tiles for festivals -->
     <section>
       <div class="card">
           <div class="row g-0">
-
-              
-              <!-- Heading, text, and picture on the right -->
               <div class="col-md-12">
                   <div class="card-header" style="border-top-right-radius: 10px; border-top-left-radius: 10px;">1. Rock in Rio</div>
                   <div class="row">
@@ -231,24 +197,15 @@
                                 
                               <p class="card-text"><strong>{% translate 'Dates:' %}</strong>
                                 {% translate 'Not fixed, but usually in the month of September.' %}
-                              </p>
-                              
+                              </p>  
                           </div>
                       </div>
-                      <!-- <div class="col-md-4 img-div">
-                          <img src="https://www.sportstourismnews.com/wp-content/uploads/2022/03/portugal-walking-trekking-930x600.jpg" 
-                          alt="Madeira's Flower Festival" class="img-fluid"
-                          >
-                      </div> -->
                   </div>
               </div>
           </div>
       </div>
       <div class="card">
           <div class="row g-0">
-        
-              
-              <!-- Heading, text, and picture on the right -->
               <div class="col-md-12">
                   <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">2. Feast Day of St. Anthony</div>
                   <div class="row">
@@ -280,8 +237,6 @@
       </div>
       <div class="card">
           <div class="row g-0">
-              
-              <!-- Heading, text, and picture on the right -->
               <div class="col-md-12">
                   <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">3. São João</div>
                   <div class="row">
@@ -316,8 +271,6 @@
       </div>
       <div class="card">
           <div class="row g-0">
-              
-              <!-- Heading, text, and picture on the right -->
               <div class="col-md-12">
                   <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">4. Carnival</div>
                   <div class="row">
@@ -351,8 +304,6 @@
       </div>
       <div class="card">
         <div class="row g-0">
-            
-            <!-- Heading, text, and picture on the right -->
             <div class="col-md-12">
                 <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">5. Semana Santa</div>
                 <div class="row">
@@ -377,8 +328,6 @@
     </div>
     <div class="card">
       <div class="row g-0">
-          
-          <!-- Heading, text, and picture on the right -->
           <div class="col-md-12">
               <div class="card-header" style="border-top-right-radius: 10px;border-top-left-radius: 10px;">6. Festas das Cruzes</div>
               <div class="row">
@@ -404,77 +353,16 @@
               </div>
           </div>
       </div>
-  </div>
-
+    </div>
   {% include 'mainsite/discord_modal.html' %}
-
-      
-      
-      <!-- Additional festival cards with similar layout -->
   </section>
-
-    <div class="card mb-3 culture-card">
-      <div class="card-body">
-        <h2 class="card-title"><b>1. Sanctuary of Christ the King</b></h2>
-        <p class="card-text">The Sanctuary of Christ the King (Portuguese: Santuário de Cristo Rei) 
-          is a Catholic monument and shrine dedicated to the Sacred Heart of Jesus Christ overlooking the city of 
-          Lisbon situated in Almada, in Portugal. It was inspired by the Christ the Redeemer statue of Rio de Janeiro, 
-          in Brazil, after the Cardinal Patriarch of Lisbon visited that monument. 
-          The project was inaugurated on 17 May 1959. The giant statue was erected to express gratitude because the 
-          Portuguese were spared the direct destructive effects of World War II.</p>
-        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
-            in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC?utm_source=generator" width="80%" height="280" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-          </div>
-      <div class="map">
-        <center>
-          <div>
-          <!-- Google Map Copied Code -->
-          <iframe width="400" height="400" style="border:0; border-radius: 10px; margin-bottom: 15px;" loading="lazy" allowfullscreen
-            src="https://www.google.com/maps/embed/v1/streetview?location=38.6787,-9.1713&key=AIzaSyDtutlR-5LD8Hzjs2uR1I5Sbku7_aml5pQ"></iframe>
-        <center>
-  <!-- Google Map Copied Code -->
-<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Cristo_Rei_%2836211699613%29.jpg/220px-Cristo_Rei_%2836211699613%29.jpg" style="border:0; border-radius: 10px; margin-bottom: 15px; margin-right: 55px; float: right; height: 400;"> -->
-</center>
 </div>
-      </div>
-    </div>
-    
-    <div class="card mb-3 culture-card">
-      <div class="card-body">
-        <h2 class="card-title"><b>2. Belém Tower</b></h2>
-        <p class="card-text">Belém Tower (Portuguese: Torre de Belém, pronounced [ˈtoʁɨ ðɨ βɨˈlɐ̃j]; 
-          literally: Bethlehem Tower), officially the 
-          Tower of Saint Vincent (Portuguese: Torre de São Vicente) is a 16th-century 
-          fortification located in Lisbon that served as a point of embarkation and 
-          disembarkation for Portuguese explorers and as a ceremonial gateway to Lisbon.
-          It was built during the height of the Portuguese Renaissance, and is 
-          a prominent example of the Portuguese Manueline style, but it 
-          also incorporates hints of other architectural styles. The structure
-           was built from lioz limestone and is composed of a bastion and a 30-metre 
-           (100 ft), four-storey tower.</p>
-    </div>
-      <div class="map">
-      <center>
-      <iframe width="400" height="400" style="border:0; border-radius: 10px; margin-bottom: 15px;" loading="lazy" allowfullscreen src="https://www.google.com/maps/embed?pb=!4v1704830452871!6m8!1m7!1sCAoSLEFGMVFpcFBuVjVMZklSNnd4R2lyN04zaFNnMThZX19NYy1FczRfRWJWSk11!2m2!1d38.69209842333764!2d-9.215197753444102!3f252.66944197108666!4f-17.197631610183265!5f0.7820865974627469" ></iframe>
-    </center>
-    </div>
-    
-    </div>
-    
-    <!-- Add more cards for other locations as needed -->
-    
-  </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
+  // Handles rotation of 3D Cube
   document.addEventListener('DOMContentLoaded', () => {
       const cube = document.getElementById('cube');
       let isDragging = false;
@@ -500,7 +388,6 @@
               };
           }
       };
-  
       cube.addEventListener('mousedown', (event) => {
           isDragging = true;
           previousMousePosition = {
@@ -508,9 +395,7 @@
               y: event.clientY
           };
       });
-  
       document.addEventListener('mousemove', rotate);
-  
       document.addEventListener('mouseup', () => {
           isDragging = false;
       });

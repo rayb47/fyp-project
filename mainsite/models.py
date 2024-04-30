@@ -11,11 +11,15 @@ class Unit(models.Model):
         return self.name
     
 class Quiz(models.Model):
+    DIFFICULTY_CHOICES = (
+        ('Beginner', 'Beginner'),
+        ('Intermediate', 'Intermediate'),
+        ('Advanced', 'Advanced'),
+    )
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='quizzes')
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)  # Can be null or blank
-    #     created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
+    difficulty = models.CharField(max_length=12, choices=DIFFICULTY_CHOICES, default='Beginner')
 
     def __str__(self):
         return self.title

@@ -127,12 +127,12 @@ textarea {
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="dailyGoalMinutes">Minutes per Day Goal</label>
-                <input type="number" name="dailyGoalMinutes" id="dailyGoalMinutes" class="form-control" placeholder="Minutes/day...." required>
+                <input type="number" name="dailyGoalMinutes" id="dailyGoalMinutes" class="form-control" placeholder="Minutes/day...." value="{{user.daily_activity_goal}}" required>
               </div>
 
               <div class="form-group col-md-6">
                 <label for="dailyGoalQuestions">Questions per Day Goal</label>
-                <input type="number" name="dailyGoalQuestions" id="dailyGoalQuestions" class="form-control" placeholder="Questions/day...." required>
+                <input type="number" name="dailyGoalQuestions" id="dailyGoalQuestions" class="form-control" placeholder="Questions/day...." value="{{user.daily_question_goal}}" required>
               </div>
             </div>
 
@@ -142,9 +142,9 @@ textarea {
                 <div class="col-md-6 form-group">
                   <label for="proficiencyLevel">Proficiency Level</label>
                   <select class="form-control" id="proficiencyLevel">
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
+                    <option value="Beginner" {% if request.user.proficiency_level == 1 %}selected{% endif %}>Beginner</option>
+                    <option value="Intermediate" {% if request.user.proficiency_level == 2 %}selected{% endif %}>Intermediate</option>
+                    <option value="Advanced" {% if request.user.proficiency_level == 3 %}selected{% endif %}>Advanced</option>
                   </select>
                 </div>
                 <div class="col-md-6 form-group">
@@ -174,8 +174,9 @@ textarea {
               <div class="form-group col-md-4">
                 <label for="playbackSpeed">Audio Playback Speed</label>
                 <select class="form-control" id="playbackSpeed">
-                  <option value="Slow">Slow</option>
-                  <option value="Fast">Fast</option>
+                  <option value="Slow" {% if request.user.playback_speed == 'Slow' %}selected{% endif %}>Slow</option>
+                  <option value="Normal" {% if request.user.playback_speed == 'Normal' %}selected{% endif %}>Normal</option>
+                  <option value="Fast" {% if request.user.playback_speed == 'Fast' %}selected{% endif %}>Fast</option>
                 </select>
               </div>
             </div>
@@ -251,13 +252,14 @@ textarea {
     var originalDailyGoalMinutes = $('#dailyGoalMinutes').val();
     var originalDailyGoalQuestions = $('#dailyGoalQuestions').val();
     var originalLanguage = $('#siteLanguage').val();
+    var originalPlayback = $('#playbackSpeed').val();
     console.log(originalLanguage);
     $('#saveSettingsBtn').click(function(e) {
         e.preventDefault();
-        var currentDailyGoalMinutes = $('#curentDailyGoalMinutes').val();
-        var currentDailyGoalQuestions = $('#currentDailyGoalQuestions').val();
+        var currentDailyGoalMinutes = $('#dailyGoalMinutes').val();
+        var currentDailyGoalQuestions = $('#dailyGoalQuestions').val();
         var currentLanguage = $('#siteLanguage').val();
-        console.log(currentLanguage);
+        var currentPlayback = $('#playbackSpeed').val();
         var dataToSend = {};
 
         if (currentDailyGoalMinutes !== originalDailyGoalMinutes) {
@@ -270,6 +272,10 @@ textarea {
 
         if (currentLanguage !== originalLanguage) {
             dataToSend.siteLanguage = currentLanguage;
+        }
+
+        if (currentPlayback !== originalPlayback) {
+            dataToSend.playbackSpeed = currentPlayback;
         }
 
         console.log(dataToSend);
@@ -368,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var dailyGoalMinutesInput = document.getElementById('dailyGoalMinutes');
     var dailyGoalQuestionsInput = document.getElementById('dailyGoalQuestions');
     var siteLanguageSelect = document.getElementById('siteLanguage');
+    var playbackSelect = document.getElementById('playbackSpeed');
 
     // Function to enable the button
     function enableSaveButton() {
@@ -378,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
     dailyGoalMinutesInput.addEventListener('change', enableSaveButton);
     dailyGoalQuestionsInput.addEventListener('change', enableSaveButton);
     siteLanguageSelect.addEventListener('change', enableSaveButton);
+    playbackSelect.addEventListener('change', enableSaveButton);
 });
 </script>
 </body>

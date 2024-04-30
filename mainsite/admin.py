@@ -9,8 +9,8 @@ class UnitAdmin(admin.ModelAdmin):
 admin.site.register(Unit, UnitAdmin)
 
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ('unit', 'title', 'description') 
-    search_fields = ('unit', 'title', 'description') 
+    list_display = ('unit', 'title', 'description', 'difficulty') 
+    search_fields = ('unit', 'title', 'description', 'difficulty') 
 
 admin.site.register(Quiz, QuizAdmin)
 

@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PortuguesePro Learning Dashboard</title>
+<title>PortuPro - Analytics Page</title>
 <!-- Include Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -19,18 +19,16 @@
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <style>
 
-.analytics-card {
-    padding: 2.5%;
-}
+.analytics-card { padding: 2.5%; }
 
 .nav-tabs .nav-link {
-            border: 2px solid black;
-            border-top-left-radius: 0.25rem;
-            border-top-right-radius: 0.25rem;
-            color: #007bff;
-            margin-right: 2px;
-            border-bottom: 1px solid black;
-        }
+    border: 2px solid black;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    color: #007bff;
+    margin-right: 2px;
+    border-bottom: 1px solid black;
+}
 
 .nav-tabs .nav-link.active {
     color: #fff; /* Active tab color, adjust as needed */
@@ -38,19 +36,11 @@
     border-color: #dee2e6 #dee2e6 #fff; /* Adjust border color as needed */
 }
 
-.card-title {
-    color: black;
-}
+.card-title { color: black; }
 
-#analyticsTabs {
-    border-bottom: 2px solid black;
-}
+#analyticsTabs { border-bottom: 2px solid black;}
 
-
-#overall-tab, #unit-wise-tab {
-    border: 1px solid black;
-    box-shadow: inset 0px 0px 6px 0px black;
-}
+#overall-tab, #unit-wise-tab { border: 1px solid black; box-shadow: inset 0px 0px 6px 0px black;}
 
 #unit-wise-tab:hover, #overall-tab:hover {
     border: 1px solid black;
@@ -59,63 +49,31 @@
     box-shadow: inset 0px 0px 10px 0px black;
 }
 
+#analyticsTabContent { margin-top:2% }
 
-#analyticsTabContent {
-    margin-top:2%
-}
+.card { border-radius: 15px; border: 2px solid black; box-shadow: 0px 0px 6px 0px; }
 
-.card {
-    border-radius: 15px;
-    border: 2px solid black;
-    box-shadow: 0px 0px 6px 0px;
-}
+.card-body { background-color:#fcf2b6; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;}
 
-.card-body {
-    background-color:#fcf2b6;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-}
+.list-group-item { background-color:#fcf2b6; }
 
-.list-group-item {
-    background-color:#fcf2b6;
-}
+.card-header { border-bottom: 2px solid black; font-weight: bold; background-color: #aaaaa6; }
 
-.card-header {
-    border-bottom: 2px solid black;
-    font-weight: bold;
-    background-color: #aaaaa6;
-}
+.btn-info { margin-left: 10px; /* Space between the count and the button */}
 
-.btn-info {
-    margin-left: 10px; /* Space between the count and the button */
-}
-.scrollable-table-wrapper {
-    max-height: 400px; /* Adjust based on desired height */
-    overflow-y: auto; /* Enable vertical scrolling */
-}
+.scrollable-table-wrapper { max-height: 400px; overflow-y: auto; }
 
-/* Sticky table header */
-.table thead th {
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 10; /* Ensure it's above other rows for stacking */
-}
+.table thead th { position: sticky; top: 0; background: white; z-index: 10; /* Ensure it's above other rows for stacking */ }
 
-.header {
-     color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px;
-}
-
+.header { color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px; }
 
 </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <a class="navbar-brand" href="#">
-          
           <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top: 8px">
           <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
-          
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -133,7 +91,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
-      </li>
+        </li>
           <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Culture
@@ -141,14 +99,12 @@
               <div class="dropdown-menu" aria-labelledby="cultureDropdown">
                 <a class="dropdown-item" href="/architecture">Architecture</a>
                 <a class="dropdown-item" href="/festivals">Festivals</a>
-                <a class="dropdown-item" href="page3.html">Media</a>
-                <!-- More dropdown items -->
+                <a class="dropdown-item" href="/media">Media</a>
               </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
         </li>
-            <!-- More nav items -->
           </ul>
           <span class="navbar-text">
             <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
@@ -157,7 +113,7 @@
             <a href="/signout" class="settings-link nb-item" style="font-size:22px">Logout</a>
           </span>
         </div>
-      </nav>
+    </nav>
 
   <div class="container mt-4">
     <h1 class="mb-4 header">Analytics</h1>
@@ -276,41 +232,8 @@
                 
                 
             </div>
-            <!-- <div class="tab-pane fade" id="unit-wise" role="tabpanel" aria-labelledby="unit-wise-tab">
-                <div class="container">
-                     Unit 1 
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header bg-primary text-white">
-                            <h4 class="my-0 fw-normal">Unit 1 Analytics</h4>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Correct Answers: <strong>20</strong></li>
-                                <li class="mb-2"><i class="fas fa-times-circle text-danger"></i> Incorrect Answers: <strong>5</strong></li>
-                                <li class="mb-2"><i class="fas fa-question-circle text-info"></i> Questions Attempted: <strong>25</strong></li>
-                                <li class="mb-2"><i class="fas fa-trophy text-warning"></i> Quizzes Completed: <strong>4</strong></li>
-                                <li class="mb-2"><i class="fas fa-book-open text-secondary"></i> Words/Phrases Learnt: <strong>15</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                     Unit 2 (Repeat structure for other units with adjusted dummy data)
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header bg-primary text-white">
-                            <h4 class="my-0 fw-normal">Unit 2 Analytics</h4>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Correct Answers: <strong>18</strong></li>
-                                <li class="mb-2"><i class="fas fa-times-circle text-danger"></i> Incorrect Answers: <strong>7</strong></li>
-                                <li class="mb-2"><i class="fas fa-question-circle text-info"></i> Questions Attempted: <strong>25</strong></li>
-                                <li class="mb-2"><i class="fas fa-trophy text-warning"></i> Quizzes Completed: <strong>3</strong></li>
-                                <li class="mb-2"><i class="fas fa-book-open text-secondary"></i> Words/Phrases Learnt: <strong>15</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+
+            <!-- Unit-Wise Tab -->
             <div class="tab-pane fade" id="unit-wise" role="tabpanel" aria-labelledby="unit-wise-tab">
                 <div class="container">
                     <!-- Dropdown to select units -->
@@ -323,7 +246,6 @@
                             <option value="4">Unit 4</option>
                         </select>
                     </div>
-            
                     <!-- Dynamic card for unit details -->
                     <div class="card mb-4 shadow-sm">
                         <div class="card-header bg-primary text-white" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
@@ -337,12 +259,11 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div> 
 </div>
 
-<!-- Modal -->
+<!-- Incorrect Question Details Modal -->
 <div class="modal fade" id="questionsModal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -375,14 +296,14 @@
         </div>
     </div>
 </div>
-
 {% include 'mainsite/discord_modal.html' %}
-
 {{ total_data|json_script:"total-data" }}
-<script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
 function viewQuestions(unitId) {
-    console.log(unitId);
+    // Gets question data for incorrect answers made
     $.ajax({
         url: `/get-questions/${unitId}/`, // Adjust the URL as per your URL configuration
         type: 'GET',
@@ -404,7 +325,7 @@ function viewQuestions(unitId) {
             $('#questionsModal').modal('show');  // Show the modal with the new data
         },
         error: function(error) {
-            console.error('Error fetching data: ', error);
+            // console.error('Error fetching data: ', error);
             alert('Error fetching questions.');
         }
     });
@@ -421,7 +342,7 @@ function viewQuestions(unitId) {
             const selectedUnit = unitData[this.value];
             updateCard(selectedUnit, this.value);
         });
-    
+        // Updates card details depending on Unit selected
         function updateCard(unit, unit_id) {
             unitTitle.textContent = unit.title;
             unitDetails.innerHTML = ''; // Clear previous details
@@ -429,27 +350,16 @@ function viewQuestions(unitId) {
                 console.log(unit_id);
                 let listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong></li>`;
 
-    // Append a button if the detail is for 'Incorrect Answers'
-    if (detail.text === 'Incorrect Answers') {
-        listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong> <button class="btn btn-sm btn-info" onclick="viewQuestions(${unit_id})">View questions</button></li>`;
-    }
-
-    unitDetails.innerHTML += listItem;
+            // Append a button if the detail is for 'Incorrect Answers'
+            if (detail.text === 'Incorrect Answers') {
+                listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong> <button class="btn btn-sm btn-info" onclick="viewQuestions(${unit_id})">View questions</button></li>`;
+            }
+            unitDetails.innerHTML += listItem;
             });
         }
-    
         // Initial load for unit 1
         updateCard(unitData['1'], 1);
     });
     </script>
-    
-    
-    
-    <!-- Add more cards for other locations as needed -->
-    
-  
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
