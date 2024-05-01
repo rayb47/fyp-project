@@ -5,19 +5,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PortuguesePro Learning Dashboard</title>
+<title>PortuPro - Architecture Page</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+<style>
+    .header { color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; }
+        
+    .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
+        
+    .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
+        
+    .card { margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 0px ; background-color: #f2edcb;}
+        
+    .card-header { border-top-right-radius: 10px; }
+        
+    .map { border-radius: 10px; }
+        
+    .map { height: 314px; width: 100%; }
+        
+    .sub-heading { color: #343a40; font-size: 1.5rem; }
+        
+    .intro-text { 
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            border-width: 1px;
+            border-color: black;
+            box-shadow: inset 0 0 10px 2px #000000;
+            transition: 0.8s;
+            background-color: beige;
+            padding: 20px;
+            margin-bottom: 20px;
+    }
+        
+    .img-fluid {margin-top: 5px; border: 2px solid black; width: 100%; height: 88%; }
+
+    #pictureCredits { font-size: 12px; }
+
+</style>
 </head>
-<body>
+<body onload="initMaps()">
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <a class="navbar-brand" href="#">
-          
           <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top:8px">
           <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
-          
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -43,14 +76,12 @@
               <div class="dropdown-menu" aria-labelledby="cultureDropdown">
                 <a class="dropdown-item" href="/architecture" style="font-size: 20px;">Architecture</a>
                 <a class="dropdown-item" href="/festivals" style="font-size: 20px;">Festivals</a>
-                <a class="dropdown-item" href="page3.html" style="font-size: 20px;">Media</a>
-                <!-- More dropdown items -->
+                <a class="dropdown-item" href="/media" style="font-size: 20px;">Music</a>
               </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
         </li>
-            <!-- More nav items -->
           </ul>
           <span class="navbar-text">
             <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
@@ -60,53 +91,7 @@
           </span>
         </div>
       </nav>
-
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portuguese Festivals</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .header { color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; }
-        .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 22px; border: 2px solid black;}
-        .footer { background-color: #f8f9fa; text-align: center; padding: 10px; font-size: 0.8rem; }
-        .card { 
-            margin-bottom: 40px; border-radius: 10px; box-shadow: 0 0px 10px 0px ; background-color: #f2edcb;
-        }
-        .card-header { 
-            border-top-right-radius: 10px;
-        }
-        .map { border-radius: 10px; }
-        .map { height: 314px; width: 100%; } /* Fixed height and full width for maps */
-        .sub-heading { color: #343a40; font-size: 1.5rem; }
-        .intro-text { 
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            border-radius: 20px;
-            border-width: 1px;
-            border-color: black;
-            box-shadow: inset 0 0 10px 2px #000000; /* Horizontal offset, vertical offset, blur radius, spread radius, color */
-            transition: 0.8s; /* Optional: adds a transition effect when the shadow changes */
-            background-color: beige;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .img-fluid {
-            margin-top: 5px;
-            border: 2px solid black;
-            width: 100%;
-            height: 88%;
-        }
-
-        #pictureCredits {
-            font-size: 12px;
-        }
-
-        
-    </style>
-</head>
-<body onload="initMaps()">
+    <!-- Main Page -->
     <div class="container mt-4">
         <h1 class="mb-4 header" style="text-shadow: 3px 3px #000000;">{% translate 'Architecture' %}</h1>
         <div class="intro-text" style="margin-bottom: 40px;">
@@ -121,14 +106,12 @@
             </span>
         </div>
         <section>
+            <!-- Card Tiles for different festivals -->
             <div class="card">
                 <div class="row g-0">
-                    <!-- Map on the left -->
                     <div class="col-md-3">
                         <div class="map" id="festivalMap" style="height: 314px;"></div> <!-- Map container -->
                     </div>
-                    
-                    <!-- Heading, text, and picture on the right -->
                     <div class="col-md-9">
                         <div class="card-header" style="border-top-right-radius: 10px;">Tower of Belém (Torre de Belém)</div>
                         <div class="row">
@@ -157,12 +140,9 @@
             </div>
             <div class="card">
                 <div class="row g-0">
-                    <!-- Map on the left -->
                     <div class="col-md-3">
-                        <div class="map" id="festivalMap2" style="height: 314px;"></div> <!-- Map container -->
+                        <div class="map" id="festivalMap2" style="height: 314px;"></div>
                     </div>
-                    
-                    <!-- Heading, text, and picture on the right -->
                     <div class="col-md-9">
                         <div class="card-header" style="border-top-right-radius: 10px;">Jerónimos Monastery (Mosteiro dos Jerónimos)</div>
                         <div class="row">
@@ -190,12 +170,9 @@
             </div>
             <div class="card">
                 <div class="row g-0">
-                    <!-- Map on the left -->
                     <div class="col-md-3">
-                        <div class="map" id="festivalMap3" style="height: 314px;"></div> <!-- Map container -->
+                        <div class="map" id="festivalMap3" style="height: 314px;"></div>
                     </div>
-                    
-                    <!-- Heading, text, and picture on the right -->
                     <div class="col-md-9">
                         <div class="card-header" style="border-top-right-radius: 10px;">Pena Palace (Palácio da Pena)</div>
                         <div class="row">
@@ -213,7 +190,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 img-div">
-                                <img src="https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJbTiPtdzADUp64iAjSA-R9f_XQCDX4yJqoAYGvmTVaKLe_ZKLRf2_WKrOVmAVEn23L8vCkk5o1rgejlgC0OqDE4QM8b-M3pb-9mY0Ve4VN8q9Slea5i4n8jjYQOmIOcSHUwWrNzYWv86lNiF4V4EiPoHuqQrhKs3nZX2t6tvufygpm9&4u16383&5m1&2e1&callback=none&client=google-maps-pro&token=5071" 
+                                <img src="{% static 'pena.jpg' %}"  
                                 alt="Madeira's Flower Festival" class="img-fluid"
                                 > 
                                 <span id="pictureCredits">From Google maps by <a target="_blank" href="https://www.google.com/maps/contrib/111296777256231766396">
@@ -225,12 +202,9 @@
             </div>
             <div class="card">
                 <div class="row g-0">
-                    <!-- Map on the left -->
                     <div class="col-md-3">
-                        <div class="map" id="festivalMap4" style="height: 314px;"></div> <!-- Map container -->
+                        <div class="map" id="festivalMap4" style="height: 314px;"></div>
                     </div>
-                    
-                    <!-- Heading, text, and picture on the right -->
                     <div class="col-md-9">
                         <div class="card-header" style="border-top-right-radius: 10px;">Batalha Monastery (Mosteiro da Batalha)</div>
                         <div class="row">
@@ -246,7 +220,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 img-div">
-                                <img src="https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJax-9WO8AjVnlNsi0byUGOBhYaGDO2jqVh5JDxTV4t4ieNoGuWSMQV9FmONOfvK7cRPcv6inm59vRvd-NxJ3ludt3OWI0HM_tva2M4jMca1F-0BChrhNLBtGVcOOJZTa1k6pmfGnPf_Hp0JQ0R0eMObIttCVxrSqUQzBK8y1DjdAmv-&4u16383&5m1&2e1&callback=none&client=google-maps-pro&token=128696" 
+                                <img src="{% static 'batalha.jpg' %}" 
                                 alt="Madeira's Flower Festival" class="img-fluid"
                                 >
                                 <span id="pictureCredits">From Google maps by <a target="_blank" href="https://www.google.com/maps/contrib/109332604429689068577/photos/@37.5013183,-7.2042332,10z/data=!3m1!4b1!4m3!8m2!3m1!1e1?entry=ttu">
@@ -258,12 +232,9 @@
             </div>
             <div class="card">
                 <div class="row g-0">
-                    <!-- Map on the left -->
                     <div class="col-md-3">
-                        <div class="map" id="festivalMap5" style="height: 314px;"></div> <!-- Map container -->
+                        <div class="map" id="festivalMap5" style="height: 314px;"></div>
                     </div>
-                    
-                    <!-- Heading, text, and picture on the right -->
                     <div class="col-md-9">
                         <div class="card-header" style="border-top-right-radius: 10px;">Casa da Música</div>
                         <div class="row">
@@ -281,7 +252,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 img-div">
-                                <img src="https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJZmpMl1bMfRUcyRdA7D-yIpKgTnPYAQRoEd4UZUJAlVdG0E5kku-vs8pmbwUmO92ZSXr1ST5L5TAn6EMNKyWDc7QAOrZiGlHEHX133ziiVYWLkK5Wekx3_6BY2wM7j6V1IzIJi2bkkKJ5_P78c0Brwsax4B2Ah0lfEyObcDWciv4sgb&4u16383&5m1&2e1&callback=none&client=google-maps-pro&token=2343" 
+                                <img src="{% static 'casa.jpg' %}" 
                                 alt="Madeira's Flower Festival" class="img-fluid"
                                 >
                                 <span id="pictureCredits">From Google maps by <a target="_blank" href="https://www.google.com/maps/contrib/108438003834014945219/photos/@41.0702067,-0.7150052,5z/data=!3m1!4b1!4m3!8m2!3m1!1e1?entry=ttu">
@@ -293,12 +264,9 @@
             </div>
             <div class="card">
                 <div class="row g-0">
-                    <!-- Map on the left -->
                     <div class="col-md-3">
-                        <div class="map" id="festivalMap6" style="height: 314px;"></div> <!-- Map container -->
+                        <div class="map" id="festivalMap6" style="height: 314px;"></div>
                     </div>
-                    
-                    <!-- Heading, text, and picture on the right -->
                     <div class="col-md-9">
                         <div class="card-header" style="border-top-right-radius: 10px;">Alcobaça Monastery (Mosteiro de Alcobaça)</div>
                         <div class="row">
@@ -314,7 +282,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 img-div">
-                                <img src="https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sATplDJbjIYpzWNSuQwRn6f0RH2LTVaV9asdoCG792L8OeifW4imPqI_Mq2MyxsbTxzpgB-cn5esikbNFe8V8q4Ela-P0kOjZPJWbydlZX-YZDO8lueqsX5qJnVYKVCbscVsaA06mf61tWe2r7-Uu4o-bodZc3OM0aL98oYaR0aOzDVnUfBtt&4u16383&5m1&2e1&callback=none&client=google-maps-pro&token=70038" 
+                                <img src="{% static 'monas.jpg' %}"
                                 alt="Madeira's Flower Festival" class="img-fluid"
                                 >
                                 <span id="pictureCredits">From Google maps by <a target="_blank" href="https://www.google.com/maps/contrib/114594204870518894120">
@@ -324,57 +292,32 @@
                     </div>
                 </div>
             </div>
-            
-            
-            <!-- Additional festival cards with similar layout -->
         </section>
     </div>
     {% include 'mainsite/discord_modal.html' %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtutlR-5LD8Hzjs2uR1I5Sbku7_aml5pQ&callback=initMap" async defer></script>
     <script>
-        // function initMap() {
-        //     var map = new google.maps.Map(document.getElementById('festivalMap'), {
-        //         zoom: 7,
-        //         center: {lat: 39.3999, lng: -8.2245} // Centered on Portugal
-        //     });
-        //     // Add markers for each festival
-        //     var markers = [
-        //         {lat: 38.7223, lng: -9.1393, info: 'Lisbon Feast of St. Anthony'}, // Example marker
-        //         {lat: 38.7223, lng: -9.1393, info: 'Lisbon Feast of St. Anthony'}
-        //         // Additional markers here
-        //     ];
-        //     markers.forEach(function(marker) {
-        //         var mark = new google.maps.Marker({
-        //             position: {lat: marker.lat, lng: marker.lng},
-        //             map: map,
-        //             title: marker.info
-        //         });
-        //     });
-        // }
-    function initMaps() {
-    var locations = [
-        {id: 'festivalMap', coords: {lat: 38.69157100000002, lng: -9.215987000000007}}, // Example coordinates for Lisbon
-        {id: 'festivalMap2', coords: {lat: 38.69720000000001, lng: -9.208056154769906}}, // Example coordinates for Porto
-        {id: 'festivalMap3', coords: {lat: 38.78752599999999, lng: -9.390500000000008}}, // Example coordinates for Madeira
-        {id: 'festivalMap4', coords: {lat: 39.65899759815084, lng: -8.825843749668113}}, // Example coordinates for Faro
-        {id: 'festivalMap5', coords: {lat: 41.15881000000001, lng: -8.630758000000009}}, // Example coordinates for Santarém
-        {id: 'festivalMap6', coords: {lat: 39.54816061664203, lng: -8.97978122300108}}  // Example coordinates for Coimbra
-    ];
+        // Initializes Google Maps Embed for each of the Architectural Sites
+        function initMaps() {
+            var locations = [
+                {id: 'festivalMap', coords: {lat: 38.69157100000002, lng: -9.215987000000007}},
+                {id: 'festivalMap2', coords: {lat: 38.69720000000001, lng: -9.208056154769906}},
+                {id: 'festivalMap3', coords: {lat: 38.78752599999999, lng: -9.390500000000008}},
+                {id: 'festivalMap4', coords: {lat: 39.65899759815084, lng: -8.825843749668113}},
+                {id: 'festivalMap5', coords: {lat: 41.15881000000001, lng: -8.630758000000009}},
+                {id: 'festivalMap6', coords: {lat: 39.54816061664203, lng: -8.97978122300108}}
+            ];
 
-    locations.forEach(function(location) {
-        new google.maps.Map(document.getElementById(location.id), {
-            center: location.coords,
-            zoom: 17
-        });
-    });
-}
+            locations.forEach(function(location) {
+                new google.maps.Map(document.getElementById(location.id), {
+                    center: location.coords,
+                    zoom: 17
+                });
+            });
+        }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

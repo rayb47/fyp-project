@@ -4,12 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PortuguesePro Learning Dashboard</title>
+<title>PortuPro - Vocabulary Page</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Correct FontAwesome link -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
@@ -25,94 +22,95 @@
     }
 
     .sound-button:focus {
-    outline: none;
-    box-shadow: none; /* Also remove any box-shadow if applied by Bootstrap */
-    background: none;
-}
+        outline: none;
+        box-shadow: none;
+        background: none;
+    }
 
-.align-middle {
-    display: inline-flex;
-    align-items: center;
-    height: 100%;
-}
+    .align-middle {
+        display: inline-flex;
+        align-items: center;
+        height: 100%;
+    }
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-           
-           background-color: #007bff;
-           color: white;
-            border-color: #000000 #000000 #000000;
-        }
-        .nav-tabs .nav-link {
-            border: 2px solid black;
-            border-top-left-radius: 0.25rem;
-            border-top-right-radius: 0.25rem;
-            color: #007bff;
-            margin-right: 2px;
-            border-bottom: 1px solid black;
-        }
-        .nav-tabs {
-            border-bottom: 1px solid black;
-        }
-        .tab-content > .tab-pane {
-            padding: 20px;
-            background: none;
-            border: 0px solid black;
-            border-top: none;
-        }
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {    
+        background-color: #007bff;
+        color: white;
+        border-color: #000000 #000000 #000000;
+    }
 
-        #user-saved-tab, #overall-list-tab, #general-search-tab {
-            border: 1px solid black;
-            box-shadow: inset 0px 0px 6px 0px black;
-        }
+    .nav-tabs .nav-link {
+        border: 2px solid black;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+        color: #007bff;
+        margin-right: 2px;
+        border-bottom: 1px solid black;
+    }
 
-        #user-saved-tab:hover, #overall-list-tab:hover, #general-search-tab:hover {
-            border: 1px solid black;
-            background-color: #0075f3;
-            color: white;
-            box-shadow: inset 0px 0px 10px 0px black;
-        }
+    .nav-tabs {
+        border-bottom: 1px solid black;
+    }
 
-        
+    .tab-content > .tab-pane {
+        padding: 20px;
+        background: none;
+        border: 0px solid black;
+        border-top: none;
+    }
 
-        #plusBtnGeneral, #plusBtnOverall {
-            background-color: rgb(67, 187, 56);
-            border: 2px solid black;
-            color: white;
-        }
+    #user-saved-tab, #overall-list-tab, #general-search-tab {
+        border: 1px solid black;
+        box-shadow: inset 0px 0px 6px 0px black;
+    }
 
-        #plusBtnGeneral:hover, #plusBtnOverall:hover {
-            background-color: rgb(45, 102, 40);
-            box-shadow: inset 0 0 4px 0px black;
-        }
+    #user-saved-tab:hover, #overall-list-tab:hover, #general-search-tab:hover {
+        border: 1px solid black;
+        background-color: #0075f3;
+        color: white;
+        box-shadow: inset 0px 0px 10px 0px black;
+    }
 
-        #deleteWord {
-            font-weight: bold;
-            border: 2px solid black;
-        }
+    #plusBtnGeneral, #plusBtnOverall {
+        background-color: rgb(67, 187, 56);
+        border: 2px solid black;
+        color: white;
+    }
 
-        #deleteWord:hover {
-            background-color: rgb(150, 44, 44);
-            box-shadow: inset 0 0 4px 0px black;
-            font-weight: bold;
-        }
-        .scrollable-table-container {
-        max-height: 450px;  /* Set maximum height of the table container */
-        overflow-y: auto;   /* Enable vertical scrolling */
-        overflow-x: hidden; /* Hide horizontal scroll */
+    #plusBtnGeneral:hover, #plusBtnOverall:hover {
+        background-color: rgb(45, 102, 40);
+        box-shadow: inset 0 0 4px 0px black;
+    }
+
+    #deleteWord {
+        font-weight: bold;
+        border: 2px solid black;
+    }
+
+    #deleteWord:hover {
+        background-color: rgb(150, 44, 44);
+        box-shadow: inset 0 0 4px 0px black;
+        font-weight: bold;
+    }
+
+    .scrollable-table-container {
+        max-height: 450px;
+        overflow-y: auto;   
+        overflow-x: hidden; 
     }
 
     .user-saved-words-table thead th {
         position: sticky;
-        top: 0; /* Set the top of the header to align with the top of the table */
-        background-color: #343a40; /* Ensure the background is not transparent */
-        color: white; /* Set text color */
-        z-index: 1020; /* Makes sure the header is above other content */
+        top: 0;
+        background-color: #343a40;
+        color: white; 
+        z-index: 1020;
     }
 
     .scrollable-table-container_2 {
-        max-height: 400px;  /* Set maximum height of the table container */
-        overflow-y: auto;   /* Enable vertical scrolling */
-        overflow-x: hidden; /* Hide horizontal scroll */
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     #download-button, #delete-all-button {
@@ -139,40 +137,36 @@
     }
 
     #vocabTab {
-    border-bottom: 2px solid black;
-}
+        border-bottom: 2px solid black;
+    }
 
-#discordLogo {
-  color: #cab2fb;
-}
+    #discordLogo {
+        color: #cab2fb;
+    }
 
-#discordLogo:hover{
-  color: #7e61ab;
-}
+    #discordLogo:hover{
+        color: #7e61ab;
+    }
 
-#discordHref {
-  text-decoration: none
-}
+    #discordHref {
+        text-decoration: none
+    }
 
-#closeModal:hover {
-  background-color: rgb(224, 107, 107);
-  font-weight: bold;
-}
+    #closeModal:hover {
+        background-color: rgb(224, 107, 107);
+        font-weight: bold;
+    }
 
-.header {
-     color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px;
-}
-
-
+    .header {
+        color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px;
+    }
 </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-        <a class="navbar-brand" href="#">
-          
+        <a class="navbar-brand" href="#">         
           <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top: 8px;">
           <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
-          
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -199,13 +193,11 @@
                 <a class="dropdown-item" href="/architecture">Architecture</a>
                 <a class="dropdown-item" href="/festivals">Festivals</a>
                 <a class="dropdown-item" href="page3.html">Media</a>
-                <!-- More dropdown items -->
               </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
         </li>
-            <!-- More nav items -->
           </ul>
           <span class="navbar-text">
             <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
@@ -215,10 +207,8 @@
           </span>
         </div>
       </nav>
-
   <div class="container mt-3">
     <h1 class="mb-4 header">Vocabulary</h1>
-
     <div class="card mb-3 vocab-card">
         <div class="card-body">
             <!-- Tab navs -->
@@ -234,7 +224,6 @@
                 </li>
                 
             </ul>
-    
             <!-- Tab content -->
             <div class="tab-content" id="myTabContent">
                 <!-- User Saved List Tab Pane -->
@@ -331,9 +320,6 @@
                                 <form id="searchForm">
                                     <div class="input-group mb-3" style="width: 50%;">
                                         <input type="text" class="form-control" placeholder="Search for words (in English or Portuguese)" id="searchQueryOverall">
-                                        <!-- <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
-                                        </div> -->
                                     </div>
                                 </form>
                             </div>
@@ -357,7 +343,7 @@
                                             <td>
                                                 <span class="align-middle">
                                                 {{word.portuguese_word}}
-                                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
+                                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.portuguese_word}}')">🔊</button>
                                                 </span>
                                             </td>
                                             <td>
@@ -398,7 +384,6 @@
                         </div>
                     </form>
                 </div>
-
                 <!-- Overall List Tab Pane -->
                 <div class="tab-pane fade" id="general-search" role="tabpanel" aria-labelledby="general-search-tab">
                     <h2 style="margin-top: 10px;">General Search</h2><div class="row mt-3">
@@ -413,7 +398,6 @@
                             </form>
                         </div>
                     </div>
-                    
                     <div class="table-responsive">
                         <table class="table table-dark table-striped">
                             <thead class="thead-dark">
@@ -441,27 +425,7 @@
             </div>
         </div>
     </div>
-    
- 
-
-    
-    
   </div>
-
-  <!-- <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 200px; z-index: 1050;">
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
-      <div class="toast-header">
-        <strong class="mr-auto text-success">Notification</strong>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="toast-body">
-        Word deleted successfully.
-      </div>
-    </div>
-  </div> -->
-
   <!-- Delete Confirmation Modal -->
   <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -480,7 +444,6 @@
         </div>
     </div>
 </div>
-
 <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 200px; z-index: 1050;">
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
       <div class="toast-header">
@@ -494,90 +457,66 @@
       </div>
     </div>
 </div>
-
 {% include 'mainsite/discord_modal.html' %}
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 
 $(document).ready(function() {
+    // Shows delete confirmation modal
     $('#delete-all-button').click(function() {
-        // Show the modal
         $('#deleteConfirmationModal').modal('show');
     });
     
+    // Reloads the page when the user saved list tab is visited
     $('#user-saved-tab').click(function(e) {
-        e.preventDefault(); // Prevent the default tab switch
-        window.location.reload(); // Reload the page
+        e.preventDefault(); 
+        window.location.reload(); 
     });
 
-    // Bind click event to the modal's confirm button
+    // Deletes all user saved words
     $('#confirmDeleteButton').click(function() {
         $.ajax({
             type: 'POST',
-            url: '/delete_all_saved_words',  // Update URL to match your Django URL configuration
+            url: '/delete_all_saved_words', 
             data: {
-                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() // Include CSRF token
+                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() 
             },
             success: function(response) {
                 if(response.success) {
-                    // alert('All items have been deleted.');
                     window.location.reload();  // Reload the page
                 } else {
                     alert('Failed to delete items: ' + response.error);
                 }
-                $('#deleteConfirmationModal').modal('hide'); // Hide the modal after processing
+                $('#deleteConfirmationModal').modal('hide'); 
             },
             error: function(xhr, status, error) {
                 alert('An error occurred: ' + error);
-                $('#deleteConfirmationModal').modal('hide'); // Hide the modal on error as well
+                $('#deleteConfirmationModal').modal('hide');
             }
         });
     });
 
-    // $('.plusBtnOverall').click(function() {
-    //     event.preventDefault()
-    //     var wordId = $(this).data('id');  // Get the word ID stored in the data-id attribute
-    //     console.log(wordId);
-    //     $.ajax({
-    //         url: '/save_word/',  // URL to your Django view
-    //         type: 'POST',
-    //         data: {
-    //             'word_id': wordId,  // Data you want to send to the server
-    //             'csrfmiddlewaretoken': '{{ csrf_token }}',  // CSRF token for Django
-    //             'word_type': 'overall'
-    //         },
-    //         success: function(response) {
-    //             // Handle success
-    //             console.log('Added to list successfully:', response);
-    //         },
-    //         error: function(xhr, status, error) {
-    //             // Handle error
-    //             console.error('Failed to add to list:', error);
-    //         }
-    //     });
-    // });
+    // Adds word to the user saved list
     $('body').on('click', '.plusBtnOverall', function(event) {
         event.preventDefault();
         var wordId = $(this).data('id');
         console.log('Word ID:', wordId);
         
         $.ajax({
-            url: '/save_word/',  // URL to your Django view
+            url: '/save_word/',
             type: 'POST',
             data: {
-                'word_id': wordId,  // Data you want to send to the server
-                'csrfmiddlewaretoken': '{{ csrf_token }}',  // CSRF token for Django
+                'word_id': wordId, 
+                'csrfmiddlewaretoken': '{{ csrf_token }}', 
                 'word_type': 'overall'
             },
             success: function(response) {
-                // Handle success
                 $('.toast-body').html(response.message);
-                $('.toast').toast('show');  // Shows the toast
+                $('.toast').toast('show');
                 setTimeout(function() {
-                    $('.toast').toast('hide'); // This will hide the toast
+                    $('.toast').toast('hide'); 
                 }, 2000);
                 console.log('Added to list successfully:', response);
             },
@@ -585,92 +524,38 @@ $(document).ready(function() {
                 var responseJson = JSON.parse(xhr.responseText);
                 var message = responseJson.message;
                 $('.toast-body').html(message);
-                $('.toast').toast('show');  // Shows the toast
+                $('.toast').toast('show'); 
                 setTimeout(function() {
-                    $('.toast').toast('hide'); // This will hide the toast
+                    $('.toast').toast('hide');
                 }, 2000)
                 console.error('Failed to add to list:', message);
             }
         });
     });
 
-});
-
-document.getElementById('download-button').addEventListener('click', function() {
-    var tableData = [];
-    // Get table rows
-    document.querySelectorAll('.user-saved-words-table tbody tr').forEach(function(row) {
-        var rowData = [];
-        row.querySelectorAll('th, td').forEach(function(cell, index) {
-        // Do not include the Actions column
-        if (index < row.querySelectorAll('th, td').length - 1) {
-            // Clone the cell to manipulate it without altering the DOM
-            let clonedCell = cell.cloneNode(true);
-            // Remove any buttons from the cloned cell
-            let buttons = clonedCell.querySelectorAll('button');
-            buttons.forEach(button => button.remove());
-            // Get the text without the button text
-            let text = clonedCell.textContent.trim();
-            rowData.push(text);
-        }
-        });
-        tableData.push(rowData.join(','));
-    });
-
-    // Send the data to the Django backend
-    $.ajax({
-    url: '/download_table', // The URL to your Django download view
-    method: 'POST',
-    data: {
-        'table_data': tableData,
-        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val() // Pass CSRF token
-    },
-    xhrFields: {
-        // Include this to treat the response as a blob
-        responseType: 'blob'
-    },
-    success: function(blob) {
-        // No need to create a Blob, since the response is already a Blob
-        // Create a download link and trigger it
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'saved-words.csv'; // specify the download filename
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    },
-    error: function(xhr, status, error) {
-        console.error('There was an error in downloading the table: ', error);
-    }
-});
-});
-
-$(document).ready(function() {
+    // Deletes word from the user saved list
     $('.delete-button').click(function() {
         var button = $(this);
         var savedWordId = button.data('id');
         event.preventDefault()
         $.ajax({
-            url: '/save_word/',  // URL to the Django view
-            type: 'POST',  // or 'POST' if you are sending data to the server
+            url: '/save_word/',
+            type: 'POST', 
             
             data: {
               'word_id': savedWordId,
-              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(), // Any data you need to pass to Django
+              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
               'add_or_remove': 'remove',
             },
             success: function(response) {
                 console.log("Success");
-                // $('.toast').toast('show');
                 var row = $('#savedWordRow_' + savedWordId);
                 row.fadeOut('slow', function() { 
                     $(this).remove();
                     window.location.reload();
                     // After removal, update the indexes of all subsequent rows.
                     $('.saved-words-table tbody tr').each(function(index) {
-                        $(this).find('th:first').text(index + 1); // Assuming the first th in each row contains the index number.
+                        $(this).find('th:first').text(index + 1);
                     });
                 });
             },
@@ -680,37 +565,18 @@ $(document).ready(function() {
             }
         });
     });
-    // $('.toast').toast();
-});
 
-function convertTextToSpeech(textToSpeak) {
-      event.preventDefault()
-    $.ajax({
-        url: '/text-to-speech/',  // URL to Django view
-        type: 'POST',
-        data: { 'text': textToSpeak },
-        success: function(response) {
-            console.log(response.message);
-            // Optional: Play the response if it includes audio data
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    });
-}
-
-$(document).ready(function() {
+    // Carries out a dynamic search in the overall list tab
     $('#searchQueryOverall').on('input', function() {
         var query = $(this).val();
 
         $.ajax({
-            url: '/search_word',  // Your endpoint for searching words
+            url: '/search_word',
             type: 'GET',
             data: {'query': query},
             success: function(response) {
                 // Clear the existing table rows
                 $('.saved-words-table tbody').empty();
-
                 if (response.words.length === 0) {
                     // If no words are returned, display a row of '-' under each column
                     var emptyRow = `<tr>
@@ -723,7 +589,7 @@ $(document).ready(function() {
                                     </tr>`;
                     $('.saved-words-table tbody').append(emptyRow);
                 } else {
-                    // Iterate over the response to build new table rows
+                    // Iterate over the response to dynamically build new table rows
                     response.words.forEach(function(word, index) {
                         var newRow = `<tr id="savedWordRow_${word.id}">
                                           <th scope="row">${index + 1}</th>
@@ -763,18 +629,19 @@ $(document).ready(function() {
         });
     });
 
+    // Carries out a search using the API for translations on the backend
     $('#generalSearchForm').submit(function(event) {
         event.preventDefault();
         var searchQuery = $('#searchQueryGeneral').val();
-
         $.ajax({
-            url: '/vocab_search',  // Ensure this matches your Django URL
+            url: '/vocab_search',
             type: 'GET',
             data: { 'query': searchQuery },
             success: function(data) {
                 var tbody = $('#searchResults');
                 console.log(data);
-                tbody.empty();  // Clear existing data
+                tbody.empty();
+                // Dynamically updates content of the table
                 data.words.forEach(function(item, index) {
                     var row = `<tr>
                         <th scope="row">${index + 1}</th>
@@ -797,12 +664,12 @@ $(document).ready(function() {
         });
     });
 
+    // Handles saving of custom words search for
     $('#searchResults').on('click', '.plus-button', function() {
     var portuguese = $(this).data('portuguese');
     var english = $(this).data('english');
-
     $.ajax({
-        url: '/save_word/',  // Update this URL to the endpoint in your Django app that handles this request
+        url: '/save_word/',
         type: 'POST',
         data: {
             'portuguese': portuguese,
@@ -811,17 +678,80 @@ $(document).ready(function() {
         },
         success: function(response) {
             $('.toast').toast('show');
-            console.log('Added to list succccccessfully:', response);
-            // Optionally update the UI to reflect the addition
         },
         error: function(xhr, status, error) {
             console.error('Error adding to list:', error);
         }
+        });
     });
 });
+
+// Download button event
+document.getElementById('download-button').addEventListener('click', function() {
+    var tableData = [];
+    // Get table rows
+    document.querySelectorAll('.user-saved-words-table tbody tr').forEach(function(row) {
+        var rowData = [];
+        row.querySelectorAll('th, td').forEach(function(cell, index) {
+        // Do not include the Actions column
+        if (index < row.querySelectorAll('th, td').length - 1) {
+            // Clone the cell to manipulate it without altering the DOM
+            let clonedCell = cell.cloneNode(true);
+            // Remove any buttons from the cloned cell
+            let buttons = clonedCell.querySelectorAll('button');
+            buttons.forEach(button => button.remove());
+            // Get the text without the button text
+            let text = clonedCell.textContent.trim();
+            rowData.push(text);
+        }
+        });
+        tableData.push(rowData.join(','));
+    });
+
+    // Send the data to the Django backend
+    $.ajax({
+    url: '/download_table',
+    method: 'POST',
+    data: {
+        'table_data': tableData,
+        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+    },
+    xhrFields: {
+        // Include this to treat the response as a blob
+        responseType: 'blob'
+    },
+    success: function(blob) {
+        // Create a download link and trigger it
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'saved-words.csv'; 
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    },
+    error: function(xhr, status, error) {
+        console.error('There was an error in downloading the table: ', error);
+    }
+    });
 });
 
-
+// Function to convert text to speech
+function convertTextToSpeech(textToSpeak) {
+      event.preventDefault()
+    $.ajax({
+        url: '/text-to-speech/',
+        type: 'POST',
+        data: { 'text': textToSpeak },
+        success: function(response) {
+            console.log(response.message);
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
 </script>
 </body>
 </html>

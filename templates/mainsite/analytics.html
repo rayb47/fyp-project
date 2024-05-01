@@ -5,16 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PortuPro - Analytics Page</title>
-<!-- Include Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-<!-- Include Bootstrap JS and its dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-
-
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <style>
@@ -31,9 +26,9 @@
 }
 
 .nav-tabs .nav-link.active {
-    color: #fff; /* Active tab color, adjust as needed */
-    background-color: #007bff; /* Bootstrap primary color, adjust as needed */
-    border-color: #dee2e6 #dee2e6 #fff; /* Adjust border color as needed */
+    color: #fff;
+    background-color: #007bff;
+    border-color: #dee2e6 #dee2e6 #fff;
 }
 
 .card-title { color: black; }
@@ -59,17 +54,18 @@
 
 .card-header { border-bottom: 2px solid black; font-weight: bold; background-color: #aaaaa6; }
 
-.btn-info { margin-left: 10px; /* Space between the count and the button */}
+.btn-info { margin-left: 10px;}
 
 .scrollable-table-wrapper { max-height: 400px; overflow-y: auto; }
 
-.table thead th { position: sticky; top: 0; background: white; z-index: 10; /* Ensure it's above other rows for stacking */ }
+.table thead th { position: sticky; top: 0; background: white; z-index: 10; }
 
 .header { color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px; }
 
 </style>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <a class="navbar-brand" href="#">
           <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top: 8px">
@@ -115,7 +111,8 @@
         </div>
     </nav>
 
-  <div class="container mt-4">
+<!-- Main Page -->
+<div class="container mt-4">
     <h1 class="mb-4 header">Analytics</h1>
     <div class="card mb-3 analytics-card">
         <!-- Nav tabs -->
@@ -127,7 +124,6 @@
                 <a class="nav-link" id="unit-wise-tab" data-toggle="tab" href="#unit-wise" role="tab" aria-controls="unit-wise" aria-selected="false">Unit-Wise</a>
             </li>
         </ul>
-
         <!-- Tab panes -->
         <div class="tab-content" id="analyticsTabContent">
             <div class="tab-pane fade show active" id="overall" role="tabpanel" aria-labelledby="overall-tab">
@@ -145,7 +141,6 @@
                                     </div>
                                 </div>
                             </div>
-                
                             <!-- Total Incorrect Answers -->
                             <div class="col-md-4">
                                 <div class="card text-center">
@@ -157,7 +152,6 @@
                                     </div>
                                 </div>
                             </div>
-                
                             <!-- Best Performed Unit Lesson -->
                             <div class="col-md-4">
                                 <div class="card text-center">
@@ -170,7 +164,6 @@
                                 </div>
                             </div>
                         </div>
-                
                         <div class="row mt-4">
                             <!-- Worst Performed Unit Lesson -->
                             <div class="col-md-4">
@@ -183,7 +176,6 @@
                                     </div>
                                 </div>
                             </div>
-                
                             <!-- Active Days This Week -->
                             <div class="col-md-4">
                                 <div class="card text-center">
@@ -195,44 +187,39 @@
                                     </div>
                                 </div>
                             </div>
-                
                             <!-- Active Days This Month -->
                             <div class="col-md-4">
                                 <div class="card text-center">
                                     <div class="card-header" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
-                                        Active Days This Month
+                                        Active Days in the Last 30 days
                                     </div>
                                     <div class="card-body" style="min-height:100px;">
-                                        <h5 class="card-title">20 Days</h5>
+                                        <h5 class="card-title">{{active_user_dates}} Days</h5>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                
                         <div class="row mt-4">
-                            <!-- Correct Answers Today/This Week/This Month -->
+                            <!-- Correct and Incorrect Answers Today/This Week/This Month -->
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header text-center" style="border-top-right-radius: 15px; border-top-left-radius: 15px;">
                                         Correct and Incorrect Answers
                                     </div>
                                     <ul class="list-group list-group-flush" style="border-bottom-right-radius: 15px; border-bottom-left-radius: 15px;">
-                                        <li class="list-group-item"><b>Today: </b><span class='text-green'>15 correct</span><b> / </b> 
-                                            <span class='text-red'>5 incorrect</span> answers</li>
-                                        <li class="list-group-item"><b>This Week: </b><span class='text-green'>27 correct</span><b> / </b> 
-                                            <span class='text-red'>9 incorrect</span> answers</li>
-                                        <li class="list-group-item"><b>This Month: </b><span class='text-green'>46 correct</span><b> / </b> 
-                                            <span class='text-red'>14 incorrect</span> answers</li>
+                                        <li class="list-group-item"><b>Today: </b><span class='text-green'>{{correct_last_day}} correct</span><b> / </b> 
+                                            <span class='text-red'>{{incorrect_last_day}} incorrect</span> answers</li>
+                                        <li class="list-group-item"><b>This Week: </b><span class='text-green'>{{correct_last_week}} correct</span><b> / </b> 
+                                            <span class='text-red'>{{incorrect_last_week}} incorrect</span> answers</li>
+                                        <li class="list-group-item"><b>This Month: </b><span class='text-green'>{{correct_last_month}} correct</span><b> / </b> 
+                                            <span class='text-red'>{{incorrect_last_month}} incorrect</span> answers</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                
             </div>
-
             <!-- Unit-Wise Tab -->
             <div class="tab-pane fade" id="unit-wise" role="tabpanel" aria-labelledby="unit-wise-tab">
                 <div class="container">
@@ -266,9 +253,9 @@
 <!-- Incorrect Question Details Modal -->
 <div class="modal fade" id="questionsModal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="box-shadow: inset 0px 0px 10px 0px; border: 3px solid black; background-color:#f2edcb">
             <div class="modal-header">
-                <h5 class="modal-title" id="questionsModalLabel">Questions Details</h5>
+                <h3 class="modal-title" id="questionsModalLabel" style="text-shadow: 0px 0px 10px 0px;"><b>Questions Details for Incorrect Answers</b></h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -278,10 +265,10 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Question</th>
-                            <th scope="col">Question Type</th>
-                            <th scope="col">Answer</th>
-                            <th scope="col">Correct Answer</th>
+                            <th scope="col" style="background-color:#f3e89d; font-size: 24px;">Question</th>
+                            <th scope="col"  style="background-color:#f3e89d; font-size: 24px;">Question Type</th>
+                            <th scope="col"  style="background-color:#f3e89d; font-size: 24px; color: #eb5c5c;">Answer Given</th>
+                            <th scope="col"  style="background-color:#f3e89d; font-size: 24px; color: #58cc62; ">Correct Answer</th>
                         </tr>
                     </thead>
                     <tbody id="questionsTableBody">
@@ -291,29 +278,28 @@
             </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 {% include 'mainsite/discord_modal.html' %}
 {{ total_data|json_script:"total-data" }}
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
 function viewQuestions(unitId) {
     // Gets question data for incorrect answers made
     $.ajax({
-        url: `/get-questions/${unitId}/`, // Adjust the URL as per your URL configuration
+        url: `/get-questions/${unitId}/`,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
             const tableBody = document.getElementById('questionsTableBody');
-            tableBody.innerHTML = '';  // Clear existing entries
-            
+            tableBody.innerHTML = '';
+            // Dynamically updates table data
             data.questions.forEach(q => {
-                const row = `<tr>
+                const row = `<tr style="border-bottom: 2px solid black;">
                                 <td>${q.question}</td>
                                 <td>${q.type}</td>
                                 <td>${q.answer}</td>
@@ -321,45 +307,42 @@ function viewQuestions(unitId) {
                              </tr>`;
                 tableBody.innerHTML += row;
             });
-
-            $('#questionsModal').modal('show');  // Show the modal with the new data
+            // Show the modal with the new data
+            $('#questionsModal').modal('show');
         },
         error: function(error) {
-            // console.error('Error fetching data: ', error);
             alert('Error fetching questions.');
         }
     });
 }
-    document.addEventListener('DOMContentLoaded', function() {
-        const unitSelection = document.getElementById('unitSelection');
-        const unitTitle = document.getElementById('unitTitle');
-        const unitDetails = document.getElementById('unitDetails');
-        const totalData = JSON.parse(document.getElementById('total-data').textContent);
-        
-        const unitData = totalData
-    
-        unitSelection.addEventListener('change', function() {
-            const selectedUnit = unitData[this.value];
-            updateCard(selectedUnit, this.value);
-        });
-        // Updates card details depending on Unit selected
-        function updateCard(unit, unit_id) {
-            unitTitle.textContent = unit.title;
-            unitDetails.innerHTML = ''; // Clear previous details
-            unit.details.forEach((detail, index) => {
-                console.log(unit_id);
-                let listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong></li>`;
 
-            // Append a button if the detail is for 'Incorrect Answers'
-            if (detail.text === 'Incorrect Answers') {
-                listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong> <button class="btn btn-sm btn-info" onclick="viewQuestions(${unit_id})">View questions</button></li>`;
-            }
-            unitDetails.innerHTML += listItem;
-            });
-        }
-        // Initial load for unit 1
-        updateCard(unitData['1'], 1);
+// Updates unit-wise tab with selected unit data
+document.addEventListener('DOMContentLoaded', function() {
+    const unitSelection = document.getElementById('unitSelection');
+    const unitTitle = document.getElementById('unitTitle');
+    const unitDetails = document.getElementById('unitDetails');
+    const totalData = JSON.parse(document.getElementById('total-data').textContent);
+    const unitData = totalData
+    unitSelection.addEventListener('change', function() {
+        const selectedUnit = unitData[this.value];
+        updateCard(selectedUnit, this.value);
     });
-    </script>
+    function updateCard(unit, unit_id) {
+        unitTitle.textContent = unit.title;
+        unitDetails.innerHTML = '';
+        unit.details.forEach((detail, index) => {
+            console.log(unit_id);
+            let listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong></li>`;
+        // Append a button if the detail is for 'Incorrect Answers'
+        if (detail.text === 'Incorrect Answers') {
+            listItem = `<li class="mb-2"><i class="fas fa-${detail.icon} ${detail.color}"></i> ${detail.text}: <strong>${detail.value}</strong> <button class="btn btn-sm btn-info" onclick="viewQuestions(${unit_id})">View questions</button></li>`;
+        }
+        unitDetails.innerHTML += listItem;
+        });
+    }
+    // Initial load for unit 1
+    updateCard(unitData['1'], 1);
+});
+</script>
 </body>
 </html>

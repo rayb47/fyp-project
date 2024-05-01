@@ -1,13 +1,13 @@
 body {
-    background: linear-gradient(to right, #33A251, #BB4B3C); /* Start and end colors of the gradient */
-    background-attachment: fixed; /* Fix the background to the viewport */
-    background-repeat: no-repeat; /* Do not repeat the background */
-    background-size: cover; /* Cover the entire page */
+    background: linear-gradient(to right, #33A251, #BB4B3C);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   
 
 .btn-primary {
-background-color: #0056b3; /* Custom color for the primary button */
+background-color: #0056b3;
 }
 
 #login-card {
@@ -38,65 +38,48 @@ background-color: #0056b3; /* Custom color for the primary button */
   }
 }
 
-/* Position the first image on the left side */
 .gif-background {
   height: 55vh;
   width:520px;
   margin-left: 40px;
-  position: fixed; /* Or 'absolute' if you want it to scroll with the page */
-  left: 0; /* Align to the left side */
-  top: 70%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust to center the image vertically */
-   /* Ensure it overlaps the background */
-
-
+  position: fixed;
+  left: 0;
+  top: 70%;
+  transform: translateY(-50%);
 }
 
-/* Position the second image on the right side */
 .gif-background2 {
   height: 65vh;
   width: 375px;
   margin-right: 140px;
-  position: fixed; /* Or 'absolute' if you want it to scroll with the page */
-  right: 0; /* Align to the right side */
-  top: 60%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust to center the image vertically */
-  /* box-shadow: inset 0 0 15px 0px red;
-  background-color: #dad5b6;
-  border-radius: 15px;
-  border: red 2px solid; */
-  /* animation: rotateY 12s ease-in-out alternate-reverse infinite; */
-  
-  /* Ensure it overlaps the background */
+  position: fixed;
+  right: 0;
+  top: 60%;
+  transform: translateY(-50%);
 }
 
 .gif-background3 {
   height: 10vh;
   width: 400px;
   margin-right: 100px;
-  position: fixed; /* Or 'absolute' if you want it to scroll with the page */
-  right: 0; /* Align to the right side */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust to center the image vertically */
+  position: fixed;
+  right: 0;
+  top: 50%; 
+  transform: translateY(-50%);
   box-shadow: inset 0 0 15px 0px rgb(32, 219, 72);
   border: green 2px solid;
   background-color: #dad5b6;
   border-radius: 15px;
-  /* animation: rotateY 12s ease-in-out reverse infinite; */
-  /* Ensure it overlaps the background */
 }
 
 .gif-background4 {
   height: 25vh;
   width: 580px;
   margin-left: 1px;
-  position: fixed; /* Or 'absolute' if you want it to scroll with the page */
-  left: 0; /* Align to the right side */
-  top: 35%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust to center the image vertically */
-
-  /* animation: rotateY 12s ease-in-out reverse infinite; */
-  /* Ensure it overlaps the background */
+  position: fixed;
+  left: 0;
+  top: 35%;
+  transform: translateY(-50%);
 }
 
 @media (max-width: 1600px) {

@@ -10,8 +10,10 @@ from random import shuffle
 from django.http import JsonResponse
 from gtts import gTTS
 import pygame
+import ast
 from django.utils.dateformat import DateFormat
 import os
+from datetime import timedelta
 import time
 from django.views.decorators.csrf import csrf_exempt
 from pydub import AudioSegment
@@ -29,43 +31,12 @@ from django.db.models.functions import TruncDate
 from datetime import date
 from django.utils import translation
 import csv
-# Include message for streak
-# Include English Text to Portuguese using the TTS
-
-# Create your views here.
-
 from django.utils import timezone
 
-def test_session(request):
-    now = timezone.now()
-    formatted_now = now.isoformat()
-    request.session['test_time'] = formatted_now
-    
-    retrieved_time = request.session.get('test_time', None)
-    return HttpResponse(f"Stored time: {formatted_now}, Retrieved time: {retrieved_time}")
-
-@login_required
-def weather_data(request):
-    data = []
-    cities = ['Lisbon', 'Madeira']
-    for city in cities:
-        r = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city))
-        r = r.json()
-        current_date = r['location']['localtime'].split(' ')[0]
-        data.append(
-            {
-                'city': r['location']['name'],
-                'current_date': current_date,
-                'temp_c': str(r['current']['temp_c']) + '°C',
-            }
-        )
-    return JsonResponse({'data': data})
-
-    
 # Renders the Home Page
 @login_required
 def home(request):
-
+    
     # Dates a user has been active for more than the set activity goal (10 minutes by default)
     user_activity_dates = [
     DateFormat(date).format('Y-m-d') for date in UserActivity.objects.filter(
@@ -75,15 +46,18 @@ def home(request):
     ]
 
     # Dates a user has answered more than 5 questions
-    dates_with_more_than_five_answers = UserAnswers.objects.filter(user=request.user) \
-        .annotate(answer_day=TruncDate('answer_date')) \
-        .values('answer_day') \
-        .annotate(answer_count=Count('id')) \
-        .filter(answer_count__gt=5) \
-        .values_list('answer_day', flat=True) \
-        .order_by('answer_day')
-    formatted_goal_dates = [date.strftime('%Y-%m-%d') for date in dates_with_more_than_five_answers]
-    
+    question_goal = request.user.daily_question_goal
+    formatted_goal_dates = []
+    if question_goal > 0:
+        dates_with_more_than_five_answers = UserAnswers.objects.filter(user=request.user) \
+            .annotate(answer_day=TruncDate('answer_date')) \
+            .values('answer_day') \
+            .annotate(answer_count=Count('id')) \
+            .filter(answer_count__gt=5) \
+            .values_list('answer_day', flat=True) \
+            .order_by('answer_day')
+        formatted_goal_dates = [date.strftime('%Y-%m-%d') for date in dates_with_more_than_five_answers]
+        
     # All existing units
     units = Unit.objects.all() 
        
@@ -91,18 +65,17 @@ def home(request):
     r = r.json()
     current_date = r['location']['localtime'].split(' ')[0]
     current_hour = int(r['location']['localtime'].split(' ')[1].split(':')[0])
-    
 
     combined_city_data = []
-    # for city_name in ['Porto', 'Madeira']:
-    #     res = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city_name))
-    #     res = res.json()
-    #     combined_city_data.append({
-    #         'city': city_name,
-    #         'temp_c': str(res['current']['temp_c']) + '°C',
-    #         # 'image': res['current']['condition']['icon'],
-    #     })
-    # print("Combined city data is:", combined_city_data)
+    for city_name in ['Porto', 'Madeira']:
+        res = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city_name))
+        res = res.json()
+        combined_city_data.append({
+            'city': city_name,
+            'temp_c': str(res['current']['temp_c']) + '°C',
+            'image': res['current']['condition']['icon'],
+        })
+
     # Set type of greeting based on time of day
     greeting = ''
     if current_hour < 12:
@@ -111,7 +84,7 @@ def home(request):
         greeting = "Good afternoon"
     else:
         greeting = "Good evening"
-    print("Local time variable:", type(current_date))
+
     # Edit date to appropriate format to be displayed (Format Example: 13th January, 2024)
     date_obj = datetime.strptime(current_date, '%Y-%m-%d')
     added_suffix = ''
@@ -146,12 +119,6 @@ def signout(request):
     # Redirect to the login page
     return redirect('login:signin')
 
-def quiz2(request):
-    return render(request, 'mainsite/quiz_2.html')
-
-def quiz3(request):
-    return render(request, 'mainsite/quiz_3.html')
-
 def media(request):
     return render(request, 'mainsite/media.html')
 
@@ -159,36 +126,22 @@ def media(request):
 def get_incorrect_questions(request, unit_id):
     answer_data = []
     for item in UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit_id), is_correct=False):
+        if item.question.question_type == 'Arrange':
+            actual_list = ast.literal_eval(item.answer_text)
+            print(type(actual_list), actual_list)
+            formulated_string = ' '.join(actual_list)
         answer_data.append(
             {'question': item.question.question_text,
              'type': item.question.question_type,
-             'answer': item.answer_text,
+             'answer': formulated_string if item.question.question_type == 'Arrange' else item.answer_text,
              'correctAnswer': item.question.correct_answer}
         )
 
     # Returns the data in JSON format to be displayed on the frontend
     return JsonResponse({'questions': answer_data})
 
-def quiz4(request):
-    answer_status = request.session.get('answer_status', None)
-    print("Answer status:", answer_status)
-    return render(request, 'mainsite/quiz_4.html', {'answer_status': answer_status})
-
-def get_unit_details(request, unit_id):
-    # Example data, replace with actual query to your database or data source
-    unit_details = {
-        'title': f'Unit {unit_id} Analytics',
-        'details': [
-            {'icon': 'check-circle', 'text': 'Correct Answers', 'value': 20, 'color': 'text-success'},
-            {'icon': 'times-circle', 'text': 'Incorrect Answers', 'value': 5, 'color': 'text-danger'},
-            # more details...
-        ]
-    }
-    return JsonResponse(unit_details)
-
-# Computes the necessary data and renders the Analytics Page
 def analytics(request):
-    # Calculations for analytics display
+    # Computes the necessary data and renders the Analytics Page
     word_count_studied = 0
     correct_count = UserAnswers.objects.filter(user=request.user, is_correct=True).count()
     incorrect_count = UserAnswers.objects.filter(user=request.user, is_correct=False).count()
@@ -196,6 +149,25 @@ def analytics(request):
     for lesson in lessons_done:
         pg_covered = 1 if lesson.pages_covered == 0 else lesson.pages_covered
         word_count_studied = 2 * int(pg_covered-1)
+
+    # Get the current time
+    now = timezone.now()
+
+    # Correct and Incorrect answers for last day, week, and month
+    correct_last_day = UserAnswers.objects.filter(user=request.user, is_correct=True, answer_date__gte=now - timedelta(days=1)).count()
+    incorrect_last_day = UserAnswers.objects.filter(user=request.user, is_correct=False, answer_date__gte=now - timedelta(days=1)).count()
+    correct_last_week = UserAnswers.objects.filter(user=request.user, is_correct=True, answer_date__gte=now - timedelta(weeks=1)).count()
+    incorrect_last_week = UserAnswers.objects.filter(user=request.user, is_correct=False, answer_date__gte=now - timedelta(weeks=1)).count()
+    correct_last_month = UserAnswers.objects.filter(user=request.user, is_correct=True, answer_date__gte=now - timedelta(days=30)).count()
+    incorrect_last_month = UserAnswers.objects.filter(user=request.user, is_correct=False, answer_date__gte=now - timedelta(days=30)).count()
+
+    # Filter to get active user dates
+    user_activity_dates = [
+    DateFormat(date).format('Y-m-d') for date in UserActivity.objects.filter(
+        user=request.user,
+        date__lt=date.today() 
+    ).values_list('date', flat=True).distinct()
+    ]
 
     # Adding formulated data for each unit to main_data dictionary
     main_data = {}
@@ -249,13 +221,20 @@ def analytics(request):
         'total_words_studied':word_count_studied,
         'best_unit': best_unit,
         'worst_unit': worst_unit,
-        'total_data': main_data
+        'total_data': main_data,
+        'correct_last_day': correct_last_day,
+        'incorrect_last_day': incorrect_last_day,
+        'correct_last_week': correct_last_week,
+        'incorrect_last_week': incorrect_last_week,
+        'correct_last_month': correct_last_month,
+        'incorrect_last_month': incorrect_last_month,
+        'active_user_dates': len(user_activity_dates)
     }
 
     return render(request, 'mainsite/analytics.html', data)
 
-# Writes the content of the User Saved Vocabulary to CSV file
 def download_table(request):
+    # Writes the content of the User Saved Vocabulary to CSV file
     if request.method == 'POST':
         table_data = request.POST.getlist('table_data[]')
 
@@ -271,34 +250,32 @@ def download_table(request):
 
         return response
 
-# Deletes all user saved words
 @login_required
 def delete_all_saved_words(request):
+    # Deletes all user saved words
     try:
         UserSavedWords.objects.filter(user=request.user).delete()
         return JsonResponse({"success": True}, status=200)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
-# Renders the Settings page
 def settings(request):
+    # Renders the Settings page
     return render(request, 'mainsite/settings.html')
 
-# Renders the Festivals page
 @login_required
 def architecture(request):
+    # Renders the Festivals page
     if request.user.is_authenticated:
-        # Renders the Portuguese or English version of the page depending on the user's settings
         if request.user.portuguese_default:
             translation.activate('pt')
-            # request.session['django_language'] = 'pt'  # Correctly set the language key in the session
         else:
             translation.deactivate_all()
     return render(request, 'mainsite/architecture.html')
 
-# Renders the Architecture page
 @login_required
 def festivals(request):
+    # Renders the Architecture page
     if request.user.is_authenticated:
         if request.user.portuguese_default:
             translation.activate('pt')  # Activate Portuguese
@@ -307,33 +284,25 @@ def festivals(request):
             translation.deactivate_all()
     return render(request, 'mainsite/festivals.html')
 
-# Saves submitted User Feedback
 def submit_feedback(request):
+    # Saves user feedback
     feedback = request.POST.get('feedback')
-    print("Inside submit feedback view")
-    print("Feedback:", feedback)
     UserFeedback.objects.get_or_create(user=request.user, feedback=feedback)
-
     return JsonResponse({"message": 'Thank you for your feedback!'})
-    return render(request, 'mainsite/test_diacritics.html')
 
-@login_required
-def testdiacritics(request):
-    return render(request, 'mainsite/test_diacritics.html')
 
-# Renders the Diacritics page
 @login_required
 def diacritics(request):
+    # Renders the Diacritics page
     return render(request, 'mainsite/diacritics.html')
 
-# Saves edited user settings
 @login_required
 def save_settings(request):
+    # Saves edited user settings
     if request.user.is_authenticated:
         current_user_id = request.user.id
         current_user_object = CustomUser.objects.get(id=current_user_id)
         data = request.POST.get('dataToSend', None)
-        print(data)
         if data:
             data = json.loads(data)
             if 'siteLanguage' in data:
@@ -347,7 +316,6 @@ def save_settings(request):
             current_user_object.save()
     
     return JsonResponse({'words': 'Data edited successfully!'})
-    return render(request, 'mainsite/settings.html')
 
 # Finds equivalent Portuguese for the inputted English phrase/word
 @login_required
@@ -367,21 +335,18 @@ def vocab_search(request):
             }
     translation_response = requests.post(url, data=payload, headers=headers)
 
-
     return JsonResponse({'words': [{'english': query, 'portuguese': translation_response.json()['data']['translatedText']}]}, safe=False)
 
 # Displays the Vocabulary List
 @login_required
 def vocab(request):
-    # FILTER OVERALL WORD DISPLAY BASED ON UNIT
+    # Filters overall word list and displays result
     search_query = request.GET.get('query', None)
     search = request.GET.get('search', False)
     user_id = request.user.id
     user_saved_words = UserSavedWords.objects.filter(user=user_id).order_by('-id')
     if search == 'True':
         words = Word.objects.filter(portuguese_word__icontains=search_query)
-        print("Words inside filter:",words)
-        print("Search term is:",search)
     else:
         words = Word.objects.all()
     return render(request, 'mainsite/vocab.html', {'saved_words': user_saved_words, 'words': words})
@@ -414,10 +379,9 @@ def search_word(request):
 
 @login_required
 def store_page_number(request):
+    # Stores current page number in the lesson
     page = request.POST.get('page_number',None)
     lesson_id = request.POST.get('lesson_id',None)
-    print("Next page number is:",page)
-    print("Lesson ID is:",lesson_id)
     lesson_obj = Lesson.objects.get(id=int(lesson_id))
     if not UserAttempts.objects.filter(lesson=lesson_obj, user=request.user).exists():
         UserAttempts.objects.create(lesson=lesson_obj, user=request.user, pages_covered=0)
@@ -426,19 +390,21 @@ def store_page_number(request):
         user_attempt.pages_covered = int(page)-1
         user_attempt.save()
 
-
     return JsonResponse({'is_correct': True, "message": "Word successfully saved!"}, status=200)
 
 @login_required
 def lesson(request, lesson_id):
-    lesson = Lesson.objects.get(id=lesson_id)
+    proficiency_dict = {
+        '1': 'Beginner',
+        '2': 'Intermediate',
+        '3': 'Advanced'
+    }
+    lesson = Lesson.objects.get(unit_id=lesson_id, difficulty=proficiency_dict[str(request.user.proficiency_level)])
     words_list = lesson.word_set.all()
 
-
+    # Page number variable
     default = 1
     if UserAttempts.objects.filter(lesson=lesson, user=request.user).exists():
-        print("Inside check!!!!!s")
-        print(UserAttempts.objects.filter(lesson=lesson, user=request.user))
         default = int(UserAttempts.objects.filter(lesson=lesson, user=request.user)[0].pages_covered)
 
     # Define the number of words per page
@@ -459,6 +425,9 @@ def lesson(request, lesson_id):
         # If the 'page' parameter is out of range (e.g., 9999), show the last page of results
         words = paginator.page(paginator.num_pages)
 
+    percent_complete = int((int(page)/paginator.num_pages)*100)
+
+    # Sets current page in the lesson for the user
     if not UserAttempts.objects.filter(lesson=lesson, user=request.user).exists():
         UserAttempts.objects.create(lesson=lesson, user=request.user, pages_covered=0)
     else:
@@ -473,16 +442,21 @@ def lesson(request, lesson_id):
         example_usages_2 = words[1].example_usages.all()
     except:
         example_usages_2 = []
+
     word_2_usages = []
     word_2_usages.append(example_usages_2)
 
-    return render(request, 'mainsite/lesson.html', {'lesson': lesson, 'words': words, 'word_1_usages':word_1_usages, 'word_2_usages':word_2_usages})
+    unit_obj = Unit.objects.get(id=lesson_id)
+
+    return render(request, 'mainsite/lesson.html', {
+        'lesson': lesson, 'words': words, 'word_1_usages':word_1_usages, 'word_2_usages':word_2_usages, 
+        'percent_complete': percent_complete, 'unit_id': lesson_id, 'unit_name': unit_obj.name})
 
 
 @login_required
 @csrf_exempt
 def save_word(request):
-
+    # Variable definitions
     word_type = request.POST.get('word_type', 'custom')
     custom_english = request.POST.get('english', None)
     custom_portuguese = request.POST.get('portuguese', None)
@@ -490,8 +464,10 @@ def save_word(request):
     word_id = request.POST.get('word_id')
     add_or_remove = request.POST.get('add_or_remove', 'add')
     
+    # Code to add words to the user saved list
     if add_or_remove == 'add':
         if word_type == 'custom':
+            # If word is not already saved, create a new UserSavedWords object (for custom words)
             try:
                 UserSavedWords.objects.get(user=request.user, custom_english=custom_english)
             except:
@@ -501,106 +477,98 @@ def save_word(request):
                     custom_portuguese=custom_portuguese
                 )
         else:
-            print("TRYING TO ADD A WORD")
+            # If word is not already saved, create a new UserSavedWords object (for lesson words)
             try:
-                print("Inside the try block")
-                UserSavedWords.objects.get(word_id=word_id)
+                UserSavedWords.objects.get(word_id=word_id, user=request.user)
                 return JsonResponse({'is_correct': False, "message": "Word already in the list!"}, status=400)
             except:
-                print("Inside the except block")
                 UserSavedWords.objects.create(
                     user=request.user,
                     word=Word.objects.get(id=int(word_id))
                 )
     else:
-        a = 1
         UserSavedWords.objects.get(id=word_id).delete()
-            
-        print("INSIDE DELETING A SAVED WORD!")
-
-    print("WORD SAVED HELL YEAH")
     return JsonResponse({'is_correct': is_correct, "message": "Word successfull saved!"}, status=200)
 
 @login_required
 def quiz(request, unit_id, quiz_id):
-    # Image API
+    # User set difficulty
+    difficulty_dict = {
+        '1': 'Beginner',
+        '2': 'Intermediate',
+        '3': 'Advanced'
+    }
+    difficulty = difficulty_dict[str(request.user.proficiency_level)]
+    
+    # PexelsAPI Setup
     api_key = 'TD3tzuMg9GoBdmw2QLf2jrheWlkp9L91Hk1DXyUtVuIWzrkadRZXv1o2'
-    # The Pexels API endpoint for searching photos
     image_url = 'https://api.pexels.com/v1/search'
-    # Set up the headers with your API key
     image_headers = {
         'Authorization': api_key
     }
 
-    # Translation API 
-    url = "https://text-translator2.p.rapidapi.com/translate"
-    headers = {
-        "content-type": "application/x-www-form-urlencoded",
-        "X-RapidAPI-Key": "7223147287mshb3ab5722c178634p1818bbjsn832d911c373c",
-        "X-RapidAPI-Host": "text-translator2.p.rapidapi.com"
-    }
-    # return render(request, 'mainsite/quiz_2.html')
-    # To get all questions for quiz 1 of unit 1
-    # Quiz.objects.filter(unit_id=1)[0].questions.all()
-    number = random.randint(1, 11)
-    water_img = ''
+    # Variabe definitions
     question_obj = None
     repeated_question = False
     options = {}
-    img_links = []
     match_dict = {}
     left_col_q = []
     right_col_q = []
-    # print(Quiz.objects.filter(unit_id=unit_id)[quiz_id-1].questions.all())
-    quiz_accessed = Quiz.objects.filter(unit_id=unit_id)[quiz_id-1]
+    jumbled_answer = []
+
+    # Set quiz to be accessed
+    quiz_accessed = Quiz.objects.filter(unit_id=unit_id, difficulty=difficulty)[quiz_id-1]
     questions_for_quiz = quiz_accessed.questions.all()
-    print(quiz_accessed.questions.all())
-    print(quiz_accessed.__dict__)
+
+    # Check if user has already attempted the quiz
     if UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user).exists():
-        print("This quiz has been accessed")
-        user_attempt = UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user)[0]
+        print("User has already attempted the quiz")
+        user_attempt = UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user).order_by('-attempt_date')[0]
+        if user_attempt.questions_answered == 8:
+            print("User has answered all questions")
+            print("Creating user object")
+            user_attempt = UserAttempts.objects.create(quiz=quiz_accessed, user=request.user, questions_answered=0)
+            messages.success(request, 'Quiz complete!')
+            # Redirect to home screen if user has completed a quiz
+            return redirect('mainsite:home')
     else:
         user_attempt = UserAttempts.objects.create(quiz=quiz_accessed, user=request.user, questions_answered=0)
-        print("This quiz has not been accessed")
     
-    jumbled_answer = []
-    questions_not_answered_correctly = []
+    # Finding unanswered questions in the quiz
     unanswered_questions = Question.objects.filter(
         quiz_id=quiz_id
     ).exclude(
         id__in=UserAnswers.objects.filter(
             question__quiz_id=quiz_id,
-            user=request.user
+            user=request.user,
+            attempt=user_attempt
         ).values_list('question_id', flat=True)
     )
 
-    # Subquery to get the ID of the latest incorrect answer for each question
+    # Finding questions whose latest answer is incorrect
     latest_incorrect_answer_subquery = UserAnswers.objects.filter(
-        question=OuterRef('pk'),  # Reference to the question in the outer query
-        is_correct=False,  # Focus on incorrect answers
-        user=request.user
-    ).order_by('-answer_date').values('id')[:1]  # Get the most recent incorrect answer's ID
-
+        question=OuterRef('pk'),
+        is_correct=False,
+        user=request.user,
+        attempt = user_attempt
+    ).order_by('-answer_date').values('id')[:1]
     # Query to find questions where the latest answer is incorrect
     questions_with_latest_incorrect_answer = Question.objects.annotate(
         latest_incorrect_answer_id=Subquery(latest_incorrect_answer_subquery)
     ).filter(
         user_answers__id=Subquery(latest_incorrect_answer_subquery)  # Ensures we filter on the latest incorrect answer
     ).values_list('id', flat=True)  # Get the IDs of those questions
-
-    # Execute the query and convert to a list
     list_of_question_ids = list(questions_with_latest_incorrect_answer)
-    print(list_of_question_ids)
 
-        
-    print("Number of incorrect answers in this quiz are:",UserAnswers.objects.filter(attempt=user_attempt, user=request.user, is_correct=False).count())
+    # Loop through unanswered questions in the Quiz
     if unanswered_questions:
         if user_attempt.questions_answered > 3 and random.randint(1,100) <= 20:
             answered_questions = Question.objects.filter(
                 quiz_id=quiz_id,
                 id__in=UserAnswers.objects.filter(
                     question__quiz_id=quiz_id,
-                    user=request.user
+                    user=request.user,
+                    attempt = user_attempt
                 ).values_list('question_id', flat=True)
             )
             answered_questions_list = list(answered_questions)
@@ -610,8 +578,11 @@ def quiz(request, unit_id, quiz_id):
             question_obj = unanswered_questions.first()
     else:
         repeated_question = True
-        print("All questions have been answered once.")
-        print(questions_for_quiz)
+        if len(list_of_question_ids) > 0:
+            for question_id in list_of_question_ids:
+                question_obj = Question.objects.get(id=question_id)
+                break
+        
         # Loops through questions for the quiz
         questions_for_quiz_copy = list(questions_for_quiz)
         shuffle(questions_for_quiz_copy)
@@ -621,17 +592,8 @@ def quiz(request, unit_id, quiz_id):
             if not UserAnswers.objects.filter(attempt=user_attempt, user=request.user, question=question, is_correct=True).exists():
                 question_obj = question
                 break
-                repeated_question = True
-            # elif UserAnswers.objects.filter(attempt=user_attempt, user=request.user, question=question, is_correct=True).count() < 2:
-            #     print("Inside less than 2 check")
-            #     question_obj = question
-            #     break
-            else:
-                print("Inside the else")
-        if not question_obj:
-            return render(request, 'mainsite/cube.html')
-
-    question_obj = Question.objects.filter(question_type='Translate')[0]
+    
+    # Question comprehension for each question type
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
         for option in options_list:
@@ -651,38 +613,20 @@ def quiz(request, unit_id, quiz_id):
         jumbled_answer = question_obj.correct_answer.split(" ")
         random.shuffle(jumbled_answer)
     elif question_obj.question_type == 'Translate':
-        a = 1
+        pass
     elif question_obj.question_type == 'Match':
         matches = question_obj.match_set.all()
         for match in matches:
             left_col_q.append(match.left_option)
             right_col_q.append(match.right_option)
             match_dict[match.left_option] = match.right_option
-        print(match_dict)
         random.shuffle(left_col_q)
         random.shuffle(right_col_q)
             
-
     submitted_answer = request.session.get('submitted_answer', '')
     unit_name = question_obj.quiz.unit.name
     unit_id = question_obj.quiz.unit.id
-
-    # image_response = requests.get(f'https://pixabay.com/api/?key=40135184-dc7bf4341a3143778714e9097&q=water')
     
-
-    # if image_response.status_code == 200:
-    #     data = image_response.json()
-    #     water_img = data['hits'][0]['webformatURL']
-    # else:
-    #     print(f'Error: {image_response.status_code}')
-    #     # Process the data as needed
-    #     # For example, you can access the image URLs using data['hits'][0]['webformatURL']
-    # else:
-    #     print(f'Error: {response.status_code}')
-
-    # --------------------------
-    
-    template_name = 'mainsite/quiz_1.html'
     if question_obj.question_type == 'Speech':
         template_name = 'mainsite/quiz_2.html'
     if question_obj.question_type == 'Match':
@@ -701,7 +645,6 @@ def quiz(request, unit_id, quiz_id):
         'question_text': question_obj.question_text, 
         'question_answer': question_obj.correct_answer,
         'question_id': question_obj.id,
-        'water_img': water_img,
         'unit_name': unit_name,
         'unit_id': unit_id,
         'options': options,
@@ -712,73 +655,56 @@ def quiz(request, unit_id, quiz_id):
         'repeated_question': repeated_question,
     })
 
-# Include different messages for answering questions correctly
-# Include scrollbar for different temperatures in cities for portugal - scrolls automatically
-# Include public holidays for Portugal
-# Change greeting to 'Good afternoon/morning' based on local time
 @login_required
 def submit_answer(request):
-    print("Inside the submit answer view")
-    valu = ''
+    # Variable definitions
     is_correct = False
-    first_time = True
     submitted_answer = request.POST.get('quiz')
     question_id = request.POST.get('form_type')
-    question_type = request.POST.get('question_type', None)
     correct_ans_msgs = ['Correct Answer!','Well Done!','Spot on!','You got it!']
     success_msg = random.choice(correct_ans_msgs)
-    testing = False
-    try:
-        question_obj = Question.objects.get(id=int(question_id))
-    except:
-        pass
-    try:
-        user_attempt = UserAttempts.objects.get(quiz=question_obj.quiz, user=request.user, questions_answered__lt=12)
-    except:
-        testing = True
-    if UserAnswers.objects.filter(question=question_obj, user=request.user, is_correct=True).exists():
-        first_time = False
-    # print("Number of incorrect answers in this quiz are:",UserAnswers.objects.filter(attempt=user_attempt, user=request.user, is_correct=False).count())
-    # print("USER ATTEMPT:",user_attempt)
+
+    # Defining question object and user attempt
+    question_obj = Question.objects.get(id=int(question_id))
+    user_attempt = UserAttempts.objects.filter(quiz=question_obj.quiz, user=request.user).order_by('-attempt_date')[0]
+    
+    # Checking answer correctness
     if question_obj.question_type in ['Match', 'Speech']:
         is_correct = True
     elif question_obj.question_type == 'Arrange':
         submitted_answer = json.loads(submitted_answer)
         sentence = ' '.join(submitted_answer)
-        print("Submitted sentence:", sentence)
         if sentence == question_obj.correct_answer:
             is_correct = True
-            print("Arrange answer is correct")
-        # return JsonResponse({'is_correct': is_correct, "message": "Correct answer!"}, status=200)
     else:
         if (question_obj.correct_answer).lower() == submitted_answer.lower():
             is_correct = True
-        #     return JsonResponse({'is_correct': is_correct, "message": "Correct answer!"}, status=200)
-        # else:
-        #     return JsonResponse({'is_correct': is_correct, "message": "Incorrect! OH NO!"}, status=200)
-    if is_correct == True:
-        if testing == False:
-            try:
-                UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=submitted_answer, is_correct=is_correct)
-            except:
-                UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=question_obj.correct_answer, is_correct=is_correct)
-
-            if first_time == True:
-                user_attempt.questions_answered += 1  # increment by 1
-                user_attempt.save()
+    if is_correct:
+        try:
+            UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=submitted_answer, is_correct=is_correct)
+        except:
+            UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=question_obj.correct_answer, is_correct=is_correct)
+        # Increasing user attempt count
+        user_attempt.questions_answered += 1
+        user_attempt.save()
         return JsonResponse({'is_correct': is_correct, "message": success_msg}, status=200)
     else:
-        if testing == False:
-            UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=submitted_answer, is_correct=is_correct)
+        UserAnswers.objects.create(attempt=user_attempt, user=request.user, question=question_obj, answer_text=submitted_answer, is_correct=is_correct)
         return JsonResponse({'is_correct': is_correct, "message": "Incorrect! OH NO!"}, status=200)
     
 @login_required
 def get_quiz_data(request):
+    # Variable definitions
     quizzes = []
     unit_id = request.GET.get('unit_id')
-    difficulty = 'Beginner'
-    quiz_data = Quiz.objects.filter(unit_id=int(unit_id), difficulty=difficulty)
+    proficiency_dict = {
+        '1': 'Beginner',
+        '2': 'Intermediate',
+        '3': 'Advanced'
+    }
+    quiz_data = Quiz.objects.filter(unit_id=int(unit_id), difficulty=proficiency_dict[str(request.user.proficiency_level)])
     quiz_number = 0
+    # Looping through quizzes for a unit
     for quiz in quiz_data:
         total_questions = quiz.questions.all().count() 
         questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).values('question').distinct().count()
@@ -790,36 +716,34 @@ def get_quiz_data(request):
             'progress_percent': int(( questions_answered / total_questions ) * 100) if total_questions > 0 else 0,
             'number': quiz_number
         })
-
+    # Returns quiz data
     return JsonResponse({'quizzes': quizzes})
         
 
-@csrf_exempt  # Disable CSRF token for simplicity (not recommended for production)
+@csrf_exempt
 def text_to_speech(request):
-    # This will only work with POST requests
     if request.method == 'POST':
         text = request.POST.get('text', '')
-        language = 'pt'  # Set the language to Portuguese
-
+        # Sets the language to Portuguese
+        language = 'pt'
         tts = gTTS(text, lang=language, slow=True)
 
         # Save the generated speech to an audio file
         tts.save("output.mp3")
 
-         # Load the speech audio
+        # Load the speech audio
         sound = AudioSegment.from_file("output.mp3")
-
+        # Fetching set user playback speed
         playback = CustomUser.objects.get(id=request.user.id).playback_speed
-
         if playback == 'Normal':
             playback_speed = 1.0
         elif playback == 'Slow':
             playback_speed = 0.9
         else:
             playback_speed = 1.1
+
         # Change speed of the audio
-        speed = playback_speed  # Speed factor > 1 to increase speed
-        print("Playback speed:", playback_speed)
+        speed = playback_speed
         altered_frame_rate = int(sound.frame_rate * speed)
         faster_sound = sound._spawn(sound.raw_data, overrides={"frame_rate": altered_frame_rate})
         faster_sound = faster_sound.set_frame_rate(sound.frame_rate)
@@ -848,23 +772,28 @@ def text_to_speech(request):
             # Remove the audio file if it exists
             if os.path.isfile("output_fast.mp3"):
                 os.remove("output_fast.mp3")
+            if os.path.isfile("output.mp3"):
+                os.remove("output.mp3")
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
         # Return a simple JSON response indicating success
         return JsonResponse({'status': 'success', 'message': 'Text has been converted to speech.'})
-
+    # Return a simple JSON response indicating failure
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
 
-@csrf_exempt  # Disable CSRF for simplicity (you should handle CSRF properly in production)
-def process_audio(request):
+@csrf_exempt
+def process_audio(request, question_id):
+    # Processes audio generated by the user
     try:
         if request.method == 'POST':
             result = ''
             audio_file = request.FILES['audio']
             file_name = audio_file.name
             file_extension = os.path.splitext(file_name)[1]
+
+            question_obj = Question.objects.get(id=question_id)
 
             # Convert audio to WAV format using pydub
             audio = AudioSegment.from_file(audio_file, format=file_extension.replace('.', ''))
@@ -876,17 +805,14 @@ def process_audio(request):
             with sr.AudioFile("converted_audio.wav") as source:
                 audio_data = recognizer.record(source)
                 text = recognizer.recognize_google(audio_data, language='pt-BR')
-                if text == "eu sou um menino":
+                print(text)
+                if text.lower() == question_obj.correct_answer.lower():
                     result = 'success'
-                    
                 else:
-                    result = 'error'
-                    
+                    result = 'error'               
             if os.path.exists('converted_audio.wav'):
                 os.remove('converted_audio.wav')
             return JsonResponse({'status': result, 'transcript': text})
-
-            
 
     except sr.UnknownValueError:
         return JsonResponse({'status': 'error', 'message': 'Could not understand audio'})

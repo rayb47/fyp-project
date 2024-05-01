@@ -22,12 +22,6 @@ from django.contrib.auth.views import PasswordResetConfirmView
 from django.core.mail import EmailMessage
 from django.core.mail import EmailMultiAlternatives
 
-
-# # Create your views here.
-# def home(request):
-#     print("BOOMBOOMBOOM")
-#     return render(request, "login/index.html")
-
 # View to handle registration of a new user
 def signup(request):
     # Handles post requests
@@ -45,17 +39,15 @@ def signup(request):
         language_yes = request.POST.get('languageYes')
         language_no = request.POST.get('languageNo')
 
-        prof_level = 0
-
         # Check if the username already exists
         if CustomUser.objects.filter(username=email).exists():
             msg = "Username already exists!"
             return JsonResponse({'status': 'error', 'message': msg}, status=400)
 
-        # # Check if the email is already registered to an account
-        # if CustomUser.objects.filter(email=form_data['email']).exists():
-        #     msg = "Email is already registered with an account!"
-        #     return JsonResponse({'status': 'error', 'message': msg}, status=400)
+        # Check if the email is already registered to an account
+        if CustomUser.objects.filter(email=email).exists():
+            msg = "Email is already registered with an account!"
+            return JsonResponse({'status': 'error', 'message': msg}, status=400)
         
         # Verifies passwords match
         if password != confirm_password:
@@ -140,9 +132,6 @@ def signin(request):
     # Renders signin page
     return render(request, "login/signin.html")
 
-def signout(request):
-    pass
-
 # Handles activation link for account registration
 def activate(request, uidb64, token):
     try:
@@ -167,11 +156,8 @@ class MyPasswordResetView(auth_views.PasswordResetView):
 
 # Handles sending out email for a password reset
 def password_reset(request):
-    print("Inside password reset view")
     email = request.POST.get('email', None)
-    print("Associated email is:",email)
     user = CustomUser.objects.get(email=email,username='rayb13')
-    print(user)
     subject = "Password Reset Requested"
     email_template_name = "login/password_reset_subject.txt"
     current_site = get_current_site(request)
@@ -194,5 +180,7 @@ def password_reset(request):
     return JsonResponse({'success': 'Password reset link has been sent to your email'}, status=200)
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'login/custom_password_reset_confirm.html'  # Path to your custom template
-    success_url = '/signin'  # URL to redirect after a successful password reset
+    # Path to your custom template
+    template_name = 'login/custom_password_reset_confirm.html' 
+    # URL to redirect after a successful password reset
+    success_url = '/signin'  

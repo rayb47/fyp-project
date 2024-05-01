@@ -7,140 +7,51 @@
 <title>Quiz - Unit {{unit_id}}: {{unit_name}}</title>
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
 <style>
-    .quiz-container {
-      max-width: 780px;
-      margin: 30px auto;
-      background-color: rgb(255, 255, 255);
-      padding: 20px;
-      padding-left: 0px;
-      padding-right: 0px;
-      border-radius: 8px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-      margin-bottom: 400px;
-    }
-    .option {
-      margin: 0px 0;
-      margin-left: 15px;
-      padding: 2px;
-      /* background-color: red; */
-      border-radius: 8px;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-    .option:hover {
-      background-color: none
-    }
-    .option img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      border: 2px solid black;
-    }
-
-    .progress-bar {
-      background-color: #4CAF50;
-    }
-    hr {
-        border: none;
-        height: 1px;
-        width: 100%;
-        margin-left: 0px;  /* counteract the left padding of the container */
-        margin-right: 0px; /* counteract the right padding of the container */
-        background-color: #000000; /* or any color that fits the design */
-        margin-top: 20px; /* or any value that fits the design */
-        margin-bottom: 20px; /* or any value that fits the design */
-    }
-
-
-
-input[type="radio"]:checked + .content-container {
-  border: 4px solid #e9d206; /* Green border for selected item */
-  background-color: #cfbc0b;
-  /* padding: 4px;
-  padding-bottom: 1px; */
-  /* If you want padding inside the border */
-}
-/* 
-input[type="radio"]:checked + img {
-  border: 8px solid #4CAF50;
-  padding: 4px;
-} */
-
-
-
-
-
-.big-close {
-  border: solid 1px #e6a9a9; 
-  margin-left: 10px;
-}
-
-.big-arrow {
-  border: solid 1px #000000; margin-right: 10px;
-}
-
-.clue-button {
-    background-color: #ffc107; /* Changing to a yellow color to match the lightbulb theme */
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 20px; /* Adjust icon size */
-    padding: 10px 15px; /* Padding around the icon */
-    border-radius: 100%; /* Circular shape */
-    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
-    box-shadow: inset 0 0 5px 0px black;
-}
-
-.clue-button:hover {
-    background-color: #e0a800; /* Darker yellow on hover/focus */
-    transform: scale(1.1); /* Slightly larger on hover/focus */
-    outline: none; /* Remove focus outline */
-}
-
-.header-with-button {
-    display: flex; /* Align children horizontally */
-    align-items: center; /* Vertically center align items */
-    justify-content: space-between; /* Space out the h2 and button */
+  .quiz-container { max-width: 780px; margin: 30px auto; background-color: rgb(255, 255, 255); padding: 20px; padding-left: 0px; 
+    padding-right: 0px; border-radius: 8px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.1); margin-bottom: 400px; 
+  }
     
-}
+  .option {margin: 0px 0; margin-left: 15px; padding: 2px; border-radius: 8px; transition: all 0.3s; cursor: pointer; }
+    
+  .option:hover { background-color: none }
+    
+  .option img { width: 100%; height: auto; border-radius: 8px; border: 2px solid black; }
 
-.header-with-button h2 {
-    margin-bottom: 0; /* Remove bottom margin from h2 to align better */
-    flex-grow: 1; /* Allows h2 to take up available space, pushing button to the edge */
-    text-align: center; /* Align the text to the left */
-}
+  .progress-bar { background-color: #4CAF50; }
+    
+  hr { border: none; height: 1px; width: 100%; margin-left: 0px;
+    margin-right: 0px; background-color: #000000;  margin-top: 20px; margin-bottom: 20px; 
+  }
 
-.clue-button {
-  margin-right: 10px;
-  margin-bottom: 10px;  
-  border: 1px solid black;
-  box-shadow: inset 0 0 4px 0px black;
-  font-size: 20px;
+  input[type="radio"]:checked + .content-container { border: 4px solid #e9d206; background-color: #cfbc0b; }
 
-}
+  .big-close { border: solid 1px #e6a9a9;  margin-left: 10px; }
 
-.hidden {
-  display: none;
-}
+  .big-arrow { border: solid 1px #000000; margin-right: 10px; }
 
-#discordLogo {
-  color: #cab2fb;
-}
+  .clue-button { background-color: #ffc107; color: white; border: none; cursor: pointer; font-size: 20px; padding: 10px 15px;
+    border-radius: 100%; transition: background-color 0.3s, transform 0.3s; box-shadow: inset 0 0 5px 0px black;
+  }
 
-#discordLogo:hover{
-  color: #7e61ab;
-}
+  .clue-button:hover {background-color: #e0a800; transform: scale(1.1); outline: none; }
 
-#discordHref {
-  text-decoration: none
-}
+  .header-with-button { display: flex;  align-items: center; justify-content: space-between; }
 
-#closeModal:hover {
-  background-color: rgb(224, 107, 107);
-  font-weight: bold;
-}
+  .header-with-button h2 { margin-bottom: 0; flex-grow: 1; text-align: center; }
 
-  </style>
+  .clue-button { margin-right: 10px; margin-bottom: 10px;   border: 1px solid black; box-shadow: inset 0 0 4px 0px black; font-size: 20px; }
+
+  .hidden { display: none; }
+
+  #discordLogo { color: #cab2fb; }
+
+  #discordLogo:hover{color: #7e61ab; }
+
+  #discordHref { text-decoration: none }
+
+  #closeModal:hover { background-color: rgb(224, 107, 107); font-weight: bold; }
+
+</style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -175,7 +86,7 @@ input[type="radio"]:checked + img {
         {% csrf_token %}
         <input type="hidden" name="form_type" value="{{question_id}}">
         <div class="row">
-          <!-- Options -->
+          <!-- Iterate through MCQ Options -->
           {% for option, link in options.items %}
           <div class="col-md-6 option-container">
             <label class="option">
@@ -189,47 +100,6 @@ input[type="radio"]:checked + img {
               </label>
           </div>
           {% endfor %}
-          
-          
-        
-          <!-- <div class="col-md-6 option-container">
-            <label class="option">
-              <input type="radio" name="quiz" value="pão" {% if quiz == "pão" %}checked{% endif %} hidden />
-              <div class="content-container">
-                <img class="quiz-img hidden" src="{% static 'bread.jpg' %}" alt="Pão" style="height:180px">
-                <p class="text-center mt-2">A. pão</p>
-              </div>
-              </label>
-          </div>
-          
-          <div class="col-md-6 option-container">
-            <label class="option">
-              <input type="radio" name="quiz" value="água" {% if quiz == "água" %}checked{% endif %} hidden/>
-              <div class="content-container">
-                <img class="quiz-img hidden" src="{{water_img}}" alt="Água" style="height:180px">
-                <p class="text-center mt-2">B. água</p>
-              </div>
-            </label>
-          </div>
-          
-          <div class="col-md-6 option-container">
-            <label class="option">
-              <input type="radio" name="quiz" value="maçã" {% if quiz == "maca" %}checked{% endif %} hidden  />
-              <div class="content-container">
-                <img class="quiz-img hidden" src="{% static 'apple.jpg' %}" alt="maca" style="height:180px">
-                <p class="text-center mt-2">C. maçã</p>
-              </div>
-            </label>
-          </div>
-          <div class="col-md-6 option-container">
-            <label class="option">
-              <input type="radio" name="quiz" value="laranja" {% if quiz == "laranja" %}checked{% endif %} hidden />
-              <div class="content-container">
-                <img class="quiz-img hidden" src="{% static 'orange.jpg' %}" alt="laranja" style="height:180px">
-                <p class="text-center mt-2">D. laranja</p>
-              </div>
-            </label>
-          </div> -->
         </div>
         <div class="text-center" style="padding:0px">
           <button id="submitButton" type="submit" class="btn btn-success btn-lg" disabled>Check</button><br>
@@ -238,23 +108,20 @@ input[type="radio"]:checked + img {
       </form>
     </div>
   </div>
-  
-  <audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
-  <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
-<!-- Replace the 'slim' version with the full version of jQuery -->
+<audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
+<audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
 <script>
-
+// Toggles the clue icon
 document.getElementById('clue-button').addEventListener('click', function() {
     var icon = document.getElementById('toggleClue'); // Get the icon element
     icon.classList.toggle('fa-eye');
     icon.classList.toggle('fa-eye-slash');
 });
-  // Using jQuery
+// Enables/Disables submit button
 $(document).ready(function() {
   $('input[type="radio"][name="quiz"]').change(function() {
             // Check if any radio button is selected
@@ -264,47 +131,44 @@ $(document).ready(function() {
                 $('#submitButton').prop('disabled', true); // Otherwise, keep it disabled
             }
         });
-
-
+// Toggles the visibility of the clue
   $('#clue-button').click(function() {
     $('.quiz-img').toggleClass('hidden');
   });
 
+// Audio playback every time an option is clicked
   $('input[type="radio"][name="quiz"]').click(function() {
-        // This gets the value of the clicked radio button
         var textToSpeak = $(this).val();
-        
-        // Call the convertTextToSpeech function with the radio button's value
         convertTextToSpeech(textToSpeak);
-    });
+  });
 
-    function convertTextToSpeech(textToSpeak) {
-        $.ajax({
-            url: '/text-to-speech/',  // URL to Django view
-            type: 'POST',
-            data: { 'text': textToSpeak },
-            success: function(response) {
-                console.log(response.message);
-                // Optional: Play the response if it includes audio data
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    }
+  // Function to convert text to speech
+  function convertTextToSpeech(textToSpeak) {
+      $.ajax({
+          url: '/text-to-speech/',  // URL to Django view
+          type: 'POST',
+          data: { 'text': textToSpeak },
+          success: function(response) {
+              console.log(response.message);
+              // Optional: Play the response if it includes audio data
+          },
+          error: function(error) {
+              console.log(error);
+          }
+      });
+  }
 });
 
-
-
+// Submits quiz data and checks for correctness
 $('#submitButton').click(function() {
     event.preventDefault();
-    var formData = $('#quiz-form').serialize();  // Serialize form data
+    var formData = $('#quiz-form').serialize();
     var button = $(this);
     if (button.text().trim() === 'Check') {
       console.log(formData);
       $.ajax({
           type: 'POST',
-          url: '/submit_answer',  // URL to your Django view
+          url: '/submit_answer',
           data: formData,
           success: function(response) {
               var contentContainer = $('input[type="radio"]:checked').next('.content-container');
@@ -312,8 +176,7 @@ $('#submitButton').click(function() {
               console.log(selectedOptionValue);
               if(response.is_correct) {
                   console.log('Correct answer!');
-                  // $('#message-container').text(response.message);  // Assuming you have a div with this ID
-                  contentContainer.css('border', '4px solid #4CAF50'); // Green for correct
+                  contentContainer.css('border', '4px solid #4CAF50');
                   contentContainer.css('background-color', '#a9e6ac'); 
                   var buzzer = document.getElementById('correctSound');
                   var check_mark = document.getElementById('correctTick'+selectedOptionValue);
@@ -323,8 +186,7 @@ $('#submitButton').click(function() {
                   
               } else {
                   console.log('Incorrect answer, try again.');
-                  // $('#message-container').text(response.message);  // Display error message
-                  contentContainer.css('border', '4px solid #FF0000'); // Red for incorrect e6a9a9
+                  contentContainer.css('border', '4px solid #FF0000');
                   contentContainer.css('background-color', '#e6a9a9');
                   var buzzer = document.getElementById('wrongSound');
                   buzzer.play();

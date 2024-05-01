@@ -5,21 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PortuguesePro Learning Dashboard</title>
- <!-- Include Bootstrap CSS -->
- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
- <!-- Font Awesome for icons -->
- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'architecture.css' %}">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <style>
 .container {
-    max-width: 800px; /* Limiting the width for better readability */
+    max-width: 800px;
 }
 
 .form-control, .btn {
-    border-radius: 0.25rem; /* Slightly rounded borders for form controls and button */
+    border-radius: 0.25rem;
 }
 
 .btn-primary {
@@ -29,11 +25,11 @@
 }
 
 .form-group label {
-    font-weight: bold; /* Makes labels bold */
+    font-weight: bold;
 }
 
 textarea {
-    resize:vertical; /* Prevent resizing of the textarea */
+    resize:vertical;
 }
 
 .header {
@@ -46,10 +42,8 @@ textarea {
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <a class="navbar-brand" href="#">
-      
       <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top: 8px">
       <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
-      
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -76,13 +70,11 @@ textarea {
             <a class="dropdown-item" href="/architecture">Architecture</a>
             <a class="dropdown-item" href="/festivals">Festivals</a>
             <a class="dropdown-item" href="page3.html">Media</a>
-            <!-- More dropdown items -->
           </div>
       </li>
       <li class="nav-item">
         <a class="nav-link active-tab" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
     </li>
-        <!-- More nav items -->
       </ul>
       <span class="navbar-text">
         <a href="#" id='discordHref' class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
@@ -110,7 +102,6 @@ textarea {
                     <input type="email" class="form-control" id="userEmail" value="{{user.email}}" readonly>
                 </div>
             </div>
-
             <!-- First Name and Last Name -->
             <div class="form-row">
                 <div class="col-md-6 form-group">
@@ -122,8 +113,6 @@ textarea {
                     <input type="text" class="form-control" id="lastName" value="{{user.last_name}}" readonly>
                 </div>
             </div>
-
-            
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="dailyGoalMinutes">Minutes per Day Goal</label>
@@ -135,8 +124,6 @@ textarea {
                 <input type="number" name="dailyGoalQuestions" id="dailyGoalQuestions" class="form-control" placeholder="Questions/day...." value="{{user.daily_question_goal}}" required>
               </div>
             </div>
-
-
             <!-- Daily Goal and Site Language -->
             <div class="form-row">
                 <div class="col-md-6 form-group">
@@ -159,7 +146,6 @@ textarea {
                     </select>
                 </div>
             </div>
-
             <div class="form-row">
               <div class="form-group col-md-8">
                 <label for="feedback">Feedback</label>
@@ -170,7 +156,6 @@ textarea {
                   </div>
               </div>
               </div>
-
               <div class="form-group col-md-4">
                 <label for="playbackSpeed">Audio Playback Speed</label>
                 <select class="form-control" id="playbackSpeed">
@@ -180,13 +165,6 @@ textarea {
                 </select>
               </div>
             </div>
-
-
-          <!-- Submit Button for Feedback
-          <div class="form-group text-center">
-              <button type="button" id="saveFeedbackBtn" class="btn btn-secondary" disabled>Submit Feedback</button>
-          </div> -->
-
             <br><br>
             <!-- Save Button -->
             <div class="form-group text-center">
@@ -196,52 +174,24 @@ textarea {
         </div>
     </div>
 </div>
-
-<!-- <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 0; right: 0; min-height: 200px; z-index: 1050; padding: 20px;">
-  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
+{% include 'mainsite/discord_modal.html' %}
+<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 100px; z-index: 1050;">
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
     <div class="toast-header">
-      <strong class="mr-auto text-primary">Notification</strong>
-      <small>11 mins ago</small>
-      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-        <span aria-hidden="true" id="closeToast">&times;</span>
+      <strong class="mr-auto text-success">Notification</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" style="text-decoration: none">
+        <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="toast-body">
       Settings saved successfully!
     </div>
   </div>
-</div> -->
-
-{% include 'mainsite/discord_modal.html' %}
-
-<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 100px; z-index: 1050;">
-  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
-    <div class="toast-header">
-      <strong class="mr-auto text-primary">Feedback Notification</strong>
-      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="toast-body">
-      Your feedback will be displayed here.
-    </div>
-  </div>
 </div>
-
-
-    
-    
-    
-    <!-- Add more cards for other locations as needed -->
-    
-  
-
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
 <!-- Include Popper.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
 <!-- Include Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -253,7 +203,8 @@ textarea {
     var originalDailyGoalQuestions = $('#dailyGoalQuestions').val();
     var originalLanguage = $('#siteLanguage').val();
     var originalPlayback = $('#playbackSpeed').val();
-    console.log(originalLanguage);
+
+    // Saves settings if any are edited
     $('#saveSettingsBtn').click(function(e) {
         e.preventDefault();
         var currentDailyGoalMinutes = $('#dailyGoalMinutes').val();
@@ -278,28 +229,24 @@ textarea {
             dataToSend.playbackSpeed = currentPlayback;
         }
 
-        console.log(dataToSend);
-
-        if (!$.isEmptyObject(dataToSend)) {  // Check if the object is not empty
+        // AJAX call to the backend to save user settings
+        if (!$.isEmptyObject(dataToSend)) { 
             $.ajax({
-                url: '/save_settings',  // Your Django URL where you handle this request
+                url: '/save_settings',
                 type: 'POST',
                 data: {
                   'dataToSend': JSON.stringify(dataToSend),
                   'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
                 },    
-                // headers: {'X-CSRFToken': getCookie('csrftoken')},  // Handling CSRF token
                 success: function(response) {
                     console.log('Settings saved successfully:', response);
-                    // Update original values to the current, so no unnecessary triggers on next save
                     originalGoal = currentDailyGoalMinutes;
                     originalLanguage = currentLanguage;
-                    // alert('Settings updated successfully!');
-                    // $('.toast').toast('show');  // Shows the toast
-                    // setTimeout(function() {
-                    //   $('.toast').toast('hide'); // This will hide the toast
-                    //   }, 2000
-                    // )
+                    $('.toast').toast('show');
+                    setTimeout(function() {
+                       $('.toast').toast('hide');
+                       }, 2000
+                     )
                 },
                 error: function(xhr, status, error) {
                     console.error('Error saving settings:', error);
@@ -310,61 +257,57 @@ textarea {
     });
 
     $('#saveFeedbackBtn').click(function() {
-        var feedback = $('#feedback').val(); // Get the value of the textarea
-        var csrfToken = $('[name="csrfmiddlewaretoken"]').val(); // Get the CSRF token from hidden input
+        var feedback = $('#feedback').val();
+        var csrfToken = $('[name="csrfmiddlewaretoken"]').val(); 
         $(this).prop('disabled', true).text('Submitting...'); 
         $.ajax({
-            url: '/submit_feedback', // URL to the Django view
-            type: 'POST', // Method type POST
+            url: '/submit_feedback',
+            type: 'POST', 
             data: {
-                'feedback': feedback, // Data passed to the server
-                'csrfmiddlewaretoken': csrfToken // CSRF token for security
+                'feedback': feedback, 
+                'csrfmiddlewaretoken': csrfToken 
             },
             success: function(response) {
-                // Handle success
                 alert(response.message);
-                console.log(response.message); // Log response from the server
                 $('#feedback').val('');
-                $('.toast-body').text('Feedback submitted successfully!');  // Update toast message dynamically
-                $('.toast').toast('show');  // Show toast notification
+                $('.toast-body').text('Feedback submitted successfully!');
+                $('.toast').toast('show');  
                 setTimeout(function() {
-                    $('.toast').toast('hide'); // This will hide the toast
+                    $('.toast').toast('hide'); 
                 }, 2000)
             },
             error: function(xhr, status, error) {
-                // Handle errors
                 alert('Failed to submit feedback. Please try again.');
                 console.error('Error details:', status, error);
             },
             complete: function() {
-            $('#saveFeedbackBtn').prop('disabled', false).text('Submit Feedback'); // Re-enable the button and reset text
+            $('#saveFeedbackBtn').prop('disabled', false).text('Submit Feedback');
         }
         });
     });
 
-    // Optional: Enable the submit button when there's input
     $('#feedback').on('input', function() {
         var input = $(this).val();
         if(input) {
-            $('#saveFeedbackBtn').prop('disabled', false); // Enable the button if there's text
+            $('#saveFeedbackBtn').prop('disabled', false);
         } else {
-            $('#saveFeedbackBtn').prop('disabled', true); // Disable the button if empty
+            $('#saveFeedbackBtn').prop('disabled', true);
         }
     });
     $('#dailyGoalQuestions').on('input', function() {
         var input = $(this).val();
         if(input) {
-            $('#saveSettingsBtn').prop('disabled', false); // Enable the button if there's text
+            $('#saveSettingsBtn').prop('disabled', false);
         } else {
-            $('#saveSettingsBtn').prop('disabled', true); // Disable the button if empty
+            $('#saveSettingsBtn').prop('disabled', true);
         }
     });
     $('#dailyGoalMinutes').on('input', function() {
         var input = $(this).val();
         if(input) {
-            $('#saveSettingsBtn').prop('disabled', false); // Enable the button if there's text
+            $('#saveSettingsBtn').prop('disabled', false);
         } else {
-            $('#saveSettingsBtn').prop('disabled', true); // Disable the button if empty
+            $('#saveSettingsBtn').prop('disabled', true);
         }
     });
 });

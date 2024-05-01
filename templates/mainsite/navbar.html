@@ -1,10 +1,8 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-    <a class="navbar-brand" href="#">
-      
+    <a class="navbar-brand" href="#">  
       <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style="padding-top: 8px;">
-      <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>
-      
+      <h1><span class="text-green" style="margin-left: 10px;">Portu</span><span class="text-red">Pro</span></h1>   
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -19,10 +17,10 @@
       </li>
       <li class="nav-item">
         <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/analytics">Analytics</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
-  </li>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nb-item" style="color: rgb(232, 255, 255);" href="/diacritics">Diacritics</a>
+      </li>
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle nb-item" style="color: rgb(232, 255, 255);"  href="#" id="cultureDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Culture
@@ -30,14 +28,12 @@
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
             <a class="dropdown-item" href="/architecture">Architecture</a>
             <a class="dropdown-item" href="/festivals">Festivals</a>
-            <a class="dropdown-item" href="page3.html">Media</a>
-            <!-- More dropdown items -->
+            <a class="dropdown-item" href="/media">Music</a>
           </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
     </li>
-        <!-- More nav items -->
       </ul>
       <span class="navbar-text">
         <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
@@ -48,7 +44,7 @@
     </div>
   </nav>
 
-  <!-- Discord Modal -->
+<!-- Discord Modal -->
 <div class="modal fade" id="discordModal" tabindex="-1" role="dialog" aria-labelledby="discordModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content">
