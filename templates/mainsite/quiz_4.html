@@ -9,100 +9,98 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <style>
     .quiz-container {
-      max-width: 700px;
-      margin: 30px auto;
-      background-color: #f9f9f9;
-      padding-top: 20px;
-      padding-left: 0px;
-      padding-right: 0px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        margin: 30px auto;
+        background-color: #f9f9f9;
+        padding-top: 20px;
+        padding-left: 0px;
+        padding-right: 0px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     
     .progress-bar {
       background-color: #4CAF50;
     }
-    hr {
-        
+    
+    hr {        
         height: 12px;
         width: 100%;
-        margin-left: 0px;  /* counteract the left padding of the container */
-        margin-right: 0px; /* counteract the right padding of the container */
-        background-color: #000000; /* or any color that fits the design */
-        margin-top: 20px; /* or any value that fits the design */
-        margin-bottom: 20px; /* or any value that fits the design */
+        margin-left: 0px;
+        margin-right: 0px;
+        background-color: #000000;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
     .phrase-section h1 {
-    color: #333;
-}
+        color: #333;
+    }
 
-.phrase {
-    display: flex;
-    justify-content: center; /* Horizontally center the content */
-    align-items: center; /* Vertically center the content */
-    height: 100px; /* Or any fixed height you prefer */
-}
-
-
-.sound-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0; /* Remove padding if you want the button closer to the text */
-    display: inline-flex; /* Align the icon vertically */
-    align-items: center;
-    justify-content: center;
-}
-
-.recording {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.record-button {
-    background-color: #f8f8f8;
-    border: 2px solid #ccc;
-    padding: 10px 20px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-.recording-slider input[type="range"] {
-    width: 100%;
-}
+    .phrase {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100px; 
+    }
 
 
-.mcq-container {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: auto;
-    padding-bottom: 20px;
-}
+    .sound-button {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0; 
+        display: inline-flex; 
+        align-items: center;
+        justify-content: center;
+    }
 
-.question {
-    font-size: 18px;
-    margin-bottom: 15px;
-}
+    .recording {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-.options {
-    list-style: none;
-    padding: 0;
-}
+    .record-button {
+        background-color: #f8f8f8;
+        border: 2px solid #ccc;
+        padding: 10px 20px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
 
-.options li {
-    margin-bottom: 10px;
-}
+    .recording-slider input[type="range"] {
+        width: 100%;
+    }
 
-    /* Hide the radio button itself */
+
+    .mcq-container {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: auto;
+        padding-bottom: 20px;
+    }
+
+    .question {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .options {
+        list-style: none;
+        padding: 0;
+    }
+
+    .options li {
+        margin-bottom: 10px;
+    }
+
     input[type="radio"] {
         display: none;
     }
 
-    /* Basic styling for labels */
     label {
         display: block;
         padding: 10px;
@@ -112,32 +110,23 @@
         cursor: pointer;
     }
 
-    /* Styling for label when the adjacent radio button is checked */
     input[type="radio"]:checked + label {
         border: 4px solid #c4c72a;
         background-color: #ebec98;
-        /* Right */
-        /* border: 2px solid #1ae245;
-        background-color: #dcffdd; */
-        /* border: 2px solid #dd2323;
-        background-color: #ffdddb; */
     }
 
-    /* Optionally, style for hovering over the label */
     label:hover {
         background-color: #ddd;
     }
-  </style>
+</style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
 <body>
   {% include 'mainsite/navbar.html' %}
-
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a> -->
         <div class="unit_heading">
           <b>Unit 4 - General Outdoors and Weather </b>
         </div>
@@ -168,86 +157,54 @@
                   class="far fa-times-circle incorrectTick" style="display:none"></i>
             </li>
             {% endfor %}
-
-            <!-- <li>
-                <input type="radio" id="option1" name="quiz" value="london">
-                <label for="option1">Eu sou um meninho</label>
-            </li>
-            <li>
-                <input type="radio" id="option2" name="quiz" value="paris">
-                <label for="option2">Eu tenho um carro</label>
-            </li>
-            <li>
-                <input type="radio" id="option3" name="quiz" value="berlin">
-                <label for="option3">Ela tehno uma maca</label>
-            </li>
-            <li>
-                <input type="radio" id="option4" name="quiz" value="madrid">
-                <label for="option4">Eu nao tehno um jornal</label>
-            </li> -->
         </ul>
-        <!-- {% if answer_status == 'correct' %} -->
-        <div id="correct_msg" class="alert alert-success" role="alert" style="width:100%">
-            <!-- Right answer given!                          -->
-        </div>
-        <!-- {% elif answer_status == 'wrong' %} -->
-        <div id="wrong_msg" class="alert alert-danger" role="alert" style="width:100%">
-            <!-- Wrong answer given!                              -->
-        </div>
-        <!-- {% endif %} -->
         <div class="text-center">
             <button id="submitButton" type="submit" class="btn btn-success btn-lg" disabled>Check</button>
         </div>
         </form>
-        <!-- <div class="text-center">
-            <button class="btn btn-success btn-lg">Check</button>
-            <button id="submitButton" type="submit" class="btn btn-success btn-lg">Check</button>
-        </div> -->
     </div>
     </div>
   </div>
-  
-<!-- Replace the 'slim' version with the full version of jQuery -->
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
 <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <script>
-
 $(document).ready(function() {
+    // Audio playback whenever an option is clicked
     $('.mcq_option').click(function() {
-        var optionValue = $(this).data('option'); // Retrieve the data-option attribute value
-        convertTextToSpeech(optionValue); // Call the function to handle the click event
+        var optionValue = $(this).data('option');
+        convertTextToSpeech(optionValue);
     });
 
+    // Enables/Disables submit button depending on if an option is selected
     $('input[type="radio"][name="quiz"]').change(function() {
             // Check if any radio button is selected
             if ($('input[type="radio"][name="quiz"]:checked').length > 0) {
-                $('#submitButton').prop('disabled', false); // Enable the submit button if any radio is checked
+                $('#submitButton').prop('disabled', false);
             } else {
-                $('#submitButton').prop('disabled', true); // Otherwise, keep it disabled
+                $('#submitButton').prop('disabled', true);
             }
         });
 
+    // Handles submission of question data to check for correctness
     $('#submitButton').click(function(event) {
-        event.preventDefault();  // Prevent the default form submission
-        var formData = $('#quiz-form').serialize();  // Serialize form data
+        event.preventDefault();
+        var formData = $('#quiz-form').serialize();
         var button = $(this);
         if (button.text().trim() === 'Check') {
           $.ajax({
               type: 'POST',
-              url: '/submit_answer',  // Adjust the URL to your Django view as needed
+              url: '/submit_answer',
               data: formData,
               success: function(response) {
                   var selectedLabel = $('input[type="radio"][name="quiz"]:checked').next('label');
                   var selectedOptionValue = $('input[type="radio"][name="quiz"]:checked').val();
-                  // Assuming response.is_correct is a boolean and response.message contains the feedback
                   if (response.is_correct) {
-                      // console.log(selectedOptionValue);
                       var check_mark = document.getElementById('correctTick'+selectedOptionValue);
                       check_mark.style.display = 'inline';
-                      // Optionally, play a sound for correct answer
                       $('#correctSound')[0].play();
                       selectedLabel.css({
                         'border': '4px solid #4CAF50', // Green border
@@ -267,7 +224,7 @@ $(document).ready(function() {
                   $('#submitButton').text('Continue');
               },
               error: function() {
-                  alert('There was an error processing your answer.');  // Basic error handling
+                  alert('There was an error processing your answer.');
               }
           });
         } else {
@@ -276,14 +233,14 @@ $(document).ready(function() {
     });
 });
 
+// Convert text to speech
 function convertTextToSpeech(textToSpeak) {
         $.ajax({
-            url: '/text-to-speech/',  // URL to Django view
+            url: '/text-to-speech/',
             type: 'POST',
             data: { 'text': textToSpeak },
             success: function(response) {
                 console.log(response.message);
-                // Optional: Play the response if it includes audio data
             },
             error: function(error) {
                 console.log(error);
@@ -291,6 +248,5 @@ function convertTextToSpeech(textToSpeak) {
         });
     }
 </script>
-
 </body>
 </html>

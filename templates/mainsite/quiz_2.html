@@ -27,11 +27,11 @@
         border: none;
         height: 1px;
         width: 100%;
-        margin-left: 0px;  /* counteract the left padding of the container */
-        margin-right: 0px; /* counteract the right padding of the container */
-        background-color: #000000; /* or any color that fits the design */
-        margin-top: 20px; /* or any value that fits the design */
-        margin-bottom: 20px; /* or any value that fits the design */
+        margin-left: 0px;
+        margin-right: 0px;
+        background-color: #000000; 
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
     .phrase-section h1 {
@@ -40,9 +40,9 @@
 
 .phrase {
     display: flex;
-    justify-content: center; /* Horizontally center the content */
-    align-items: center; /* Vertically center the content */
-    height: 100px; /* Or any fixed height you prefer */
+    justify-content: center;
+    align-items: center;
+    height: 100px; 
 }
 
 
@@ -51,8 +51,8 @@
     border: none;
     font-size: 24px;
     cursor: pointer;
-    padding: 0; /* Remove padding if you want the button closer to the text */
-    display: inline-flex; /* Align the icon vertically */
+    padding: 0; 
+    display: inline-flex; 
     align-items: center;
     justify-content: center;
 }
@@ -76,15 +76,12 @@
     width: 100%;
 }
 
-
-
-
-
 .option-container {
-    margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
+    margin-bottom: 1rem !important;
 }
   </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
 <body>
@@ -93,7 +90,6 @@
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a> -->
         <div class='unit_heading'>
           <b>{{unit_name}} </b>
         </div>
@@ -121,168 +117,134 @@
         </div>
         <div class="container" style="margin-top:20px">
           <div id="message" class="alert alert-danger" role="alert" style="width: 100%; display: none; border: 2px solid;"></div>
-          <!-- <div class="row justify-content-center">
-              <div class="col-auto">
-                  <div id="message" role="alert" style="display: none; width: 100%;"></div>
-              </div>
-          </div> -->
       </div>
       <div class="text-center" style="padding-top:10px">
         <button id="submitButton" type="submit" class="btn btn-success btn-lg">Continue</button>
-        <!-- Additional button next to Continue -->
-        <!-- <button id="skipButton" type="button" class="btn btn-danger btn-lg">Skip</button> -->
     </div>
       </form>
     </section>
     </div>
   </div>
-  <audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
-  <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
-<!-- Replace the 'slim' version with the full version of jQuery -->
+<audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
+<audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-    // // JavaScript to handle button click and make AJAX request
-    // $('#speakBtn').click(function() {
-    //     var textToSpeak = "Eu Sou Um Menino";  // The text you want to convert to speech
-    //     $.ajax({
-    //         url: '/text-to-speech/',  // URL to Django view
-    //         type: 'POST',
-    //         data: { 'text': textToSpeak },
-    //         success: function(response) {
-    //             console.log(response.message);
-    //         },
-    //         error: function(error) {
-    //             console.log(error);
-    //         }
-    //     });
-    // });
-
-    $(document).ready(function(){
-      $('#submitButton').prop('disabled', true);
-    $('#submitButton').click(function(e){
-        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
-        $.ajax({
-            type: 'POST',
-            url: '/submit_answer',  // Change to your actual view URL
-            data:{
-              'form_type': "{{question_id}}",
-              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // CSRF token for Django
-            }
-              
-            ,
-            success: function(response) {
-                // Do something with the response if needed
-                console.log("Success");
-                window.location.reload();
-            },
-            error: function(xhr, status, error) {
-                // Handle any errors here
-                console.error('Error on AJAX request: ' + error);
-                // window.location.reload();
-            }
-          });
-        // window.location.reload();
-      }); 
-    });
+  $(document).ready(function(){
+    $('#submitButton').prop('disabled', true);
+  $('#submitButton').click(function(e){
+      e.preventDefault();
+      $.ajax({
+          type: 'POST',
+          url: '/submit_answer',
+          data:{
+            'form_type': "{{question_id}}",
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val() 
+          }
+            
+          ,
+          success: function(response) {
+              window.location.reload();
+          },
+          error: function(xhr, status, error) {
+              // Handle any errors here
+              console.error('Error on AJAX request: ' + error);
+          }
+        });
+    }); 
+  });
 
 
-    $(document).ready(function(){
-    $('#recordBtn').click(function(e){
-        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
-      }); 
-    });
+  $(document).ready(function(){
+  $('#recordBtn').click(function(e){
+      e.preventDefault();
+    }); 
+  });
 
-    function convertTextToSpeech(textToSpeak) {
+  function convertTextToSpeech(textToSpeak) {
     $.ajax({
-        url: '/text-to-speech/',  // URL to Django view
+        url: '/text-to-speech/',
         type: 'POST',
         data: { 'text': textToSpeak },
         success: function(response) {
             console.log(response.message);
-            // Optional: Play the response if it includes audio data
         },
         error: function(error) {
             console.log(error);
         }
     });
-}
+  }
 
+  const recordButton = document.getElementById('recordBtn');
 
-    const recordButton = document.getElementById('recordBtn');
+  recordButton.addEventListener('click', () => {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+              // Check if the browser supports recording in WAV format
+              let options = {};
+              if (MediaRecorder.isTypeSupported('audio/wav')) {
+                  options = { mimeType: 'audio/wav' };
+              }
+              const mediaRecorder = new MediaRecorder(stream, options);
+              mediaRecorder.start();
 
-    recordButton.addEventListener('click', () => {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                // Check if the browser supports recording in WAV format
-                let options = {};
-                if (MediaRecorder.isTypeSupported('audio/wav')) {
-                    options = { mimeType: 'audio/wav' };
-                }
-                const mediaRecorder = new MediaRecorder(stream, options);
-                mediaRecorder.start();
+              const audioChunks = [];
+              mediaRecorder.addEventListener("dataavailable", event => {
+                  audioChunks.push(event.data);
+              });
 
-                const audioChunks = [];
-                mediaRecorder.addEventListener("dataavailable", event => {
-                    audioChunks.push(event.data);
-                });
+              mediaRecorder.addEventListener("stop", () => {
+                  const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+                  sendAudioToServer(audioBlob);
+              });
+              // Stop recording after 5 seconds
+              setTimeout(() => {
+                  mediaRecorder.stop();
+              }, 5000);
+          })
+          .catch(error => {
+              console.log("Error recording audio:", error);
+          });
+  });
 
-                mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-                    sendAudioToServer(audioBlob);
-                });
-
-                // Stop recording after 5 seconds
-                setTimeout(() => {
-                    mediaRecorder.stop();
-                }, 5000);
-            })
-            .catch(error => {
-                console.log("Error recording audio:", error);
-            });
-    });
-
-    function sendAudioToServer(blob) {
-        const formData = new FormData();
-        formData.append('audio', blob);
-
-        fetch('/process_audio/', { // URL of your Django view
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // Handle the response from the server
-            const messageElement = document.getElementById('message');
-            messageElement.style.display = ''; // Show the message div
-            if (data.status === 'success') {
-                messageElement.className = 'alert alert-success'; // Use Bootstrap success class
-                // messageElement.textContent = 'Success: ' + data.message;
-                messageElement.textContent = 'Correct!';
-                messageElement.style.textAlign = 'center';
-                messageElement.style.fontSize = '20px';
-                messageElement.style.fontWeight = 'bold';
-                messageElement.style.borderColor = 'green';
-                var buzzer = document.getElementById('correctSound');
-                buzzer.play();
-                $('#submitButton').prop('disabled', false);
-            } else {
-                messageElement.className = 'alert alert-danger'; // Use Bootstrap danger class for errors
-                messageElement.textContent = 'Incorrect!';
-                messageElement.style.fontSize = '20px';
-                messageElement.style.textAlign = 'center';
-                messageElement.style.fontWeight = 'bold';
-                messageElement.style.borderColor = 'red';
-                var buzzer = document.getElementById('wrongSound');
-                buzzer.play();
-            }
-
-        })
-        .catch(error => {
-            console.log("Error sending audio to server:", error);
-        });
-    }
-    </script>
+  // Sends recorded audio to the backend to check for correctness
+  function sendAudioToServer(blob) {
+      const formData = new FormData();
+      formData.append('audio', blob);
+      fetch('/process_audio/{{question_id}}', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          const messageElement = document.getElementById('message');
+          messageElement.style.display = '';
+          if (data.status === 'success') {
+              messageElement.className = 'alert alert-success';
+              messageElement.textContent = 'Correct!';
+              messageElement.style.textAlign = 'center';
+              messageElement.style.fontSize = '20px';
+              messageElement.style.fontWeight = 'bold';
+              messageElement.style.borderColor = 'green';
+              var buzzer = document.getElementById('correctSound');
+              buzzer.play();
+              $('#submitButton').prop('disabled', false);
+          } else {
+              messageElement.className = 'alert alert-danger';
+              messageElement.textContent = 'Incorrect!';
+              messageElement.style.fontSize = '20px';
+              messageElement.style.textAlign = 'center';
+              messageElement.style.fontWeight = 'bold';
+              messageElement.style.borderColor = 'red';
+              var buzzer = document.getElementById('wrongSound');
+              buzzer.play();
+          }
+      })
+      .catch(error => {
+          console.log("Error sending audio to server:", error);
+      });
+  }
+</script>
 </body>
 </html>

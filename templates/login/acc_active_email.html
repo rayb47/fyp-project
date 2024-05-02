@@ -1,3 +1,5 @@
-<p>Hi {{ user.username }},</p>
-<p>Please click on the link to confirm your registration:</p>
+<p>Hi {{ user.first_name }},</p>
+<p>Thank you for registering on PortuPro.</p>
+<p>Please click on the link to confirm the activation of your account:</p>
 <a href="{{ domain }}{% url 'login:activate' uidb64=uid token=token %}">Activate</a>
+<p>Happy Learning!</p>

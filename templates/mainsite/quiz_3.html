@@ -8,94 +8,95 @@
 <title>Quiz - Unit 3: Food And Drink</title>
 <link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
 <style>
-    .quiz-container {
-      max-width: 68%;
-      margin: 30px auto;
-      background-color: #f9f9f9;
-      padding: 20px;
-      padding-left: 0px;
-      padding-right: 0px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .option {
-      margin: 10px 0;
-      padding: 15px;
-      border-radius: 8px;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-    .option:hover {
-      background-color: #f0f0f0;
-    }
-    .option img {
+  .quiz-container {
+    max-width: 68%;
+    margin: 30px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .option {
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .option:hover {
+    background-color: #f0f0f0;
+  }
+
+  .option img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .progress {
+    height: 20px;
+  }
+
+  .progress-bar {
+    background-color: #4CAF50;
+  }
+
+  hr {
+      border: none;
+      height: 1px;
       width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .progress {
-      height: 20px;
-    }
-    .progress-bar {
-      background-color: #4CAF50;
-    }
-    hr {
-        border: none;
-        height: 1px;
-        width: 100%;
-        margin-left: 0px;  /* counteract the left padding of the container */
-        margin-right: 0px; /* counteract the right padding of the container */
-        background-color: #000000; /* or any color that fits the design */
-        margin-top: 20px; /* or any value that fits the design */
-        margin-bottom: 20px; /* or any value that fits the design */
-    }
+      margin-left: 0px; 
+      margin-right: 0px;
+      background-color: #000000; 
+      margin-top: 20px;
+      margin-bottom: 20px; 
+  }
 
-    input[type="radio"]:checked + img {
-  border: 8px solid #4CAF50; /* Green border for selected item */
-  /* padding: 4px; */
-}
+  input[type="radio"]:checked + img {
+    border: 8px solid #4CAF50;
+  } 
 
-.match-item { cursor: pointer; }
-.matched { background-color: #198754; color: rgb(34, 190, 34); font-weight: 600; }
-.mismatched { color: red; font-weight: bold;}
+  .match-item { cursor: pointer; }
 
+  .matched { background-color: #198754; color: rgb(34, 190, 34); font-weight: 600; }
 
+  .mismatched { color: red; font-weight: bold;}
 
+  .option-container {
+    margin-bottom: 1rem !important;
+  }
 
-.option-container {
-    margin-bottom: 1rem !important; /* 'mb-1' equivalent, change as needed */
-}
+  .list-group.match-list {
+    margin: 20px;
+    border-radius: 5px;
+  }
 
-.list-group.match-list {
-        margin: 20px;
-        border-radius: 5px;
-    }
-    #listA {
-        border: 3px solid black;  /* Light grey background */
-    }
+  #listA {
+    border: 3px solid black;
+  }
 
-    #listB {
-        border: 3px solid black;  /* Light grey background */
-    }
+  #listB {
+    border: 3px solid black; 
+  }
 
-    #columnA, #columnB {
-      border-bottom: 1.5px solid black; /* Light grey background */
-      box-shadow:  0 0 5px 0px;
-      background-color: #eeeee4;
-      font-weight: bold;
-      font-size: 20px;
-    }
+  #columnA, #columnB {
+    border-bottom: 1.5px solid black;
+    box-shadow:  0 0 5px 0px;
+    background-color: #eeeee4;
+    font-weight: bold;
+    font-size: 20px;
+  }
 
-
-    #columnA:hover, #columnB:hover {
-      background-color: #b9b987;
-    }
-
-
-
-
-  </style>
+  #columnA:hover, #columnB:hover {
+    background-color: #b9b987;
+  }
+</style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
 <body>
@@ -107,7 +108,7 @@
           <b>{{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%;"> 
-          <div class="progress-bar" style="width:70%"></div>
+          <div class="progress-bar progress-bar-striped" style="width:70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
         </div>
         {% if not repeated_question %}
         <div class='numbering'><b>{{question_id}} of 11</b></div>
@@ -148,66 +149,35 @@
     </form>
     </div>
   </div>
-
 <audio id="correctSound" src="{% static 'correct_sound_effect.mp3' %}" preload="auto"></audio>
 <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
-<!-- Replace the 'slim' version with the full version of jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
+    // Submits answer data
     $('#submitButton').click(function(e){
-        e.preventDefault(); // Prevents the default action of the submit button if it's inside a form
+        e.preventDefault();
         var formData = $('#quiz-form').serialize();
         $.ajax({
             type: 'POST',
-            url: '/submit_answer',  // Change to your actual view URL
+            url: '/submit_answer',
             data: formData,
             success: function(response) {
-                // Do something with the response if needed
-                console.log("Success");
                 window.location.reload()
             },
             error: function(xhr, status, error) {
-                // Handle any errors here
                 console.error('Error on AJAX request: ' + error);
-                // window.location.reload();
             }
         });
-        // window.location.reload();
     }); 
-    // let lastClicked = null;
-    // $('.match-item').click(function() {
-    //     const currentClicked = $(this);
-    //     if (lastClicked && lastClicked[0] !== currentClicked[0]) { // Ensure they are different elements
-    //         if (lastClicked.data('match') === currentClicked.attr('data-match')) { // Check if data-match values are equal
-    //             currentClicked.addClass('matched');
-    //             lastClicked.addClass('matched');
-    //             var buzzer = document.getElementById('correctSound');
-    //             buzzer.play();
-    //         } else {
-    //             currentClicked.addClass('mismatched');
-    //             lastClicked.addClass('mismatched');
-    //             var buzzer = document.getElementById('wrongSound');
-    //             buzzer.play();
-    //             // Store lastClicked in a separate variable to use in the timeout function
-    //             const tempLastClicked = lastClicked;
-    //             setTimeout(() => {
-    //                 // Remove 'mismatched' class from both last clicked and current clicked elements
-    //                 currentClicked.removeClass('mismatched');
-    //                 tempLastClicked.removeClass('mismatched');
-    //             }, 1000);
-    //         }
-    //         lastClicked = null; // Reset lastClicked after handling
-    //     } else {
-    //         lastClicked = currentClicked; // Set currentClicked as lastClicked for the next click
-    //     }
-    // });
 });
 
 let lastClicked = null;
 let totalMatchesRequired = parseInt(document.getElementById('matchCount').value);
 let currentMatches = 0;
-
+// Handles matching the selected items
 $('.match-item').click(function() {
     const currentClicked = $(this);
     console.log(currentMatches);
@@ -239,9 +209,7 @@ $('.match-item').click(function() {
         lastClicked = currentClicked;
     }
 });
-
 </script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

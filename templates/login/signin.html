@@ -12,10 +12,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
 <body>
-
 <img class="gif-background" src="{% static 'Big Logo.png' %}" alt="GIF" class="gif">
 <img class="gif-background2" src="{% static '6 Tags on right.png' %}" alt="GIF" class="gif">
-<!-- <img class="gif-background3" src="{% static 'Welcome Text (2).png' %}" alt="GIF" class="gif"> -->
 <img class="gif-background4" src="{% static 'Big Website Title.png' %}" alt="GIF" class="gif">
 <div class="container mt-5">
   <div class="row justify-content-center">
@@ -23,26 +21,15 @@
       <div class="card" id="login-card">
         <div class="card-body">
           <div class="text-center mb-4">
-            <img src="{% static 'Small Logo for Centre.png' %}" class="mb-4" alt="Portuguese Flag" style="width: 250px; height: 250px;"> <!-- Adjust size as needed -->
-            <!-- <h1><b><span class="text-green" style="color:green; font-size: 50px; text-shadow: black 2px 2px;">Portu</span><span class="text-red" style="color:rgb(202, 41, 41); font-size: 50px; text-shadow: black 2px 2px;">Pro</span></b></h1> -->
+            <img src="{% static 'Small Logo for Centre.png' %}" class="mb-4" alt="Portuguese Flag" style="width: 200px; height: 200px;"> <!-- Adjust size as needed -->
             <p>A Portuguese language learning website to help you sharpen and develop your Portuguese. <br><br><span style="font-weight: bold"> Enter your login details below.</span></p>
-          </div>
-          
+          </div> 
           <form action="signin" method="post">
             {% csrf_token %}
             <div class="form-group">
               <label for="inputEmail"><b>Username</b></label>
               <input type="username" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
             </div>
-
-            <!-- <div class="form-group">
-                <label for="inputPassword">Password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                <small id="passwordHelpBlock" class="form-text text-muted">
-                  <a href="#" onclick="togglePasswordVisibility()">Show Password</a>
-                </small>
-            </div> -->
-
             <div class="form-group">
                 <label for="inputPassword"><b>Password</b></label>
                 <div class="input-group" id="inputPasswordtotal">
@@ -54,34 +41,21 @@
                   </div>
                 </div>
               </div>
-
-            <!-- <div class="checkbox mb-3">
-              <label>
-                <input type="checkbox" name="remember-me" value="remember-me"> Remember me
-              </label>
-            </div> -->
-            
             <center><button class="btn btn-lg btn-primary btn-block" type="submit" id="loginBtn" style="margin-top:10px">Login</button></center>
             <div class="mt-3">
-              <!-- <a href="{% url 'login:password_reset' %}">Forgot Password?</a> -->
               <center><a href="#" data-bs-toggle="modal" data-bs-target="#passwordResetModal">Forgot Password?</a></center>
             </div>
-          </form>
-          
+          </form>          
           <div class="mt-4">
             <p class="text-center">Don't have an account? <a href="signup" class="text-primary">Register</a></p>
           </div>
-
-
-          
         </div>
       </div>
     </div>
   </div>
 </div>
-
 <script>
-    // Toggles the visibility of the password input field and updates the text of the password link.
+    // Show/Hide passowrd functionality
     function togglePasswordVisibility() {
         var passwordInput = document.getElementById('inputPassword');
         var togglePasswordIcon = document.getElementById('togglePassword');
@@ -95,68 +69,61 @@
             togglePasswordIcon.classList.add('fa-eye');
         }
     }
-    
-
-
-    </script>
-    {% if messages %}
-    <script type="text/javascript">
-        window.onload = function() {
-            // Concatenate all messages into one string
-            let messageText = "{% for message in messages %}{{ message }}\n{% endfor %}";
-            alert(messageText);  // Use a simple alert for demonstration
-        }
-    </script>
-    {% endif %}
+</script>
+{% if messages %}
+<script type="text/javascript">
+    window.onload = function() {
+        // Concatenate all messages into one string
+        let messageText = "{% for message in messages %}{{ message }}\n{% endfor %}";
+        alert(messageText);  // Use a simple alert for demonstration
+    }
+</script>
+{% endif %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
+    // Password reset functionality
     $('#passwordResetForm').submit(function(e) {
-        e.preventDefault(); // Prevent default form submission
-        var email = $('#userEmail').val(); // Get the email from the input field
-        
+        e.preventDefault();
+        var email = $('#userEmail').val();
         $.ajax({
             type: "POST",
-            url: "/password_reset", // Update with the path to your Django password reset view
+            url: "/password_reset",
             data: {
                 email: email,
-                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() // Ensure CSRF token is sent with the request
+                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
             },
             success: function(response) {
-                // Handle success - perhaps display a message that the email has been sent
                 alert("Please check your email for the password reset link.");
                 $('#passwordResetModal').modal('hide'); // Optionally hide the modal
             },
             error: function(xhr, status, error) {
-                // Handle error
                 alert("An error occurred. Please try again.");
             }
         });
     });
 });
 </script>
-          <!-- Password Reset Modal -->
-          <div class="modal fade" id="passwordResetModal" tabindex="-1" aria-labelledby="passwordResetModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="passwordResetModalLabel">Reset Password</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="passwordResetForm">
-                            <div class="mb-3">
-                                <label for="userEmail" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp" required>
-                                <div id="emailHelp" class="form-text">We'll send a link to reset your password.</div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Send Reset Link</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+<!-- Password Reset Modal -->
+<div class="modal fade" id="passwordResetModal" tabindex="-1" aria-labelledby="passwordResetModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="passwordResetModalLabel">Reset Password</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-
-       
+          <div class="modal-body">
+              <form id="passwordResetForm">
+                  <div class="mb-3">
+                      <label for="userEmail" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp" required>
+                      <div id="emailHelp" class="form-text">We'll send a link to reset your password.</div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Send Reset Link</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
 </body>
 </html>

@@ -8,86 +8,83 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
 <style>
   .lesson-card .card-body {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensures max spacing between top and bottom content */
-}
+    justify-content: space-between;
+  }
 
-.unit-img {
-    width: 100%; /* Ensures the image takes up the full width of the card */
-    object-fit: cover; /* Ensures the image covers the area without distortion */
+  .unit-img {
+    width: 100%;
+    object-fit: cover; 
     border: 2px solid white;
     box-shadow: 0 0 10px 0px black;
-}
-
-#quizBtn {
-  border: 1px solid black;
-  margin-left: 2%;
-  box-shadow: inset 0 0 10px 0px black;
-  font-size: 18px;
-}
-
-#lessonBtn {
-  border: 1px solid black;
-  margin-right: 2%;
-  box-shadow: inset 0 0 10px 0px black;
-  font-size: 18px;
-}
-
-.goal {
-  color: rgb(43, 175, 43);
-  font-weight: bold;
-  text-shadow: 1px 1px #020202;
-}
-
-@media (min-width: 768px) { /* Adjusts for medium screens and up */
-  .tiles-container {
-    padding-right: 5rem; /* Increase the right padding */
   }
-  
+
+  #quizBtn {
+    border: 1px solid black;
+    margin-left: 2%;
+    box-shadow: inset 0 0 10px 0px black;
+    font-size: 18px;
+  }
+
+  #lessonBtn {
+    border: 1px solid black;
+    margin-right: 2%;
+    box-shadow: inset 0 0 10px 0px black;
+    font-size: 18px;
+  }
+
+  .goal {
+    color: #0905f7;
+    font-weight: bold;
+    
+  }
+
+  @media (min-width: 768px) { 
+    .tiles-container {
+      padding-right: 5rem;
+    }
+    
+    .widgets-container {
+      padding-left: 5rem;
+    }
+  }
+
   .widgets-container {
-    padding-left: 5rem; /* Increase the left padding */
+    padding-left: 5rem;
+    flex-basis: 350px;
   }
-}
 
-.widgets-container {
-  padding-left: 5rem; /* Keep your existing padding */
-  flex-basis: 350px; /* Example max-width, adjust as needed */
-}
+  #discordLogo {
+    color: #cab2fb;
+  }
 
-#discordLogo {
-  color: #cab2fb;
-}
+  #discordLogo:hover{
+    color: #7e61ab;
+  }
 
-#discordLogo:hover{
-  color: #7e61ab;
-}
+  #discordHref {
+    text-decoration: none
+  }
 
-#discordHref {
-  text-decoration: none
-}
+  #closeModal:hover {
+    background-color: rgb(224, 107, 107);
+    font-weight: bold;
+  }
 
-#closeModal:hover {
-  background-color: rgb(224, 107, 107);
-  font-weight: bold;
-}
-
-.tooltip-inner {
-    max-width: 300px; /* Increase max-width as needed */
-    width: auto; /* Set width to auto to allow flexible content width */
-}
+  .tooltip-inner {
+      max-width: 300px;
+      width: auto;
+  }
 </style>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <a class="navbar-brand" href="#">
-      
-      <img src="{% static 'Logo2.png' %}" alt="Logo" width="90" height="65" class="d-inline-block align-text-top">
+      <img src="{% static 'Logo for Navbar.png' %}" alt="Logo" width="70" height="70" class="d-inline-block align-text-top" style=" padding-top: 8px;">
       <h1><span class="text-green" style="margin-left: 10px; text-shadow: rgb(233, 225, 183) 1px 1px; ">Portu</span><span class="text-red" style="text-shadow: rgb(233, 225, 183) 1px 1px;">Pro</span></h1>
-      
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -113,14 +110,12 @@
           <div class="dropdown-menu" aria-labelledby="cultureDropdown">
             <a class="dropdown-item" href="/architecture">Architecture</a>
             <a class="dropdown-item" href="/festivals">Festivals</a>
-            <a class="dropdown-item" href="page3.html">Media</a>
-            <!-- More dropdown items -->
+            <a class="dropdown-item" href="/media">Media</a>
           </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" style="color: rgb(232, 255, 255);" href="/settings">Settings</a>
     </li>
-        <!-- More nav items -->
       </ul>
       <span class="navbar-text">
         <a href="#" id='discordHref' class="settings-link nb-item"  class="settings-link nb-item" style="font-size:26px; margin-right: 2em;" data-toggle="modal" data-target="#discordModal">
@@ -130,28 +125,25 @@
       </span>
     </div>
   </nav>
-
 <div class="container mt-4">
   <div class="text-white">
     {% if user.is_authenticated %}
-    <h1>{{greeting}} {{user.username}}</h1><br>
+    <h1 style="text-shadow: 0px 0px 12px rgb(0, 0, 0);">{{greeting}}, {{user.first_name}}</h1><br>
     {% endif %}
   </div>
-  
   <div class="row">
     <div class="col-md-8 tiles-container pr-md-3">
       <div class="row">
-        
         {% for unit in units %}
         <div class="col-md-6 mb-3">
           <div class="card lesson-card">
               <img src="{{ unit.description }}" class="img-responsive-img-top unit-img" alt="..." style="height:200px">
-              <div class="card-body d-flex flex-column justify-content-between"> <!-- Flexbox utilities to control vertical layout -->
+              <div class="card-body d-flex flex-column justify-content-between"> 
                   <center><h5 class="card-title" style="font-size: 18px;">{{ unit.id }} - {{ unit.name }}</h5></center>
                   <!-- Flex container for buttons -->
-                  <div class="mt-auto"> <!-- This class pushes the container to the bottom -->
-                      <div class="btn-group" role="group" style="width: 100%;"> <!-- Button group for side-by-side alignment -->
-                          <a href="/lesson/{{ unit.id }}" class="btn btn-primary" id="lessonBtn">Lessons</a> <!-- flex-fill makes buttons expand to fill the container -->
+                  <div class="mt-auto"> 
+                      <div class="btn-group" role="group" style="width: 100%;"> 
+                          <a href="/lesson/{{ unit.id }}" class="btn btn-primary" id="lessonBtn">Lessons</a> 
                           <a href="#" class="btn btn-primary quiz-button" data-toggle="modal" data-target="#quizModal" id="quizBtn" data-unit="{{ unit.id }}">Quizzes</a>
                       </div>
                   </div>
@@ -203,30 +195,16 @@
                     </div>
                     <a href="#" class="btn btn-primary">Access Quiz</a>
                 </li>
-                <!-- Quiz 4 -->
-                <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                    Quiz 4: <strong>10 out of 10 questions answered</strong>
-                    <div class="progress" style="height: 20px; margin-top: 10px; width: 80%;">
-                        <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-                    </div>
-                    </div>
-                    <a href="#" class="btn btn-primary">Access Quiz</a>
-                </li> -->
                 </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id='closeModal' data-dismiss="modal" ><b>Close</b></button>
-                <!-- You can add additional buttons if needed -->
             </div>
             </div>
         </div>
         </div>
-        
-        <!-- Repeat for other units -->
       </div>
     </div>
-    
     <div class="col-md-4 widgets-container pl-md-6">
       <h2 style="color: black; font-weight: bold; width: 120%;">Weather Widget</h2>
       <div class="card mb-3 weather-widget">
@@ -234,7 +212,7 @@
             
             <h2 class="card-title city-title" style="color: white; font-weight: bold; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; text-shadow: 3px 3px #000000;">{{city}}</h2>
             <div style="position: absolute; top: 10%; right: 10%;">
-              <img src="{{image}}" alt="Weather Icon" style="width: 120%; background-color: rgb(0, 0, 0); border-radius: 15px; box-shadow: inset 0 0 10px 0px rgb(28, 185, 224);">
+              <img src="{{image}}" alt="Weather Icon" style="width: 120%; border-radius: 15px; box-shadow: inset 0 0 10px 0px rgb(0, 0, 0); border: 1px solid black;">
             </div>
             <h3 id="localTime" class="card-text" style="margin-top: 15%">{{current_date}}</h3>
             <h4 id="liveTime"></h4>
@@ -242,18 +220,13 @@
             <h5 id="localTemp" class="card-text" style=" color: white; text-shadow: 3px 3px #000000;">{{temp_c}}</h5>
         </div>
       </div>
-    
-      <!-- Add other widgets like activity tracker and twitter feed -->
-      
       <h2 style="color: black; margin-top: 14%; font-weight: bold; width: 120%;">Activity Tracker
-        <a href="#" data-toggle="tooltip" data-html="true" title="Yellow Background - Current Date<br>Green Background - Activity Goal Met<br>Green Text - Question Goal Met" 
+        <a href="#" data-toggle="tooltip" data-html="true" title="Yellow Background - Current Date<br>Green Background - Activity Goal Met<br>Blue Text - Question Goal Met" 
           style="font-size: 20px; color: white;">
           <i class="fas fa-info-circle"></i>
       </a>
       </h2>
       <div class="card mb-3" id="calendar-container">
-      <!-- <div id="calendar-container"> -->
-      
         <table id="loginCalendar" class="calendar">
           <thead>
             <tr>
@@ -263,7 +236,7 @@
                   <button id="nextMonth">&#8594;</button>
               </th>
             </tr>
-            <tr style="background-color: #ddd186;" >
+            <tr style="background-color: #cec488;" >
                 <th>Sun</th>
                 <th>Mon</th>
                 <th>Tue</th>
@@ -278,48 +251,44 @@
                 <!-- Calendar days will be generated by JavaScript -->
             </tbody>
         </table>
-      <!-- </div> -->
     </div>
-      <!-- <div class="twitter-container">
-        <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/theportugalnews?ref_src=twsrc%5Etfw">Tweets by theportugalnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div> -->
     </div>
   </div>
 </div>
-
-<!-- Discord Modal -->
-<div class="modal fade" id="discordModal" tabindex="-1" role="dialog" aria-labelledby="discordModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="discordModalLabel">Join Our Discord</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              Join our discord to interact with the community
-              <a href="https://discord.gg/placeholder" target="_blank">https://discord.gg/placeholder</a>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-      </div>
-  </div>
+{% include 'mainsite/discord_modal.html' %}
+<div id="messages" style="display:none;">
+  {% for message in messages %}
+      <div data-message="{{ message }}" data-tag="{{ message.tags }}"></div>
+  {% endfor %}
 </div>
-
 {{ user_activity_dates|json_script:"activity-data" }}
 {{ goal_dates|json_script:"goal-data" }}
 {{ combined_city_data|json_script:"weather-data" }}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+  $(document).ready(function() {
+      $('#messages div').each(function() {
+          var message = $(this).data('message');
+          var tag = $(this).data('tag');
   
-  
+          Swal.fire({  // SweetAlert function call
+              icon: tag,  // 'success', 'error', etc.
+              title: 'Alert',
+              text: message,
+              timer: 3000,  // Auto close after 5 seconds
+              timerProgressBar: true
+          });
+      });
+  });
+  </script>
+<script>
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
 
+    // Gets data for quizzes for a unit when the 'Quiz' button is clicked
     $('.quiz-button').click(function() {
     var unitId = $(this).data('unit');
         $.ajax({
@@ -329,7 +298,6 @@
             success: function(response) {
                 // Clears the existing contents of the modal
                 var quizList = $('.modal-body .list-group').empty();
-                
                 // Iterates through the data on the quizzes and append to the list
                 response.quizzes.forEach(function(quiz) {
                     var quizItem = `<li class="list-group-item d-flex justify-content-between align-items-center">
@@ -354,6 +322,7 @@
     });
 });
   
+  // Updates the time
   function updateTime() {
     const now = new Date();
     // Specify the timeZone as Europe/Lisbon for Portugal
@@ -364,11 +333,10 @@
 
 // Update the time every second
 setInterval(updateTime, 1000);
-
-// Initialize
 updateTime();
 let currentDate = new Date();
 
+// Handles interaction with the calendar
 document.addEventListener('DOMContentLoaded', function() {
     updateCalendar(currentDate);
 
@@ -381,6 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Updates the calendar
 function updateCalendar(date) {
     generateCalendar(date);
     document.getElementById('monthYear').textContent = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
@@ -391,6 +360,7 @@ function updateCalendar(date) {
     markLoginDates(loginDates, goalDates, date);
 }
 
+// Generates the calendar
 function generateCalendar(date) {
     const monthDays = document.querySelector("#loginCalendar tbody");
     monthDays.innerHTML = "";
@@ -404,7 +374,7 @@ function generateCalendar(date) {
     }
 
     // Generate days for the calendar
-    for (let i = 0; i < (6*7); i++) { // 6 weeks coverage
+    for (let i = 0; i < (6*7); i++) { 
         if (i % 7 === 0) {
             var week = document.createElement("tr");
             monthDays.appendChild(week);
@@ -421,11 +391,13 @@ function generateCalendar(date) {
     }
 }
 
+// Cycles through months on the calendar
 function changeMonth(change) {
     currentDate.setMonth(currentDate.getMonth() + change);
     updateCalendar(currentDate);
 }
 
+// Marks login dates on the calendar
 function markLoginDates(loginDates, goalDates, date) {
     const month = date.getMonth();
     const year = date.getFullYear();
@@ -441,59 +413,22 @@ function markLoginDates(loginDates, goalDates, date) {
     });
 }
 
+// Cycles through weather data
 document.addEventListener('DOMContentLoaded', function() {
-    const weatherData = [
-        { country: 'Porto', local_time: '13th September, 2024', temp_c: '13.0°C' },
-        { country: 'Madeira', local_time: '13th April, 2024', temp_c: '16°C'}
-        // Add more cities as needed
-    ];
-
+    const weatherData = JSON.parse(document.getElementById('weather-data').textContent);
     let currentIndex = 0;
-
     function updateWeatherWidget() {
         const data = weatherData[currentIndex];
-        document.querySelector('.city-title').innerHTML = `${data.country}`;
-        document.querySelector('#localTime').innerHTML = `${data.local_time}`;
+        document.querySelector('.city-title').innerHTML = `${data.city}`;
+        document.querySelector('#localTime').innerHTML = "{{current_date}}";
         document.querySelector('#localTemp').innerHTML = `${data.temp_c}`;
-        // document.querySelector('img').src = data.image;
-
-        currentIndex = (currentIndex + 1) % weatherData.length; // Loop back to the first city
+        // document.querySelector('.weather-icon').src = `https:${data.image}`;
+        console.log(weatherData.length);
+        currentIndex = (currentIndex + 1) % weatherData.length;
     }
 
     setInterval(updateWeatherWidget, 5000); // Update every 5000 milliseconds (5 seconds)
 });
-
-// ---- WORKING CODE ---------
-// document.addEventListener('DOMContentLoaded', function() {
-//     // Access the data from the json_script output
-//     const weatherData = JSON.parse(document.getElementById('weather-data').textContent);
-
-//     let currentIndex = 0;
-
-//     function updateWeatherWidget() {
-//         const data = weatherData[currentIndex];
-//         document.querySelector('.city-title').innerHTML = `${data.city}`; // changed from country to city
-//         document.querySelector('#localTime').innerHTML = `13th September, 2024`; // Assuming you'll add local time
-//         document.querySelector('#localTemp').innerHTML = `${data.temp_c}`;
-//         // Assuming the image element has a specific class for targeting
-//         // document.querySelector('.weather-icon').src = `https:${data.image}`;
-//         console.log(weatherData.length);
-//         currentIndex = (currentIndex + 1) % weatherData.length; // Loop back to the first city
-//     }
-
-//     setInterval(updateWeatherWidget, 5000); // Update every 5000 milliseconds (5 seconds)
-// });
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     fetch('/weather_data')
-//         .then(response => response.json())
-//         .then(data => {
-//             // 'data' contains the weather data from your Django view
-//             console.log(data.data); // Access the 'data' key of the JSON response
-//             // Process and display this data as needed
-//         })
-//         .catch(error => console.error('Error fetching weather data:', error));
-// });
 </script>
 </body>
 </html>

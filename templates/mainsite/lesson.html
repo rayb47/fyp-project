@@ -4,136 +4,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz - Unit 3: Food And Drink</title>
-<link rel="icon" type="image/jpg" href="{% static 'pp.jpg' %}">
+<title>PortuPro Lesson - Unit {{unit_id}}: {{unit_name}}</title>
+<link rel="icon" type="image/jpg" href="{% static 'Logo for Navbar.png' %}">
 <style>
-    .quiz-container {
-      max-width: 1000px;
-      margin: 30px auto;
-      background-color: #f9f9f9;
-      padding: 20px;
-      padding-left: 0px;
-      padding-right: 0px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+  .quiz-container {max-width: 1000px; margin: 30px auto; background-color: #f9f9f9; padding: 20px; padding-left: 0px; padding-right: 0px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
     
+  hr { border: none; height: 1px; width: 100%; margin-left: 0px; margin-right: 0px; background-color: #000000; }
 
-    hr {
-        border: none;
-        height: 1px;
-        width: 100%;
-        margin-left: 0px;  /* counteract the left padding of the container */
-        margin-right: 0px; /* counteract the right padding of the container */
-        background-color: #000000; /* or any color that fits the design */
-       /* or any value that fits the design */
-       
-    }
+  .phrase-section h1 { color: #333; }
 
-    .phrase-section h1 {
-    color: #333;
-}
+  .phrase { display: flex; justify-content: center; align-items: center; height: 100px; }
 
-.phrase {
-    display: flex;
-    justify-content: center; /* Horizontally center the content */
-    align-items: center; /* Vertically center the content */
-    height: 100px; /* Or any fixed height you prefer */
-}
+  .sound-button { background: none; border: none; font-size: 24px; cursor: pointer; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
 
+  .recording { display: flex; flex-direction: column; align-items: center; }
 
-.sound-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0; /* Remove padding if you want the button closer to the text */
-    display: inline-flex; /* Align the icon vertically */
-    align-items: center;
-    justify-content: center;
-}
+  .record-button { background-color: #f8f8f8; border: 2px solid #ccc; padding: 10px 20px; border-radius: 20px; margin-bottom: 10px; cursor: pointer; }
 
-.recording {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+  .sound-button, .plus-button { margin-left: 10px; cursor: pointer;  transition: transform 0.2s ease-in-out;}
 
-.record-button {
-    background-color: #f8f8f8;
-    border: 2px solid #ccc;
-    padding: 10px 20px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
+  .sound-button i, .plus-button i { pointer-events: none; }
 
-.recording-slider input[type="range"] {
-    width: 100%;
-}
+  .sound-button:hover, .plus-button:hover { transform: scale(1.1); }
 
-.sound-button, .plus-button {
-    margin-left: 10px;
-    cursor: pointer;
-}
+  .sound-button:focus, .plus-button:focus { outline: none; box-shadow: none;  background-color: #8b1f1f; background: none; }
 
-.sound-button i, .plus-button i {
-    pointer-events: none; /* Prevents the icon from capturing click events directly */
-}
+  #plusBtn { border: 2px solid green }
 
-.sound-button, .plus-button {
-    transition: transform 0.2s ease-in-out;
-}
-
-.sound-button:hover, .plus-button:hover {
-    transform: scale(1.1);
-}
-
-.sound-button:focus, .plus-button:focus {
-    outline: none;
-    box-shadow: none; /* Also remove any box-shadow if applied by Bootstrap */
-    background-color: #8b1f1f;
-    background: none;
-}
-
-#plusBtn {
-  border: 2px solid green
-}
-
-
-
-
-
-
-  </style>
+</style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
 <body>
- {% include 'mainsite/navbar.html' %}
-
-
+  {% include 'mainsite/navbar.html' %}
+  <!-- Main Page -->
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- <a href="#" class="btn btn-light big-arrow" style="border: solid 1px #000000; margin-left: 10px;">&larr;</a> -->
         <div style="width: auto; margin-left:20px; font-size: 18px">
-          <b>Unit 2 - Common Food and Animal Names </b>
+          <b>Unit {{unit_id}} - {{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%;"> 
-          <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 30%" data-toggle="tooltip" data-placement="top" title="For Quiz 2" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">70%</div>
+          <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ percent_complete }}%;" data-toggle="tooltip" data-placement="top" title="For Quiz 2" aria-valuenow="{{percent_complete}}" aria-valuemin="0" aria-valuemax="100">{{percent_complete}}%</div>
         </div>
         <a href="/home" class="btn btn-light big-close" id="big_close">&times;</a>
     </div>
     <hr>
-    <!-- Word in Portuguese (Word in English)
-    Usage in Portuguese (Meaning of same usage in English)
-    Speaker button to pronounce the word in English
-    Speaker button to pronounce the example sentence usage in English -->
     <div class="lesson-content" style="margin: 20px;">
       <form>
         {% csrf_token %}
+        <!-- Iterate through words for the lesson on this page -->
         {% for word in words %}
         <div class="word-header" style="margin-top: 30px;">
           <h1>{{word.portuguese_word}} ({{word.english_translation}}) 
@@ -144,10 +65,10 @@
         <div class="example-usage">
           <h4>Example Usage</h4>
           <ul>
+            <!-- Iterate through example usage for words -->
             {% for usage in word.example_usages.all %}
             <li style="font-size:24px; margin-left: 12px;"> {{usage.english_usage}} <b>   /   </b> {{usage.portuguese_usage}} <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')" style="font-size: 24px; margin-left: 20px;">🔊</button></li>
             {% endfor %}
-            <!-- <li><b style="display: inline;">Portuguese:</b> Eu sou um menino <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('Eu sou um menino')" style="font-size: 20px">🔊</button></li> -->
           </ul>
           </div>
         <hr style="margin-top:30px">
@@ -174,11 +95,9 @@
                   <span class="page-link" style="color: rgb(0, 0, 0);">&laquo;</span>
                 </li>
               {% endif %}
-          
               <li class="page-item disabled">
                 <span class="page-link" style="background-color: rgb(255, 255, 255); font-size:24px; color: black;">Page <b>{{ words.number }}</b> of <b>{{ words.paginator.num_pages }}</b></span>
-              </li>
-          
+              </li>         
               {% if words.has_next %}
                 <li class="page-item">
                   <a class="page-link" href="?page={{ words.next_page_number }}" aria-label="Next" id="nextBtn" style="background-color: rgb(219, 213, 213); font-weight: bold; font-size:24px">
@@ -205,7 +124,7 @@
       </div>
     </div>
   </div>
-
+  <!-- Toast Box for word saved notifications -->
   <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-height: 200px; z-index: 1050;">
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
       <div class="toast-header">
@@ -218,106 +137,53 @@
         Word saved successfully.
       </div>
     </div>
-  </div>
-  
-  
-<!-- Replace the 'slim' version with the full version of jQuery -->
+  </div> 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-    // JavaScript to handle button click and make AJAX request
-    // $('#speakBtn').click(function() {
-    //     var textToSpeak = "Menino";  // The text you want to convert to speech
-    //     $.ajax({
-    //         url: '/text-to-speech/',  // URL to Django view
-    //         type: 'POST',
-    //         data: { 'text': textToSpeak },
-    //         success: function(response) {
-    //             console.log(response.message);
-    //         },
-    //         error: function(error) {
-    //             console.log(error);
-    //         }
-    //     });
-    // });
     $(document).ready(function() {
-      var lessonId = "{{ lesson.id }}";
-    //   $('#nextBtn').click(function(e) {
-    //     // e.preventDefault(); // Prevent the default action of the anchor tag
-    //     e.preventDefault(); // Prevent the default action of the anchor tag
-    //     var nextPage = $(this).attr('href').match(/page=(\d+)/)[1]; // Extract the page number from the href
-        
-    //     // AJAX POST request to Django view
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '/store_page_number', // URL of your Django view
-    //         data: {
-    //             'page_number': nextPage, // Pass the extracted page number
-    //             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(), // CSRF token for Django
-    //             'lesson_id': lessonId
-    //         },
-    //         success: function(response) {
-    //             // Handle success
-    //             console.log('Page number stored successfully.');
-    //             // If you want to navigate to the next page after storing
-    //             // window.location.href = $('#nextBtn').attr('href');
-    //         },
-    //         error: function(xhr, errmsg, err) {
-    //             // Handle error
-    //             console.log('Error storing page number: ' + errmsg);
-    //         }
-    //     });
-    //     // If you need to navigate after the log, you can uncomment the line below
-    //     // window.location.href = $(this).attr('href');
-    // });
-    
+      $('[data-toggle="tooltip"]').tooltip();
+      var lessonId = "{{ lesson.id }}";   
+      // Adds word to user saved list 
       $('.plus-button').click(function() {
         var wordId = $(this).data('word-id');
         event.preventDefault()
         $.ajax({
-            url: '/save_word/',  // URL to the Django view
-            type: 'POST',  // or 'POST' if you are sending data to the server
-            
+            url: '/save_word/',
+            type: 'POST', 
             data: {
               'word_id': wordId,
-              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(), // Any data you need to pass to Django
+              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
               'word_type': 'lesson'
             },
             success: function(response) {
-                // Do something with the response
                 console.log("Success");
                 $('.toast').toast('show');
             },
             error: function(xhr, errmsg, err) {
-                // Handle errors
                 console.log(xhr.status + ": " + xhr.responseText);
             }
         });
+      });
+      $('.toast').toast();
     });
-    $('.toast').toast();
-});
 
+    // Convert text to speech
     function convertTextToSpeech(textToSpeak) {
       event.preventDefault()
     $.ajax({
-        url: '/text-to-speech/',  // URL to Django view
+        url: '/text-to-speech/',
         type: 'POST',
         data: { 'text': textToSpeak },
         success: function(response) {
             console.log(response.message);
-            // Optional: Play the response if it includes audio data
         },
         error: function(error) {
             console.log(error);
         }
     });
 }
-
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip(); // Initialize tooltips
-});
-    
 </script>
 </body>
 </html>
