@@ -271,7 +271,7 @@ def architecture(request):
             translation.activate('pt')
         else:
             translation.deactivate_all()
-    return render(request, 'mainsite/architecture.html')
+    return render(request, 'mainsite/festivals.html')
 
 @login_required
 def festivals(request):
@@ -282,7 +282,7 @@ def festivals(request):
             request.session['django_language'] = 'pt'
         else:
             translation.deactivate_all()
-    return render(request, 'mainsite/festivals.html')
+    return render(request, 'mainsite/architecture.html')
 
 def submit_feedback(request):
     # Saves user feedback
