@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-24 15:36+0300\n"
+"POT-Creation-Date: 2024-05-05 18:31+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,40 +42,45 @@ msgstr ""
 msgid "Reset my password"
 msgstr ""
 
-#: .\templates\mainsite\architecture.html:125
+#: .\templates\mainsite\architecture.html:97 .\templates\mainsite\media.html:53
 msgid "Home"
 msgstr "Lar"
 
-#: .\templates\mainsite\architecture.html:130
+#: .\templates\mainsite\architecture.html:102
+#: .\templates\mainsite\media.html:58
 msgid "Vocabulary"
 msgstr "Vocabulário"
 
-#: .\templates\mainsite\architecture.html:135
+#: .\templates\mainsite\architecture.html:107
+#: .\templates\mainsite\media.html:63
 msgid "Analytics"
 msgstr "Análise"
 
-#: .\templates\mainsite\architecture.html:140
+#: .\templates\mainsite\architecture.html:112
+#: .\templates\mainsite\media.html:68
 msgid "Diacritics"
 msgstr "Diacríticos"
 
-#: .\templates\mainsite\architecture.html:145
+#: .\templates\mainsite\architecture.html:117
+#: .\templates\mainsite\media.html:73
 msgid "Culture"
 msgstr "Cultura"
 
-#: .\templates\mainsite\architecture.html:148
-#: .\templates\mainsite\festivals.html:110
+#: .\templates\mainsite\architecture.html:120
+#: .\templates\mainsite\festivals.html:96 .\templates\mainsite\media.html:76
 msgid "Architecture"
 msgstr "Arquitetura"
 
-#: .\templates\mainsite\architecture.html:149
+#: .\templates\mainsite\architecture.html:121
+#: .\templates\mainsite\media.html:77
 msgid "Festivals"
 msgstr "Festivais"
 
-#: .\templates\mainsite\architecture.html:150
+#: .\templates\mainsite\architecture.html:122
 msgid "Media"
 msgstr "Meios de comunicação"
 
-#: .\templates\mainsite\architecture.html:172
+#: .\templates\mainsite\architecture.html:143
 msgid ""
 "Portugal is a nation that takes great pride in its festivals, which vividly "
 "reflect its rich heritage and past culture."
@@ -83,7 +88,7 @@ msgstr ""
 "Portugal é uma nação que se orgulha muito dos seus festivais, que reflectem "
 "vividamente o seu rico património e cultura passada."
 
-#: .\templates\mainsite\architecture.html:173
+#: .\templates\mainsite\architecture.html:144
 msgid ""
 "\n"
 "          These nationwide festivals encompass a wide range of activities, "
@@ -113,18 +118,18 @@ msgstr ""
 "da essência de Portugal, exibindo uma manifestação vibrante e vibrante da "
 "história do país e da hospitalidade amigável da sua população."
 
-#: .\templates\mainsite\architecture.html:182
+#: .\templates\mainsite\architecture.html:153
 msgid ""
 "Rotate the cube on the right to view images of some common Portuguese "
 "festivals."
 msgstr ""
 "Rode o cubo à direita para ver imagens de algumas festas portuguesas comuns."
 
-#: .\templates\mainsite\architecture.html:183
+#: .\templates\mainsite\architecture.html:154
 msgid "Click on their names to learn more."
 msgstr "Clique nos nomes deles para saber mais."
 
-#: .\templates\mainsite\architecture.html:216
+#: .\templates\mainsite\architecture.html:185
 msgid ""
 "'Rock in Rio is one of the world's largest and most famous music festivals "
 "originally founded in \n"
@@ -144,16 +149,16 @@ msgstr ""
 "grande escala, atraindo os principais artistas internacionais de vários "
 "gêneros musicais, desde rock e pop até eletrônico e indie."
 
-#: .\templates\mainsite\architecture.html:221
-#: .\templates\mainsite\architecture.html:267
-#: .\templates\mainsite\architecture.html:300
-#: .\templates\mainsite\architecture.html:335
-#: .\templates\mainsite\architecture.html:366
-#: .\templates\mainsite\architecture.html:396
+#: .\templates\mainsite\architecture.html:190
+#: .\templates\mainsite\architecture.html:227
+#: .\templates\mainsite\architecture.html:258
+#: .\templates\mainsite\architecture.html:291
+#: .\templates\mainsite\architecture.html:320
+#: .\templates\mainsite\architecture.html:348
 msgid "Location:"
 msgstr "Localização:"
 
-#: .\templates\mainsite\architecture.html:222
+#: .\templates\mainsite\architecture.html:191
 msgid ""
 "\n"
 "                                It is held in Lisbon, usually at the Parque "
@@ -167,20 +172,20 @@ msgstr ""
 "parque que pode acomodar os amplos palcos, áreas de audiência e zonas de "
 "entretenimento necessárias para acolher o festival."
 
-#: .\templates\mainsite\architecture.html:228
-#: .\templates\mainsite\architecture.html:270
-#: .\templates\mainsite\architecture.html:306
-#: .\templates\mainsite\architecture.html:341
-#: .\templates\mainsite\architecture.html:367
-#: .\templates\mainsite\architecture.html:397
+#: .\templates\mainsite\architecture.html:197
+#: .\templates\mainsite\architecture.html:230
+#: .\templates\mainsite\architecture.html:264
+#: .\templates\mainsite\architecture.html:297
+#: .\templates\mainsite\architecture.html:321
+#: .\templates\mainsite\architecture.html:349
 msgid "Dates:"
 msgstr "Datas:"
 
-#: .\templates\mainsite\architecture.html:229
+#: .\templates\mainsite\architecture.html:198
 msgid "Not fixed, but usually in the month of September."
 msgstr "Não fixas, mas geralmente no mês de setembro."
 
-#: .\templates\mainsite\architecture.html:254
+#: .\templates\mainsite\architecture.html:214
 msgid ""
 "\n"
 "                                Also known as 'Dia de Santo António', the "
@@ -198,7 +203,7 @@ msgstr ""
 "a observância religiosa com festividades populares que refletem a profunda "
 "herança cultural e o espírito comunitário entre as pessoas."
 
-#: .\templates\mainsite\architecture.html:261
+#: .\templates\mainsite\architecture.html:221
 msgid ""
 "\n"
 "                                One of the unique aspects of the Feast Day "
@@ -218,17 +223,17 @@ msgstr ""
 "venerado como o santo casamenteiro, o que torna estes casamentos "
 "particularmente significativos."
 
-#: .\templates\mainsite\architecture.html:268
+#: .\templates\mainsite\architecture.html:228
 msgid ""
 "Celebrated all over Portugal, but most ferevently in Lisbon, as that is "
 "Saint Anthony's place of birth."
 msgstr ""
 
-#: .\templates\mainsite\architecture.html:270
+#: .\templates\mainsite\architecture.html:230
 msgid "June 13"
 msgstr "13 de Junho"
 
-#: .\templates\mainsite\architecture.html:287
+#: .\templates\mainsite\architecture.html:245
 msgid ""
 "\n"
 "                                The São João festival is one of Portugal's "
@@ -246,7 +251,7 @@ msgstr ""
 "um evento cultural significativo e com profundas raízes na tradição "
 "portuguesa."
 
-#: .\templates\mainsite\architecture.html:294
+#: .\templates\mainsite\architecture.html:252
 msgid ""
 "\n"
 "                                Keeping with ancient tradition, bonfires are "
@@ -266,7 +271,7 @@ msgstr ""
 "festivaleiros batem uns nos outros na cabeça com estes martelos para criar "
 "uma reação amigável e alegre entre si."
 
-#: .\templates\mainsite\architecture.html:301
+#: .\templates\mainsite\architecture.html:259
 msgid ""
 "\n"
 "                                Mainly celebrated in Porto, and also other "
@@ -277,7 +282,7 @@ msgstr ""
 "Celebrado principalmente no Porto, mas também noutras zonas do Norte de "
 "Portugal como Braga e Vila do Conde, embora em menor escala."
 
-#: .\templates\mainsite\architecture.html:323
+#: .\templates\mainsite\architecture.html:279
 msgid ""
 "\n"
 "                                The Carinval in Portugal, known locally as "
@@ -292,7 +297,7 @@ msgstr ""
 "tradições. Acontece pouco antes da Quarta-feira de Cinzas e apresenta uma "
 "mistura de elementos religiosos, pagãos e modernos."
 
-#: .\templates\mainsite\architecture.html:329
+#: .\templates\mainsite\architecture.html:285
 msgid ""
 "\n"
 "                                The Carnaval is widely known for its "
@@ -309,7 +314,7 @@ msgstr ""
 "participantes desses desfiles costumam se vestir de maneira extravagante, "
 "refletindo tanto temas tradicionais quanto comentários sociais ou políticos."
 
-#: .\templates\mainsite\architecture.html:336
+#: .\templates\mainsite\architecture.html:292
 msgid ""
 "\n"
 "                                The festivities take place all over "
@@ -321,14 +326,14 @@ msgstr ""
 "As festas acontecem um pouco por todo o país, mas as celebrações mais "
 "famosas encontram-se nas regiões de Torres Vedras, Ovar, Loulé e Madeira."
 
-#: .\templates\mainsite\architecture.html:341
+#: .\templates\mainsite\architecture.html:297
 msgid ""
 "The days leading up to Ash Wednesday (decided by the Christian Calendar)"
 msgstr ""
 "Os dias que antecedem a Quarta-feira de Cinzas (decidido pelo Calendário "
 "Cristão)"
 
-#: .\templates\mainsite\architecture.html:358
+#: .\templates\mainsite\architecture.html:312
 msgid ""
 "\n"
 "                              Semana Santa (Holy Week) is a deeply "
@@ -347,7 +352,7 @@ msgstr ""
 "outros países católicos do mundo, estas celebrações são uma experiência "
 "espiritual que envolve procissões, rituais e cerimónias."
 
-#: .\templates\mainsite\architecture.html:364
+#: .\templates\mainsite\architecture.html:318
 msgid ""
 "The celebration of Holy Week includes 4 parts, namely, Palm Sunday, Holy "
 "Thursday, Good Friday and Easter Sunday."
@@ -355,11 +360,11 @@ msgstr ""
 "A celebração da Semana Santa inclui 4 partes, nomeadamente, Domingo de "
 "Ramos, Quinta-feira Santa, Sexta-feira Santa e Domingo de Páscoa."
 
-#: .\templates\mainsite\architecture.html:366
+#: .\templates\mainsite\architecture.html:320
 msgid "All across Portugal."
 msgstr "Em todo Portugal."
 
-#: .\templates\mainsite\architecture.html:367
+#: .\templates\mainsite\architecture.html:321
 msgid ""
 "It spans the last week of Lent. Starting on Palm Sunday and ending on Easter "
 "Sunday."
@@ -367,7 +372,7 @@ msgstr ""
 "Abrange a última semana da Quaresma. Começando no Domingo de Ramos e "
 "terminando no Domingo de Páscoa."
 
-#: .\templates\mainsite\architecture.html:384
+#: .\templates\mainsite\architecture.html:336
 msgid ""
 "\n"
 "                            Festas Das Cruzes (Festival of Crosses) is a "
@@ -386,7 +391,7 @@ msgstr ""
 "religioso, mas também um momento de celebração alegre, refletindo a cultura "
 "e o património da comunidade."
 
-#: .\templates\mainsite\architecture.html:391
+#: .\templates\mainsite\architecture.html:343
 msgid ""
 "\n"
 "                            This festival is a vivid example of how Portugal "
@@ -400,16 +405,16 @@ msgstr ""
 "rica história e património religioso através de eventos comunitários anuais, "
 "combinando a devoção com a festividade cultural."
 
-#: .\templates\mainsite\architecture.html:396
+#: .\templates\mainsite\architecture.html:348
 msgid "Primarily celebrated in Barcelos, located in Northern Portugal."
 msgstr ""
 "Comemorado principalmente em Barcelos, localizado no Norte de Portugal."
 
-#: .\templates\mainsite\architecture.html:397
+#: .\templates\mainsite\architecture.html:349
 msgid "The beginning of Spring."
 msgstr "Início da primavera."
 
-#: .\templates\mainsite\festivals.html:113
+#: .\templates\mainsite\festivals.html:99
 msgid ""
 "\n"
 "                Portugal is renowned for its rich architecural heritage, "
@@ -425,7 +430,7 @@ msgstr ""
 "barroco ao moderno. Abaixo são apresentadas informações sobre os seis sítios "
 "arquitetónicos mais famosos de Portugal."
 
-#: .\templates\mainsite\festivals.html:119
+#: .\templates\mainsite\festivals.html:105
 msgid ""
 "Interact with the maps and switch to Street View to get a better view of the "
 "sites."
@@ -433,7 +438,7 @@ msgstr ""
 "Interaja com os mapas e mude para o Street View para ter uma visão melhor "
 "dos locais."
 
-#: .\templates\mainsite\festivals.html:137
+#: .\templates\mainsite\festivals.html:121
 msgid ""
 "\n"
 "                                        Located in the heart of Lisbon, this "
@@ -454,7 +459,7 @@ msgstr ""
 "Lisboa. Hoje é Património Mundial da UNESCO e um dos marcos mais "
 "fotografados de Portugal."
 
-#: .\templates\mainsite\festivals.html:171
+#: .\templates\mainsite\festivals.html:152
 msgid ""
 "\n"
 "                                        Also located in Belem, Lisbon, the "
@@ -475,7 +480,7 @@ msgstr ""
 "Este local também faz parte da mesma designação de Patrimônio Mundial da "
 "UNESCO que a Torre de Belém."
 
-#: .\templates\mainsite\festivals.html:204
+#: .\templates\mainsite\festivals.html:182
 msgid ""
 "\n"
 "                                        Situated upon a hilltop in the "
@@ -494,7 +499,7 @@ msgstr ""
 "do século XIX no mundo. Hoje, o palácio é Património Mundial da UNESCO e "
 "considerado uma das Sete Maravilhas de Portugal."
 
-#: .\templates\mainsite\festivals.html:239
+#: .\templates\mainsite\festivals.html:214
 msgid ""
 "\n"
 "                                        Located in Batalha, this monastery "
@@ -514,7 +519,7 @@ msgstr ""
 "demorou mais de um século a ser concluído. Possui uma impressionante "
 "variedade de esculturas, filigranas e as famosas Capelas Inacabadas. "
 
-#: .\templates\mainsite\festivals.html:272
+#: .\templates\mainsite\festivals.html:244
 msgid ""
 "\n"
 "                                        Located in Porto, Casa de Musica is "
@@ -535,7 +540,7 @@ msgstr ""
 "seu design contemporâneo distinto, mas também pelo seu significado cultural "
 "como principal espaço de música e artes performativas."
 
-#: .\templates\mainsite\festivals.html:307
+#: .\templates\mainsite\festivals.html:276
 msgid ""
 "\n"
 "                                        The Alcobaça Monastery is one of the "
@@ -552,6 +557,127 @@ msgstr ""
 "arquitectura cisterciense em Portugal. Fundado no século XII, o mosteiro é "
 "celebrado pela pureza e clareza do seu estilo arquitectónico, destacando-se "
 "particularmente pelos túmulos ornamentados de D. Pedro I e D. Inês de Castro."
+
+#: .\templates\mainsite\media.html:78
+msgid "Music"
+msgstr "Música"
+
+#: .\templates\mainsite\media.html:82
+msgid "Settings"
+msgstr "Configurações"
+
+#: .\templates\mainsite\media.html:89
+msgid "Logout"
+msgstr "Sair"
+
+#: .\templates\mainsite\media.html:106
+msgid ""
+"\n"
+"                    Portuguese music has a rich heritage that blends "
+"traditional sounds with a contemporary influence, creating a vibrant music "
+"scene that is recognized\n"
+"                    worldwide. At the heart of Portugal's music tradition is "
+"Fado, which is recognized by UNESCO as a World Intangible Cultural Heritage. "
+"It is a genre\n"
+"                    characterized by mournful tunes and lyrics, often about "
+"the sea life or the poor. Fado is usually performed in small intimate "
+"venues\n"
+"                    called 'Fado Houses' and is an essential experience for "
+"anyone visiting Portugal. A Fado performance generally comprises of a solo "
+"singer\n"
+"                    accompanied by a classical Portuguese Guitar. It is "
+"meant to carry a sense of resignation and melancholy, known as 'saudade' in "
+"Portuguese.\n"
+"                    "
+msgstr ""
+"\n"
+"A música portuguesa tem um património rico que combina sons tradicionais com "
+"influência contemporânea, criando um cenário musical vibrante e reconhecido "
+"mundialmente. No coração da tradição musical de Portugal está o Fado, "
+"reconhecido pela UNESCO como Património Cultural Imaterial Mundial. É um "
+"gênero caracterizado por melodias e letras tristes, muitas vezes sobre a "
+"vida marinha ou os pobres. O Fado é normalmente apresentado em pequenos "
+"espaços intimistas denominados 'Casas de Fado' e é uma experiência essencial "
+"para quem visita Portugal. Uma actuação de Fado é geralmente composta por um "
+"cantor a solo acompanhado por uma Guitarra Clássica Portuguesa. Pretende "
+"transmitir um sentimento de resignação e melancolia, conhecido como "
+"'saudade' em português."
+
+#: .\templates\mainsite\media.html:117
+msgid "Explore the profound depths of Fado with this curated playlist."
+msgstr ""
+"Explorar as profundezas do Fado com esta lista de reprodução selecionada."
+
+#: .\templates\mainsite\media.html:119
+msgid ""
+"\n"
+"                    Beyond Fado, Portugal is known for its folk music, which "
+"varies significantly from region to region. In the North, you find the "
+"upbeat tunes of\n"
+"                    folklore music accompanied by accordions and violas. The "
+"traditional dance styles like \"Corridinho\" from the region of Algarve add "
+"to the cultural\n"
+"                    flavor.\n"
+"                    "
+msgstr ""
+"\n"
+"Além do Fado, Portugal é conhecido pela sua música folclórica, que varia "
+"significativamente de região para região. No Norte, você encontra as "
+"melodias animadas da música folclórica acompanhadas de acordeões e violas. "
+"Os estilos de dança tradicionais como o \"Corridinho\" da região do Algarve "
+"contribuem para o sabor cultural."
+
+#: .\templates\mainsite\media.html:126
+msgid ""
+"\n"
+"                    Portugal has embraced modern music enthusiastically, "
+"with festivals like Rock in Rio Lisboa drawing fans of rock, pop, electronic "
+"and indie music.\n"
+"                    These events often showcase international acts alongside "
+"the country's favourite artists, providing a platform for emerging "
+"Portuguese musical talent\n"
+"                    to thrive. In the contemporary settings, genres such as "
+"hip-hop, dance and electronic have flourished with artists and DJs from "
+"Portugal gaining recognition\n"
+"                    on the European stage. Portuguese pop music, heavily "
+"influenced by Brazillian sounds due to the common language and cultural "
+"ties, is also a constant presence\n"
+"                    in the charts. \n"
+"                    "
+msgstr ""
+"\n"
+"Portugal abraçou a música moderna com entusiasmo, com festivais como o Rock "
+"in Rio Lisboa atraindo fãs de rock, pop, música eletrónica e indie. Estes "
+"eventos apresentam frequentemente actuações internacionais ao lado dos "
+"artistas favoritos do país, proporcionando uma plataforma para o talento "
+"musical português emergente prosperar. Nos cenários contemporâneos, géneros "
+"como o hip-hop, a dança e a electrónica floresceram com artistas e DJs de "
+"Portugal a ganharem reconhecimento no palco europeu. A música pop "
+"portuguesa, fortemente influenciada pelas sonoridades brasileiras devido à "
+"língua comum e aos laços culturais, também é presença constante nas paradas."
+
+#: .\templates\mainsite\media.html:135
+msgid ""
+"\n"
+"                    Discover the sounds of Portugal with these curated "
+"playlists of Portuguese music, featuring a mix of pop, contemporary hits, "
+"modern music, and everything in between.\n"
+"                    Click play and immerse yourself in the rhythms of "
+"Portugal.\n"
+"                    "
+msgstr ""
+"\n"
+"Descubra os sons de Portugal com estas playlists selecionadas de música "
+"portuguesa, apresentando uma mistura de pop, sucessos contemporâneos, música "
+"moderna e tudo mais. Clique no play e mergulhe nos ritmos de Portugal."
+
+#: .\templates\mainsite\media.html:143
+msgid "A vibrant mix of modern Portuguese pop music."
+msgstr "Uma mistura vibrante de música pop portuguesa moderna."
+
+#: .\templates\mainsite\media.html:147
+msgid "An assortment of a variety of Portuguese music."
+msgstr "Uma variedade de música portuguesa."
 
 #, fuzzy
 #~| msgid "Location:"

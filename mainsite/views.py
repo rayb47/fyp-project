@@ -119,9 +119,6 @@ def signout(request):
     # Redirect to the login page
     return redirect('login:signin')
 
-def media(request):
-    return render(request, 'mainsite/media.html')
-
 # Fetches data on the incorrect answers for a particular unit
 def get_incorrect_questions(request, unit_id):
     answer_data = []
@@ -283,6 +280,16 @@ def festivals(request):
         else:
             translation.deactivate_all()
     return render(request, 'mainsite/architecture.html')
+
+def media(request):
+    # Renders the Music page
+    if request.user.is_authenticated:
+        if request.user.portuguese_default:
+            translation.activate('pt')  # Activate Portuguese
+            request.session['django_language'] = 'pt'
+        else:
+            translation.deactivate_all()
+    return render(request, 'mainsite/media.html')
 
 def submit_feedback(request):
     # Saves user feedback
