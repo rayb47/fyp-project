@@ -713,8 +713,15 @@ def get_quiz_data(request):
     quiz_number = 0
     # Looping through quizzes for a unit
     for quiz in quiz_data:
-        total_questions = quiz.questions.all().count() 
-        questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True).values('question').distinct().count()
+        total_questions = quiz.questions.all().count()
+        user_attempt = UserAttempts.objects.filter(quiz=quiz, user=request.user).order_by('-attempt_date')
+        # --- TEST AND REMOVE ---
+        if user_attempt.exists():
+            user_attempt = user_attempt[1]
+            questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True, attempt=user_attempt).values('question').distinct().count()
+            questions_answered = user_attempt.questions_answered
+        else:
+            questions_answered = 0
         quiz_number += 1
         quizzes.append({
             'id': quiz.id,
