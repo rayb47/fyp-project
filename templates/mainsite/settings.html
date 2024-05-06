@@ -129,9 +129,9 @@ textarea {
                 <div class="col-md-6 form-group">
                   <label for="proficiencyLevel">Proficiency Level</label>
                   <select class="form-control" id="proficiencyLevel">
-                    <option value="Beginner" {% if request.user.proficiency_level == 1 %}selected{% endif %}>Beginner</option>
-                    <option value="Intermediate" {% if request.user.proficiency_level == 2 %}selected{% endif %}>Intermediate</option>
-                    <option value="Advanced" {% if request.user.proficiency_level == 3 %}selected{% endif %}>Advanced</option>
+                    <option value="1" {% if request.user.proficiency_level == 1 %}selected{% endif %}>Beginner</option>
+                    <option value="2" {% if request.user.proficiency_level == 2 %}selected{% endif %}>Intermediate</option>
+                    <option value="3" {% if request.user.proficiency_level == 3 %}selected{% endif %}>Advanced</option>
                   </select>
                 </div>
                 <div class="col-md-6 form-group">
@@ -203,6 +203,7 @@ textarea {
     var originalDailyGoalQuestions = $('#dailyGoalQuestions').val();
     var originalLanguage = $('#siteLanguage').val();
     var originalPlayback = $('#playbackSpeed').val();
+    var originalProficiency = $('#proficiencyLevel').val();
 
     // Saves settings if any are edited
     $('#saveSettingsBtn').click(function(e) {
@@ -211,6 +212,7 @@ textarea {
         var currentDailyGoalQuestions = $('#dailyGoalQuestions').val();
         var currentLanguage = $('#siteLanguage').val();
         var currentPlayback = $('#playbackSpeed').val();
+        var currentProficiency = $('#proficiencyLevel').val();
         var dataToSend = {};
 
         if (currentDailyGoalMinutes !== originalDailyGoalMinutes) {
@@ -227,6 +229,10 @@ textarea {
 
         if (currentPlayback !== originalPlayback) {
             dataToSend.playbackSpeed = currentPlayback;
+        }
+
+        if (currentProficiency !== originalProficiency) {
+            dataToSend.proficiencyLevel = currentProficiency;
         }
 
         // AJAX call to the backend to save user settings
@@ -318,6 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var dailyGoalQuestionsInput = document.getElementById('dailyGoalQuestions');
     var siteLanguageSelect = document.getElementById('siteLanguage');
     var playbackSelect = document.getElementById('playbackSpeed');
+    var proficiencyLevel = document.getElementById('proficiencyLevel');
 
     // Function to enable the button
     function enableSaveButton() {
@@ -329,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
     dailyGoalQuestionsInput.addEventListener('change', enableSaveButton);
     siteLanguageSelect.addEventListener('change', enableSaveButton);
     playbackSelect.addEventListener('change', enableSaveButton);
+    proficiencyLevel.addEventListener('change', enableSaveButton);
 });
 </script>
 </body>

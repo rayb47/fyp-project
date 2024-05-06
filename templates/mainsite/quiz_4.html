@@ -142,7 +142,7 @@
       </div>
       <hr> 
       <div class="mcq-container">
-        <h1 class="text-center mb-4">{{question_text}}</h1>
+        <h1 class="text-center mb-4">Select <b>'{{question_text}}'</b> from below</h1>
         <form id="quiz-form" method="post" action="submit_answer">
         {% csrf_token %}
         <input type="hidden" name="form_type" value="{{question_id}}">

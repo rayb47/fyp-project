@@ -222,7 +222,7 @@
           messageElement.style.display = '';
           if (data.status === 'success') {
               messageElement.className = 'alert alert-success';
-              messageElement.textContent = 'Correct!';
+              messageElement.textContent = 'Correct! You said: ' + data.transcript;
               messageElement.style.textAlign = 'center';
               messageElement.style.fontSize = '20px';
               messageElement.style.fontWeight = 'bold';
@@ -232,7 +232,12 @@
               $('#submitButton').prop('disabled', false);
           } else {
               messageElement.className = 'alert alert-danger';
-              messageElement.textContent = 'Incorrect!';
+              if (data.message != "Could not understand audio") {
+                messageElement.textContent = 'Incorrect! You said: ' + data.transcript;
+              } else {
+                messageElement.textContent = 'Incorrect! Could not understand audio.';
+              }
+              
               messageElement.style.fontSize = '20px';
               messageElement.style.textAlign = 'center';
               messageElement.style.fontWeight = 'bold';

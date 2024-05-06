@@ -67,9 +67,10 @@ def home(request):
     current_hour = int(r['location']['localtime'].split(' ')[1].split(':')[0])
 
     combined_city_data = []
-    for city_name in ['Porto', 'Madeira']:
+    for city_name in ['Coimbra', 'Madeira', 'Lisbon']:
         res = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city_name))
         res = res.json()
+        print(res)
         combined_city_data.append({
             'city': city_name,
             'temp_c': str(res['current']['temp_c']) + '°C',
@@ -172,7 +173,7 @@ def analytics(request):
         correct = UserAnswers.objects.filter(user=request.user, is_correct=True, question__quiz__unit=int(unit.id)).count()
         incorrect = UserAnswers.objects.filter(user=request.user, is_correct=False, question__quiz__unit=int(unit.id)).count()
         attempted = UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit.id)).count()
-        quizzes_done = UserAttempts.objects.filter(user=request.user, quiz__isnull=False, questions_answered=8, quiz__unit=int(unit.id)).count()
+        quizzes_done = UserAttempts.objects.filter(user=request.user, quiz__isnull=False, questions_answered=5, quiz__unit=int(unit.id)).count()
         lessons = UserAttempts.objects.filter(user=request.user, lesson__isnull=False, lesson__unit=int(unit.id))
         if lessons.count() > 0:
             word_count = 2*(lessons[0].pages_covered-1)
@@ -320,6 +321,8 @@ def save_settings(request):
                 current_user_object.daily_question_goal = int(data['dailyGoalQuestions'])
             if 'playbackSpeed' in data:
                 current_user_object.playback_speed = data['playbackSpeed']
+            if 'proficiencyLevel' in data:
+                current_user_object.proficiency_level = int(data['proficiencyLevel'])
             current_user_object.save()
     
     return JsonResponse({'words': 'Data edited successfully!'})
@@ -513,7 +516,8 @@ def quiz(request, unit_id, quiz_id):
     image_headers = {
         'Authorization': api_key
     }
-
+    print("Unit ID: ", unit_id)
+    print("Quiz ID: ", quiz_id)
     # Variabe definitions
     question_obj = None
     repeated_question = False
@@ -525,13 +529,14 @@ def quiz(request, unit_id, quiz_id):
 
     # Set quiz to be accessed
     quiz_accessed = Quiz.objects.filter(unit_id=unit_id, difficulty=difficulty)[quiz_id-1]
+    print("Quiz accessed: ", quiz_accessed)
     questions_for_quiz = quiz_accessed.questions.all()
 
     # Check if user has already attempted the quiz
     if UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user).exists():
         print("User has already attempted the quiz")
         user_attempt = UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user).order_by('-attempt_date')[0]
-        if user_attempt.questions_answered == 8:
+        if user_attempt.questions_answered == 5:
             print("User has answered all questions")
             print("Creating user object")
             user_attempt = UserAttempts.objects.create(quiz=quiz_accessed, user=request.user, questions_answered=0)
@@ -543,14 +548,15 @@ def quiz(request, unit_id, quiz_id):
     
     # Finding unanswered questions in the quiz
     unanswered_questions = Question.objects.filter(
-        quiz_id=quiz_id
+        quiz=quiz_accessed,
     ).exclude(
         id__in=UserAnswers.objects.filter(
-            question__quiz_id=quiz_id,
+            question__quiz=quiz_accessed,
             user=request.user,
             attempt=user_attempt
         ).values_list('question_id', flat=True)
     )
+    print(unanswered_questions)
 
     # Finding questions whose latest answer is incorrect
     latest_incorrect_answer_subquery = UserAnswers.objects.filter(
@@ -716,10 +722,12 @@ def get_quiz_data(request):
         total_questions = quiz.questions.all().count()
         user_attempt = UserAttempts.objects.filter(quiz=quiz, user=request.user).order_by('-attempt_date')
         # --- TEST AND REMOVE ---
-        if user_attempt.exists():
+        if user_attempt.count() > 1:
             user_attempt = user_attempt[1]
             questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True, attempt=user_attempt).values('question').distinct().count()
             questions_answered = user_attempt.questions_answered
+        elif user_attempt.count() == 1:
+            questions_answered = user_attempt[0].questions_answered
         else:
             questions_answered = 0
         quiz_number += 1
@@ -826,7 +834,7 @@ def process_audio(request, question_id):
                     result = 'error'               
             if os.path.exists('converted_audio.wav'):
                 os.remove('converted_audio.wav')
-            return JsonResponse({'status': result, 'transcript': text})
+            return JsonResponse({'status': result, 'transcript': text, 'message': ''})
 
     except sr.UnknownValueError:
         return JsonResponse({'status': 'error', 'message': 'Could not understand audio'})
