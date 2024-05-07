@@ -67,7 +67,7 @@
           <ul>
             <!-- Iterate through example usage for words -->
             {% for usage in word.example_usages.all %}
-            <li style="font-size:24px; margin-left: 12px;"> {{usage.english_usage}} <b>   /   </b> {{usage.portuguese_usage}} <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')" style="font-size: 24px; margin-left: 20px;">🔊</button></li>
+            <li style="font-size:24px; margin-left: 12px;"> {{usage.english_usage}} <b>   /   </b> <span style="color:blue">{{usage.portuguese_usage}}</span><button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')" style="font-size: 24px; margin-left: 20px;">🔊</button></li>
             {% endfor %}
           </ul>
           </div>
