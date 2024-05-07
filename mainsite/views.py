@@ -173,7 +173,8 @@ def analytics(request):
         correct = UserAnswers.objects.filter(user=request.user, is_correct=True, question__quiz__unit=int(unit.id)).count()
         incorrect = UserAnswers.objects.filter(user=request.user, is_correct=False, question__quiz__unit=int(unit.id)).count()
         attempted = UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit.id)).count()
-        quizzes_done = UserAttempts.objects.filter(user=request.user, quiz__isnull=False, questions_answered=5, quiz__unit=int(unit.id)).count()
+        quiz_ids = UserAttempts.objects.filter(user=request.user, quiz__isnull=False, questions_answered=5, quiz__unit=int(unit.id)).values_list('quiz', flat=True).distinct()
+        quizzes_done = Quiz.objects.filter(id__in=quiz_ids).count()
         lessons = UserAttempts.objects.filter(user=request.user, lesson__isnull=False, lesson__unit=int(unit.id))
         if lessons.count() > 0:
             word_count = 2*(lessons[0].pages_covered-1)
@@ -721,11 +722,13 @@ def get_quiz_data(request):
     for quiz in quiz_data:
         total_questions = quiz.questions.all().count()
         user_attempt = UserAttempts.objects.filter(quiz=quiz, user=request.user).order_by('-attempt_date')
+        times_completed = user_attempt.filter(questions_answered=5).count()
         # --- TEST AND REMOVE ---
         if user_attempt.count() > 1:
-            user_attempt = user_attempt[1]
-            questions_answered = UserAnswers.objects.filter(user=request.user, question__in=quiz.questions.all(), is_correct=True, attempt=user_attempt).values('question').distinct().count()
-            questions_answered = user_attempt.questions_answered
+            if user_attempt[0].questions_answered > 0:
+                questions_answered = user_attempt[0].questions_answered
+            else:
+                questions_answered = user_attempt[1].questions_answered
         elif user_attempt.count() == 1:
             questions_answered = user_attempt[0].questions_answered
         else:
@@ -736,7 +739,8 @@ def get_quiz_data(request):
             'total_questions': total_questions,
             'questions_answered': questions_answered,
             'progress_percent': int(( questions_answered / total_questions ) * 100) if total_questions > 0 else 0,
-            'number': quiz_number
+            'number': quiz_number,
+            'times_completed': times_completed
         })
     # Returns quiz data
     return JsonResponse({'quizzes': quizzes})
