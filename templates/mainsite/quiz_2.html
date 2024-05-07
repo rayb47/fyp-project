@@ -108,7 +108,7 @@
         <form id="quiz-form" method="post">
           {% csrf_token %}
           <input type="hidden" name="form_type" value="{{question_id}}">
-        <h1 class="text-center mb-4">Say the following phrase</h1>
+        <h2 class="text-center mb-4">Say the following phrase slowly and clearly</h2>
         <div class="phrase">
             <span style="font-size:28px"><b>{{question_text}}</b> <button class="sound-button" id="speakBtn" style="margin-left: 10px;" onclick="convertTextToSpeech('{{question_text}}')">🔊</button></span>
         </div>

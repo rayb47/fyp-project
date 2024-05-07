@@ -21,7 +21,7 @@ class QuestionAdmin(admin.ModelAdmin):
 admin.site.register(Question, QuestionAdmin)
 
 class OptionAdmin(admin.ModelAdmin):
-    list_display = ('question', 'option_text') 
+    list_display = ('question', 'option_text', 'translation') 
     search_fields = ('option_text',) 
 
 admin.site.register(Option, OptionAdmin)

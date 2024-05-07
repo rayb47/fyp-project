@@ -150,8 +150,8 @@
             {% for option in options %}
             <li>
                 <input type="radio"  id="option{{forloop.counter}}" name="quiz" value="{{option}}">
-                <label class="mcq_option" for="option{{forloop.counter}}" data-option="{{option}}"><b>{{option}}
-                </b></label>
+                <label class="mcq_option" for="option{{forloop.counter}}" data-option="{{option}}" data-toggle="tooltip" data-placement="left" title="{{option.translation}}">
+                <b>{{option}}</b></label>
                 <i id='correctTick{{option}}' class="far fa-check-circle correctTick" style="display:none">
                 </i><i id='incorrectTick{{option}}' 
                   class="far fa-times-circle incorrectTick" style="display:none"></i>
@@ -173,6 +173,11 @@
 <audio id="wrongSound" src="{% static 'wrong_sound_effect.mp3' %}" preload="auto"></audio>
 <script>
 $(document).ready(function() {
+    // Initializes the tooltip but only appears if triggered manually
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'manual' 
+    });
+
     // Audio playback whenever an option is clicked
     $('.mcq_option').click(function() {
         var optionValue = $(this).data('option');
@@ -209,6 +214,10 @@ $(document).ready(function() {
                       selectedLabel.css({
                         'border': '4px solid #4CAF50', // Green border
                         'background-color': '#e7ffe7' // Light green background
+                    });
+                    // Show tooltip manually
+                    $('.mcq_option').each(function() {
+                        $(this).tooltip('show');
                     });
                   } else {
                       var check_mark = document.getElementById('incorrectTick'+selectedOptionValue);

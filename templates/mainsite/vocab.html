@@ -96,7 +96,7 @@
     .scrollable-table-container {
         max-height: 450px;
         overflow-y: auto;   
-        overflow-x: hidden; 
+        overflow-x: auto; 
     }
 
     .user-saved-words-table thead th {
@@ -110,7 +110,7 @@
     .scrollable-table-container_2 {
         max-height: 400px;
         overflow-y: auto;
-        overflow-x: hidden;
+        overflow-x: auto;
     }
 
     #download-button, #delete-all-button {
@@ -159,6 +159,10 @@
 
     .header {
         color: #ffffff; font-family: Arial, Helvetica, sans-serif   ; font-weight: bold; font-size:52px; text-shadow: 3px 3px #000000; margin-top: 20px;
+    }
+
+    .saved-words-table thead th, .user-saved-words-table thead th {
+        position: sticky; top: 0; background-color: #343a40; z-index: 1020;
     }
 </style>
 </head>

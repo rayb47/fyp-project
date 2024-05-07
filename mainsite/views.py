@@ -606,7 +606,7 @@ def quiz(request, unit_id, quiz_id):
             if not UserAnswers.objects.filter(attempt=user_attempt, user=request.user, question=question, is_correct=True).exists():
                 question_obj = question
                 break
-    
+
     # Question comprehension for each question type
     if question_obj.question_type == 'MCQ':
         options_list = question_obj.option_set.all()
