@@ -274,7 +274,6 @@ textarea {
                 'csrfmiddlewaretoken': csrfToken 
             },
             success: function(response) {
-                alert(response.message);
                 $('#feedback').val('');
                 $('.toast-body').text('Feedback submitted successfully!');
                 $('.toast').toast('show');  
