@@ -307,7 +307,7 @@
                                 <div class="progress-bar progress-bar-striped" role="progressbar" style="width: ${quiz.progress_percent}%;" aria-valuenow="${quiz.progress_percent}" aria-valuemin="0" aria-valuemax="100"><div style="margin-left: 10px">${quiz.progress_percent}%</div></div>
                             </div>
                         </div>
-                        <a href="/quiz/${unitId}/${quiz.number}" class="btn btn-primary" style="${quiz.total_questions !== 5 ? 'pointer-events: none; color: gray;' : ''}">Access Quiz</a>
+                        <a href="/quiz/${unitId}/${quiz.number}" class="btn btn-primary" style="${quiz.total_questions !== 5 ? 'pointer-events: none; background-color: gray' : ''}">Access Quiz</a>
                     </li>`;
                     quizList.append(quizItem);
                 });
