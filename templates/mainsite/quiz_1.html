@@ -65,10 +65,10 @@
           <b>{{unit_name}} </b>
         </div>
         <div class="progress" style="width: 30%;"> 
-          <div class="progress-bar progress-bar-striped" style="width:70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+          <div class="progress-bar progress-bar-striped" style="width: {{ percentage_complete }}%;" aria-valuenow="{{percentage_complete}}" aria-valuemin="0" aria-valuemax="100">{{percentage_complete}}%</div>
         </div>
         {% if not repeated_question %}
-          <div class="numbering"><b>{{question_id}} of 11</b></div>
+          <div class="numbering"><b>{{questions_answered}} of 5</b></div>
         {% else %}
           <b>Repeated Question</b>
         {% endif %} 

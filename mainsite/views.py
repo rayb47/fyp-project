@@ -517,8 +517,7 @@ def quiz(request, unit_id, quiz_id):
     image_headers = {
         'Authorization': api_key
     }
-    print("Unit ID: ", unit_id)
-    print("Quiz ID: ", quiz_id)
+
     # Variabe definitions
     question_obj = None
     repeated_question = False
@@ -530,16 +529,12 @@ def quiz(request, unit_id, quiz_id):
 
     # Set quiz to be accessed
     quiz_accessed = Quiz.objects.filter(unit_id=unit_id, difficulty=difficulty)[quiz_id-1]
-    print("Quiz accessed: ", quiz_accessed)
     questions_for_quiz = quiz_accessed.questions.all()
 
     # Check if user has already attempted the quiz
     if UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user).exists():
-        print("User has already attempted the quiz")
         user_attempt = UserAttempts.objects.filter(quiz=quiz_accessed, user=request.user).order_by('-attempt_date')[0]
         if user_attempt.questions_answered == 5:
-            print("User has answered all questions")
-            print("Creating user object")
             user_attempt = UserAttempts.objects.create(quiz=quiz_accessed, user=request.user, questions_answered=0)
             messages.success(request, 'Quiz complete!')
             # Redirect to home screen if user has completed a quiz
@@ -609,6 +604,7 @@ def quiz(request, unit_id, quiz_id):
 
     # Question comprehension for each question type
     if question_obj.question_type == 'MCQ':
+        template_name = 'mainsite/quiz_1.html'
         options_list = question_obj.option_set.all()
         for option in options_list:
             word = Word.objects.get(portuguese_word=option)
@@ -621,14 +617,20 @@ def quiz(request, unit_id, quiz_id):
             photo = image_response.json()['photos'][0]['src']['original']
             options[option] = photo
     elif question_obj.question_type == 'MCQ_Text':
+        template_name = 'mainsite/quiz_4.html'
         options_list = question_obj.option_set.all()
         options = options_list
     elif question_obj.question_type == 'Arrange':
+        template_name = 'mainsite/quiz_5.html'
         jumbled_answer = question_obj.correct_answer.split(" ")
         random.shuffle(jumbled_answer)
     elif question_obj.question_type == 'Translate':
+        template_name = 'mainsite/quiz_6.html'
         pass
+    elif question_obj.question_type == 'Speech':
+        template_name = 'mainsite/quiz_2.html'
     elif question_obj.question_type == 'Match':
+        template_name = 'mainsite/quiz_3.html'
         matches = question_obj.match_set.all()
         for match in matches:
             left_col_q.append(match.left_option)
@@ -640,26 +642,16 @@ def quiz(request, unit_id, quiz_id):
     submitted_answer = request.session.get('submitted_answer', '')
     unit_name = question_obj.quiz.unit.name
     unit_id = question_obj.quiz.unit.id
-    
-    if question_obj.question_type == 'Speech':
-        template_name = 'mainsite/quiz_2.html'
-    if question_obj.question_type == 'Match':
-        template_name = 'mainsite/quiz_3.html'
-    if question_obj.question_type == 'MCQ_Text':
-        template_name = 'mainsite/quiz_4.html'
-    if question_obj.question_type == 'MCQ':
-        template_name = 'mainsite/quiz_1.html'
-    if question_obj.question_type == 'Arrange':
-        template_name = 'mainsite/quiz_5.html'
-    if question_obj.question_type == 'Translate':
-        template_name = 'mainsite/quiz_6.html'
-
+    current_attempt = UserAttempts.objects.filter(user=request.user, quiz=quiz_accessed).order_by('-attempt_date')[0]
+    percentage_complete = int(((current_attempt.questions_answered+1)/5)*100)
     return render(request, template_name, {
         'quiz': submitted_answer, 
         'question_text': question_obj.question_text, 
         'question_answer': question_obj.correct_answer,
         'question_id': question_obj.id,
         'unit_name': unit_name,
+        'percentage_complete': percentage_complete,
+        'questions_answered': current_attempt.questions_answered+1,
         'unit_id': unit_id,
         'options': options,
         'jumbled_answer': jumbled_answer,
