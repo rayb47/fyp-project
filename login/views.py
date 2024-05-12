@@ -157,7 +157,7 @@ class MyPasswordResetView(auth_views.PasswordResetView):
 # Handles sending out email for a password reset
 def password_reset(request):
     email = request.POST.get('email', None)
-    user = CustomUser.objects.get(email=email,username='rayb13')
+    user = CustomUser.objects.filter(email=email)[0]
     subject = "Password Reset Requested"
     email_template_name = "login/password_reset_subject.txt"
     current_site = get_current_site(request)
