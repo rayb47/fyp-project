@@ -31,13 +31,12 @@ def signup(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirm_password = request.POST.get('passwordConfirm')
-        study_frequency = request.POST.get('frequencyUnit')
-        study_frequency_amount = request.POST.get('studyFrequency')
-        beginner_lvl = request.POST.get('beginner_lvl')
-        intermediate_lvl = request.POST.get('intermediate_lvl')
-        advanced_lvl = request.POST.get('advanced_lvl')
-        language_yes = request.POST.get('languageYes')
-        language_no = request.POST.get('languageNo')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        proficiency_level = request.POST.get('proficiencyLevel')
+        daily_minutes_goal = request.POST.get('dailyMinutesGoal')
+        daily_questions_goal = request.POST.get('dailyQuestionsGoal')
+        site_language = request.POST.get('siteLanguage', 'English')
 
         # Check if the username already exists
         if CustomUser.objects.filter(username=email).exists():
@@ -59,31 +58,29 @@ def signup(request):
         except ValidationError as e:
             return JsonResponse({'status': 'error', 'message': e.messages}, status=400)
 
+        # Sets user attributes based on inputted data
         try:
             myuser = CustomUser(username=username, email=email)
             myuser.set_password(password)
             myuser.is_active = False
+            if proficiency_level:
+                myuser.proficiency_level = int(proficiency_level)
+            if last_name and first_name:
+                myuser.first_name = first_name
+                myuser.last_name = last_name
+            if daily_minutes_goal:
+                myuser.daily_activity_goal = int(daily_minutes_goal)
+            if daily_questions_goal:
+                myuser.daily_question_goal = int(daily_questions_goal)
+            if site_language == 'English':
+                myuser.portuguese_default = False
+            elif site_language == 'Portuguese':
+                myuser.portuguese_default = True
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': 'Technical error'}, status=400)
-        
-        myuser = CustomUser(username=username, email=email)
-        myuser.set_password(password)
-        myuser.is_active = False
 
-        # Sets user attributes based on inputted data
-        if study_frequency and study_frequency_amount:
-            myuser.study_frequency = study_frequency
-            myuser.study_frequency_amount = study_frequency_amount
-        if language_yes:
-            myuser.portuguese_default = True
-        if language_no:
-            myuser.portuguese_default = False
-        if beginner_lvl:
-            myuser.proficiency_level = 1
-        if intermediate_lvl:
-            myuser.proficiency_level = 2
-        if advanced_lvl:
-            myuser.proficiency_level = 3
+        
+
         try:
             # Saves created user object
             myuser.save()

@@ -436,7 +436,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete all items?
@@ -709,7 +708,7 @@ document.getElementById('download-button').addEventListener('click', function() 
             rowData.push(text);
         }
         });
-        tableData.push(rowData.join(','));
+        tableData.push(rowData.join('|'));
     });
 
     // Send the data to the Django backend

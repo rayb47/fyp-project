@@ -125,7 +125,7 @@
     <input type="hidden" id="matchCount" value="{{ match_items|length }}">
     <div class="row" style="margin-top: 20px;">
         <div class="col-6">
-            <u><h5 style="text-align: center;"><b>Portuguese</b></h5></u>
+            <u><h5 style="text-align: center;"><b>English</b></h5></u>
             <ul class="list-group match-list" id="listA" style="margin-left: 30px;">
               {% for item, value in match_items.items %}
                 <li class="list-group-item match-item" data-match="{{value}}" id="columnA">
@@ -135,7 +135,7 @@
             </ul>
         </div>
         <div class="col-6">
-            <u><h5 style="text-align: center;"><b>English</b></h5></u>
+            <u><h5 style="text-align: center;"><b>Portuguese</b></h5></u>
             <ul class="list-group match-list" id="listB" style="margin-right: 30px;">
               {% for item in left_col_q %}
                 <li class="list-group-item match-item" data-match="{{ match_items|get_item:item }}" id="columnA">{{item}}</li>

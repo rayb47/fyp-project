@@ -243,7 +243,7 @@ def download_table(request):
         writer = csv.writer(response)
         writer.writerow(['No.', 'Portuguese', 'English', 'English Example Usage', 'Portuguese Example Usage'])
         for row in table_data:
-            columns = row.split(',')
+            columns = row.split('|')
             # Make sure to handle the Unicode strings properly by ensuring they are in the correct format
             writer.writerow([col for col in columns])
 
@@ -810,9 +810,7 @@ def process_audio(request, question_id):
             audio_file = request.FILES['audio']
             file_name = audio_file.name
             file_extension = os.path.splitext(file_name)[1]
-
             question_obj = Question.objects.get(id=question_id)
-
             # Convert audio to WAV format using pydub
             audio = AudioSegment.from_file(audio_file, format=file_extension.replace('.', ''))
             audio = audio.set_frame_rate(16000).set_channels(1)  # Convert to mono and adjust frame rate
@@ -823,7 +821,6 @@ def process_audio(request, question_id):
             with sr.AudioFile("converted_audio.wav") as source:
                 audio_data = recognizer.record(source)
                 text = recognizer.recognize_google(audio_data, language='pt-BR')
-                print(text)
                 if text.lower() == question_obj.correct_answer.lower():
                     result = 'success'
                 else:

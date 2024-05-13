@@ -159,9 +159,9 @@ textarea {
               <div class="form-group col-md-4">
                 <label for="playbackSpeed">Audio Playback Speed</label>
                 <select class="form-control" id="playbackSpeed">
-                  <option value="Slow" {% if request.user.playback_speed == 'Slow' %}selected{% endif %}>Slow</option>
-                  <option value="Normal" {% if request.user.playback_speed == 'Normal' %}selected{% endif %}>Normal</option>
-                  <option value="Fast" {% if request.user.playback_speed == 'Fast' %}selected{% endif %}>Fast</option>
+                  <option value="slow" {% if request.user.playback_speed == 'slow' %}selected{% endif %}>Slow</option>
+                  <option value="normal" {% if request.user.playback_speed == 'normal' %}selected{% endif %}>Normal</option>
+                  <option value="fast" {% if request.user.playback_speed == 'fast' %}selected{% endif %}>Fast</option>
                 </select>
               </div>
             </div>

@@ -102,36 +102,44 @@
       <fieldset class="form-group col-md-6">
         <legend class="col-form-label pt-0"><b>Proficiency Level</b></legend>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="proficiencyLevel" id="beginner" value="beginner">
+          <input class="form-check-input" type="radio" name="proficiencyLevel" id="beginner" value="1">
           <label class="form-check-label" for="beginner">
-            Beginner
+            Beginner (Default)
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="proficiencyLevel" id="intermediate" value="intermediate">
+          <input class="form-check-input" type="radio" name="proficiencyLevel" id="intermediate" value="2">
           <label class="form-check-label" for="intermediate">
             Intermediate
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="proficiencyLevel" id="advanced" value="advanced">
+          <input class="form-check-input" type="radio" name="proficiencyLevel" id="advanced" value="3">
           <label class="form-check-label" for="advanced">
             Advanced
           </label>
         </div>
       </fieldset>
-    <div class="form-group">
-      <label for="siteLanguage"><b>Default Site Language to</b>
-          <a href="#" data-toggle="tooltip" data-placement="right" title="This affects mainly the Culture pages of the website.">
-              <i class="fas fa-info-circle"></i>
-          </a>
-      </label>
-      <select class="form-control" id="siteLanguage">
-          <option value="English">English</option>
-          <option value="Portuguese">Portuguese</option>
-      </select>
+      <div class="form-group">
+        <label for="siteLanguage"><b>Site Language</b>
+            <a href="#" data-toggle="tooltip" data-placement="right" title="This affects only the Culture pages of the website">
+                <i class="fas fa-info-circle"></i>
+            </a>
+        </label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="siteLanguage" id="English" value="English">
+          <label class="form-check-label" for="English">
+            English (Default)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="siteLanguage" id="Portuguese" value="Portuguese">
+          <label class="form-check-label" for="Portuguese">
+            Portuguese
+          </label>
+        </div>
+      </div>
     </div>
-  </div>
   <button type="submit" class="btn btn-primary btn-block">Submit</button>
 </form>
 </div>
@@ -175,6 +183,7 @@
   document.getElementById('signup-form').addEventListener('submit', function(e) {
       e.preventDefault();
       var formData = new FormData(this);
+      console.log(formData);
       // Retrieve the CSRF token from the form
       var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
       fetch('/signup', {
@@ -186,8 +195,6 @@
       }).then(response => response.json())
       .then(data => {
           if(data.status === 'error') {
-              console.log(data.message);
-              console.log("EHFEHHF")
               const errorToastEl = document.getElementById('errorToast');
               const errorToastBody = errorToastEl.querySelector('.toast-body');
               if (Array.isArray(data.message)) {
@@ -196,7 +203,6 @@
                   errorToastBody.innerHTML = data.message;
               }
               const errorToast = new bootstrap.Toast(errorToastEl);
-              console.log("Inside here")
               errorToast.show();
           } else {
               alert(data.message);
