@@ -79,8 +79,6 @@ def signup(request):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': 'Technical error'}, status=400)
 
-        
-
         try:
             # Saves created user object
             myuser.save()
