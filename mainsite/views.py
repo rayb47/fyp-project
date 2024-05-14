@@ -70,7 +70,6 @@ def home(request):
     for city_name in ['Coimbra', 'Madeira', 'Lisbon']:
         res = requests.get("https://api.weatherapi.com/v1/current.json?key=023566f8135543a68ab235213233012&q={}".format(city_name))
         res = res.json()
-        print(res)
         combined_city_data.append({
             'city': city_name,
             'temp_c': str(res['current']['temp_c']) + '°C',
@@ -126,7 +125,6 @@ def get_incorrect_questions(request, unit_id):
     for item in UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit_id), is_correct=False):
         if item.question.question_type == 'Arrange':
             actual_list = ast.literal_eval(item.answer_text)
-            print(type(actual_list), actual_list)
             formulated_string = ' '.join(actual_list)
         answer_data.append(
             {'question': item.question.question_text,
@@ -173,6 +171,7 @@ def analytics(request):
         correct = UserAnswers.objects.filter(user=request.user, is_correct=True, question__quiz__unit=int(unit.id)).count()
         incorrect = UserAnswers.objects.filter(user=request.user, is_correct=False, question__quiz__unit=int(unit.id)).count()
         attempted = UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit.id)).count()
+        attempted_distinct = UserAnswers.objects.filter(user=request.user, question__quiz__unit=int(unit.id)).values('question').distinct().count()
         quiz_ids = UserAttempts.objects.filter(user=request.user, quiz__isnull=False, questions_answered=5, quiz__unit=int(unit.id)).values_list('quiz', flat=True).distinct()
         quizzes_done = Quiz.objects.filter(id__in=quiz_ids).count()
         lessons = UserAttempts.objects.filter(user=request.user, lesson__isnull=False, lesson__unit=int(unit.id))
@@ -185,7 +184,7 @@ def analytics(request):
         detail_list = [
             {'icon': 'check-circle', 'text': 'Correct Answers', 'value': correct, 'color': 'text-success'},
             {'icon': 'times-circle', 'text': 'Incorrect Answers', 'value': incorrect, 'color': 'text-danger'},
-            {'icon': 'question-circle', 'text': 'Questions Attempted', 'value': attempted, 'color': 'text-info'},
+            {'icon': 'question-circle', 'text': 'Questions Attempted', 'value': "{} (Distinct: {})".format(attempted, attempted_distinct), 'color': 'text-info'},
             {'icon': 'trophy', 'text': 'Quizzes Completed', 'value': quizzes_done, 'color': 'text-warning'},
             {'icon': 'book-open', 'text': 'Words/Phrases Learnt', 'value': word_count, 'color': 'text-secondary'}
         ]
@@ -461,7 +460,9 @@ def lesson(request, lesson_id):
 
     return render(request, 'mainsite/lesson.html', {
         'lesson': lesson, 'words': words, 'word_1_usages':word_1_usages, 'word_2_usages':word_2_usages, 
-        'percent_complete': percent_complete, 'unit_id': lesson_id, 'unit_name': unit_obj.name})
+        'percent_complete': percent_complete, 'unit_id': lesson_id, 'unit_name': unit_obj.name, 
+        'difficulty': proficiency_dict[str(request.user.proficiency_level)]
+    })
 
 
 @login_required
@@ -552,7 +553,6 @@ def quiz(request, unit_id, quiz_id):
             attempt=user_attempt
         ).values_list('question_id', flat=True)
     )
-    print(unanswered_questions)
 
     # Finding questions whose latest answer is incorrect
     latest_incorrect_answer_subquery = UserAnswers.objects.filter(
@@ -659,6 +659,7 @@ def quiz(request, unit_id, quiz_id):
         'left_col_q':left_col_q,
         'right_col_q': right_col_q,
         'repeated_question': repeated_question,
+        'difficulty': difficulty
     })
 
 @login_required

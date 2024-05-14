@@ -258,54 +258,65 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for word in saved_words %}
-                                        <tr id="savedWordRow_{{word.id}}">
-                                            <th scope="row">{{forloop.counter}}</th>
-                                            <td>
-                                                <span class="align-middle">
-                                                {% if word.custom_portuguese %}
-                                                    {{word.custom_portuguese}}
-                                                    <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.custom_portuguese}}')">🔊</button>
-                                                {% else %}
-                                                    {{word.word.portuguese_word}}
-                                                    <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
-                                                {% endif %}
-                                                
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="align-middle">
-                                                    {% if word.custom_english %}
-                                                        {{word.custom_english}}
+                                        {% if saved_words %}
+                                            {% for word in saved_words %}
+                                            <tr id="savedWordRow_{{word.id}}">
+                                                <th scope="row">{{forloop.counter}}</th>
+                                                <td>
+                                                    <span class="align-middle">
+                                                    {% if word.custom_portuguese %}
+                                                        {{word.custom_portuguese}}
+                                                        <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.custom_portuguese}}')">🔊</button>
                                                     {% else %}
-                                                        {{word.word.english_translation}}
+                                                        {{word.word.portuguese_word}}
+                                                        <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.word.portuguese_word}}')">🔊</button>
                                                     {% endif %}
-                                                </span>
-                                            </td>
-                                            {% with word.word.example_usages.all.first as usage %}
-                                                <td>
-                                                    <span class="align-middle">
-                                                        {% if usage.english_usage %}
-                                                            {{usage.english_usage}}
-                                                        {% else %}
-                                                            -
-                                                        {% endif %}
+                                                    
                                                     </span>
                                                 </td>
                                                 <td>
                                                     <span class="align-middle">
-                                                        {% if usage.portuguese_usage %}
-                                                            {{usage.portuguese_usage}}
-                                                            <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                        {% if word.custom_english %}
+                                                            {{word.custom_english}}
                                                         {% else %}
-                                                            -
+                                                            {{word.word.english_translation}}
                                                         {% endif %}
                                                     </span>
                                                 </td>
-                                            {% endwith %}
-                                            <td><center><button class="btn btn-danger btn-sm delete-button" id="deleteWord" data-id="{{word.id}}"><i class="fas fa-trash-alt"></i>      Delete</button></center></td> <!-- Delete icon button -->
-                                        </tr>
-                                        {% endfor %}
+                                                {% with word.word.example_usages.all.first as usage %}
+                                                    <td>
+                                                        <span class="align-middle">
+                                                            {% if usage.english_usage %}
+                                                                {{usage.english_usage}}
+                                                            {% else %}
+                                                                -
+                                                            {% endif %}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="align-middle">
+                                                            {% if usage.portuguese_usage %}
+                                                                {{usage.portuguese_usage}}
+                                                                <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
+                                                            {% else %}
+                                                                -
+                                                            {% endif %}
+                                                        </span>
+                                                    </td>
+                                                {% endwith %}
+                                                <td><center><button class="btn btn-danger btn-sm delete-button" id="deleteWord" data-id="{{word.id}}"><i class="fas fa-trash-alt"></i>      Delete</button></center></td> <!-- Delete icon button -->
+                                            </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td><center>-</center></td>
+                                            </tr>
+                                        {% endif %}
                                     </tbody>
                                 </table>
                                 </div>

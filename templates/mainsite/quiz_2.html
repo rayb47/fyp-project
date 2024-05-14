@@ -90,14 +90,11 @@
   <div class="container">
     <div class="quiz-container">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class='unit_heading'>
-          <b>{{unit_name}} </b>
-        </div>
-        <div class="progress" style="width: 30%; border: 2px solid black;"> 
-          <div class="progress-bar progress-bar-striped" style="width: {{ percentage_complete }}%;" aria-valuenow="{{percentage_complete}}" aria-valuemin="0" aria-valuemax="100">{{percentage_complete}}%</div>
+        <div class="unit_heading" style="width:55%">
+          <b>{{unit_name}} - {{difficulty}}</b>
         </div>
         {% if not repeated_question %}
-        <div class='numbering'><b>{{questions_answered}} of 5</b></div>
+        <div class="question_count_box"><b>{{questions_answered}} of 5</b></div>
       {% else %}
         <b>Repeated Question</b>
       {% endif %} 
