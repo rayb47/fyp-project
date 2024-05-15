@@ -263,7 +263,7 @@
                                             <tr id="savedWordRow_{{word.id}}">
                                                 <th scope="row">{{forloop.counter}}</th>
                                                 <td>
-                                                    <span class="align-middle">
+                                                    <span class="align-middle notranslate">
                                                     {% if word.custom_portuguese %}
                                                         {{word.custom_portuguese}}
                                                         <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.custom_portuguese}}')">🔊</button>
@@ -294,7 +294,7 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span class="align-middle">
+                                                        <span class="align-middle notranslate">
                                                             {% if usage.portuguese_usage %}
                                                                 {{usage.portuguese_usage}}
                                                                 <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')">🔊</button>
@@ -356,7 +356,7 @@
                                         <tr id="savedWordRow_{{word.id}}">
                                             <th scope="row">{{forloop.counter}}</th>
                                             <td>
-                                                <span class="align-middle">
+                                                <span class="align-middle notranslate">
                                                 {{word.portuguese_word}}
                                                 <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{word.portuguese_word}}')">🔊</button>
                                                 </span>
@@ -608,7 +608,7 @@ $(document).ready(function() {
                         var newRow = `<tr id="savedWordRow_${word.id}">
                                           <th scope="row">${index + 1}</th>
                                           <td>
-                                              <span class="align-middle">
+                                              <span class="align-middle notranslate">
                                                   ${word.portuguese_word}
                                                   <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${word.portuguese_word}')">🔊</button>
                                               </span>
@@ -624,7 +624,7 @@ $(document).ready(function() {
                                               </span>
                                           </td>
                                           <td>
-                                              <span class="align-middle">
+                                              <span class="align-middle notranslate">
                                                   ${word.example_usage ? word.example_usage.portuguese_usage : '-'}
                                                   ${word.example_usage ? `<button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${word.example_usage.portuguese_usage}')">🔊</button>` : ''}
                                               </span>
@@ -660,7 +660,7 @@ $(document).ready(function() {
                     var row = `<tr>
                         <th scope="row">${index + 1}</th>
                         <td>
-                            <span class="align-middle">
+                            <span class="align-middle notranslate">
                                 ${item.portuguese}
                                 <button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('${item.portuguese}')">🔊</button>
                         </td>

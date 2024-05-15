@@ -89,7 +89,7 @@ def signup(request):
             from_email = settings.EMAIL_HOST_USER
             protocol = 'https' if settings.USE_HTTPS else 'http'
             to = [email]
-            text_content = 'Please confirm your email address to complete the registration.'
+            text_content = 'Please check the email sent to your inbox to activate your account.'
             html_content = render_to_string('login/acc_active_email.html', {
                 'user': myuser,
                 'domain': f'{protocol}://{current_site.domain}',

@@ -57,7 +57,7 @@
         <!-- Iterate through words for the lesson on this page -->
         {% for word in words %}
         <div class="word-header" style="margin-top: 30px;">
-          <h1>{{word.portuguese_word}} ({{word.english_translation}}) 
+          <h1><span class="notranslate">{{word.portuguese_word}}</span> ({{word.english_translation}}) 
               <button class="sound-button" id="speakBtn" style="font-size:32px" onclick="convertTextToSpeech('{{word.portuguese_word}}')">🔊</button>
               <button class="btn btn-outline-success plus-button" id="plusBtn" data-word-id="{{ word.id }}"><i class="fas fa-plus"></i>    Add to List</button>
           </h1><br>
@@ -67,7 +67,7 @@
           <ul>
             <!-- Iterate through example usage for words -->
             {% for usage in word.example_usages.all %}
-            <li style="font-size:24px; margin-left: 12px;"> {{usage.english_usage}} <b>   /   </b> <span style="color:blue">{{usage.portuguese_usage}}</span><button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')" style="font-size: 24px; margin-left: 20px;">🔊</button></li>
+            <li style="font-size:24px; margin-left: 12px;"> {{usage.english_usage}} <b>   /   </b> <span class="notranslate" style="color:blue">{{usage.portuguese_usage}}</span><button class="sound-button" id="speakBtn" onclick="convertTextToSpeech('{{usage.portuguese_usage}}')" style="font-size: 24px; margin-left: 20px;">🔊</button></li>
             {% endfor %}
           </ul>
           </div>
